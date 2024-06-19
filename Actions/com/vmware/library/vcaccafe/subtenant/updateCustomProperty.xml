@@ -1,0 +1,19 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dunes-script-module name="updateCustomProperty" result-type="vCACCAFE:Subtenant" api-version="6.0.0" id="b3210db4-2643-48d5-b992-f17ab432e8b0" version="1.0.0" allowed-operations="vf" category-name="com.vmware.library.vcaccafe.subtenant">
+  <description><![CDATA[Updates a custom property from a business group.]]></description>
+  <param n="group" t="vCACCAFE:Subtenant"><![CDATA[Business group]]></param>
+  <param n="oldPropertyName" t="string"><![CDATA[Old property name]]></param>
+  <param n="newPropertyName" t="string"><![CDATA[New property name]]></param>
+  <param n="value" t="string"><![CDATA[Value]]></param>
+  <param n="isEncrypted" t="boolean"><![CDATA[Encrypted]]></param>
+  <param n="isRuntime" t="boolean"><![CDATA[Prompt user]]></param>
+  <script encoded="false"><![CDATA[System.getModule("com.vmware.library.vcaccafe.util").validateObject(group, "Business group");
+vCACCAFESubtenantHelper.updateCustomProperty(group, oldPropertyName, newPropertyName, value, isEncrypted, isRuntime);
+
+System.log("Updating business group '" + group.getName() + "'...");
+var host = vCACCAFEEntitiesFinder.getHostForEntity(group);
+var service = host.createAuthenticationClient().getAuthenticationSubtenantService();
+service.updateSubtenant(group.getTenant(), group);
+System.log("Business group updated: " + group.getId());
+return vCACCAFEEntitiesFinder.getSubtenant(host, group.getId());]]></script>
+</dunes-script-module>

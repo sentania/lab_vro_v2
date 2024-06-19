@@ -1,0 +1,22 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dunes-script-module name="getDefaultIpamConnection" result-type="InfobloxIPAM:IpamConnection" api-version="6.0.0" id="32be1a2c-0957-4509-93a2-5d41bb00e117" version="0.0.4" allowed-operations="evf" category-name="com.infoblox.ipam">
+  <description><![CDATA[Returns default connection to IPAM server.]]></description>
+  <script encoded="false"><![CDATA[var connections = Server.findAllForType("InfobloxIPAM:IpamConnection");
+if(connections == null || connections.length == 0) {
+	throw "Cannot find any Infoblox IPAM connections.";
+}
+
+connections = connections.sort(compareByPriority);
+var defaultConnection = connections[0];
+
+System.log("The default Infoblox IPAM connection: " + defaultConnection.hostName + "/" + defaultConnection.apiType.name);
+
+return defaultConnection;
+
+function compareByPriority(a, b) {
+  return a.connectionPriority - b.connectionPriority;
+}
+
+
+]]></script>
+</dunes-script-module>

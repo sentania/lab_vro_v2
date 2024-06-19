@@ -1,0 +1,45 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<workflow xmlns="http://vmware.com/vco/workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://vmware.com/vco/workflow http://vmware.com/vco/workflow/Workflow-v4.xsd" root-name="item1" object-name="workflow:name=generic" id="18abfc8a-433f-4ec2-b2db-3b39304bcb08" version="0.0.3" api-version="6.0.0" allowed-operations="vfe" editor-version="1.6" restartMode="1" resumeFromFailedMode="0">
+  <display-name><![CDATA[Upload file to vCO server]]></display-name>
+  <description><![CDATA[Create a new resource element if resource element with same name does not exist, overwrite existing otherwise]]></description>
+  <position y="50.0" x="100.0"/>
+  <input>
+    <param name="resourceMimeAttachment" type="MimeAttachment"/>
+  </input>
+  <attrib name="resourceElementCategoryPath" type="string" read-only="false" conf-id="a83c945b-6d8c-4e56-8469-36b4d908dcd8" conf-key="additionalResourceElementCategoryPath">
+    <value encoded="n"><![CDATA[]]></value>
+  </attrib>
+  <workflow-item name="item0" type="end" end-mode="0">
+    <in-binding/>
+    <position y="50.0" x="420.0"/>
+  </workflow-item>
+  <workflow-item name="item1" out-name="item0" type="task">
+    <display-name><![CDATA[Scriptable task]]></display-name>
+    <script encoded="false"><![CDATA[var resourcesCategory = Server.getResourceElementCategoryWithPath(resourceElementCategoryPath);
+
+var existingResources = resourcesCategory.resourceElements;
+
+
+for each (var existingResource in existingResources) {
+	if (existingResource.name == resourceMimeAttachment.name) 
+		{	
+			existingResource.setContentFromMimeAttachment(resourceMimeAttachment);
+			System.log("Resource "  + resourceMimeAttachment.name  + " updated");
+			break;
+		}		
+}
+
+//resourceMimeAttachment.mimeType = "text/plain";
+if (existingResource ==null || existingResource.name != resourceMimeAttachment.name) {
+	var resource = Server.createResourceElement(resourcesCategory, resourceMimeAttachment.name, resourceMimeAttachment);
+	System.log("Resource " + resourceMimeAttachment.name + " created");
+}]]></script>
+    <in-binding>
+      <bind name="resourceMimeAttachment" type="MimeAttachment" export-name="resourceMimeAttachment"/>
+      <bind name="resourceElementCategoryPath" type="string" export-name="resourceElementCategoryPath"/>
+    </in-binding>
+    <out-binding/>
+    <position y="60.0" x="220.0"/>
+  </workflow-item>
+  <presentation/>
+</workflow>

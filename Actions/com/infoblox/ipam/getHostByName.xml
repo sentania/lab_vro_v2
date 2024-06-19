@@ -1,0 +1,24 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dunes-script-module name="getHostByName" result-type="Any" api-version="6.0.0" id="40d43cde-f140-41b4-b794-1d6860ce58c9" version="0.0.2" allowed-operations="evf" category-name="com.infoblox.ipam">
+  <description><![CDATA[Gets a host record by name in specified DNS view.
+If DNS view is not specified, then default DNS view will be used.]]></description>
+  <param n="ipamConnection" t="InfobloxIPAM:IpamConnection"><![CDATA[Connection to the IPAM server]]></param>
+  <param n="hostName" t="string"><![CDATA[Host name (FQDN)]]></param>
+  <param n="dnsView" t="string"><![CDATA[DNS view, in which the host record resides]]></param>
+  <script encoded="false"><![CDATA[var hostManager = ipamConnection.getHostManager();
+var result = hostManager.findHostsByName(hostName, dnsView);
+var effectiveDnsView = dnsView ? "DNS view [" + dnsView + "]" : "default DNS view";
+
+if (result.length == 0) {
+	throw "The host record with name [" + hostName + "] was not found in " + effectiveDnsView +"."
+}
+
+if (result.length > 1) {
+	throw "More than one host records with name [" + hostName + "] were found in " + effectiveDnsView + ".";
+}
+
+var refInfo = ReferenceInfo.parse(result[0].reference);
+System.log("The host record [" + refInfo.description + "] was found by name [" + hostName + "] in " + effectiveDnsView + ".");
+
+return result[0];]]></script>
+</dunes-script-module>

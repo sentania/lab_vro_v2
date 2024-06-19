@@ -1,0 +1,29 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dunes-script-module name="logInputProperties" result-type="string" api-version="6.0.0" id="6909d340-6795-417a-bf24-bc2111bbe929" version="0.1.0" allowed-operations="vfe" category-name="net.sentania.Actions">
+  <param n="inputProperties" t="Properties"><![CDATA[]]></param>
+  <script encoded="false"><![CDATA[function dumpProperties(props,lvl){
+         var keys = props.keys;
+         var prefix = ""
+     for (var i=0; i<lvl; i++){
+                   prefix = prefix + "";
+          }
+          for (k in keys){
+                 var key = keys[k];
+                 var value = props.get(keys[k])
+                 if ("Properties" == System.getObjectType(value)){
+                  System.log(prefix + key + "[")
+                  dumpProperties(value,(lvl+2));
+                  System.log(prefix+ "]")
+                 } else{
+                   System.log( prefix + key + ":" + value)
+                 }
+                 }
+   }
+
+   dumpProperties(inputProperties, 0)
+
+   
+
+   
+   ]]></script>
+</dunes-script-module>

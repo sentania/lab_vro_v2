@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dunes-script-module name="calculateMaximumSnapshotDate" result-type="Date" api-version="6.0.0" id="7ef03907-d9a2-4993-8f75-70b7320da8f0" version="0.2.0" allowed-operations="vfe" category-name="net.sentania.Actions">
+  <script encoded="false"><![CDATA[var date = new Date();
+date.setDate(date.getDate() + 14);
+System.log(date)
+return date;]]></script>
+</dunes-script-module>

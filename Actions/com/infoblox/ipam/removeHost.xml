@@ -1,0 +1,8 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dunes-script-module name="removeHost" result-type="void" api-version="6.0.0" id="16f7875b-686b-4f39-8728-39b0b3d6a00d" version="0.0.5" allowed-operations="evf" category-name="com.infoblox.ipam">
+  <description><![CDATA[Removes a host record from IPAM.]]></description>
+  <param n="ipamConnection" t="InfobloxIPAM:IpamConnection"><![CDATA[Connection to the IPAM server]]></param>
+  <param n="reference" t="string"><![CDATA[Reference to the host record]]></param>
+  <script encoded="false"><![CDATA[ipamConnection.getHostManager().removeHost(reference);
+System.log("The host record [" + ReferenceInfo.parse(reference).description + "] was removed from IPAM.");]]></script>
+</dunes-script-module>

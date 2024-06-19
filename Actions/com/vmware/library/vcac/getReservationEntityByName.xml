@@ -1,0 +1,20 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dunes-script-module name="getReservationEntityByName" result-type="vCAC:Entity" api-version="6.0.0" id="112ff630-fd3d-470c-9864-1b2342ef935b" version="0.0.1" allowed-operations="vf" category-name="com.vmware.library.vcac">
+  <description><![CDATA[Given a vCAC Host and the name of a Reservation, return the vCAC:Entity object for the reservation]]></description>
+  <param n="vcacHost" t="vCAC:VCACHost"><![CDATA[vCAC Host to search]]></param>
+  <param n="reservationName" t="string"><![CDATA[Reservation Name]]></param>
+  <script encoded="false"><![CDATA[if (vcacHost == null) return null;
+var model = "ManagementModelEntities.svc";
+var entitySetName = "HostReservations";
+
+var reservationProperty = new Properties();
+reservationProperty.put("HostReservationName",reservationName);
+
+var entities = vCACEntityManager.readModelEntitiesByCustomFilter(vcacHost.id, model, entitySetName, reservationProperty, null);
+if (entities != null){
+	return entities[0];
+}else{
+	System.warn("No Reservation found with name: "+reservationName);
+	return null;
+}]]></script>
+</dunes-script-module>

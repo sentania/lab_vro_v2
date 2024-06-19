@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<package>
+<description><![CDATA[Create, store, run, distribute script to run in guest OS.
+Version for vRO 8.x input forms
+Supports cmd / powershell / bash.
+Provides stdout and stderror.
+Use cmdAnsi from Pierre Torris. Donateware on www.ptorris.com]]></description>
+<elm src-category='null'><![CDATA[dunes://service.dunes.ch/Workflow?id='03cbb40c-fc06-4fc2-9c58-c6c807586edd'&dunesName='Workflow']]></elm>
+<elm src-category='null'><![CDATA[dunes://service.dunes.ch/Action?id='042ece5f-cf9c-4b86-96c3-4f8626800849'&dunesName='Action'&name='getExtension'&category='com.vmware.pso.helpers']]></elm>
+<elm src-category='null'><![CDATA[dunes://service.dunes.ch/Action?id='09bc4327-6c69-437f-b43e-bb1804dbe63c'&dunesName='Action'&name='getResourceElementsFromCategoryPath'&category='com.vmware.coe.library.resourceElements']]></elm>
+<elm src-category='null'><![CDATA[dunes://service.dunes.ch/Action?id='0eaa1cf3-c9f9-41ec-8cc2-da4e8729cfcf'&dunesName='Action'&name='getResourceElementAttributeWithKeyByResourceElementName'&category='com.vmware.coe.library.resourceElements']]></elm>
+<elm src-category='null'><![CDATA[dunes://service.dunes.ch/Action?id='14475154-d077-4e87-bb05-d77f648dac44'&dunesName='Action'&name='getResourceElementAttributeWithKey'&category='com.vmware.coe.library.resourceElements']]></elm>
+<elm src-category='null'><![CDATA[dunes://service.dunes.ch/Workflow?id='18abfc8a-433f-4ec2-b2db-3b39304bcb08'&dunesName='Workflow']]></elm>
+<elm src-category='null'><![CDATA[dunes://service.dunes.ch/Workflow?id='24c23d4c-12be-4889-aa66-29b8a450f1cd'&dunesName='Workflow']]></elm>
+<elm src-category='null'><![CDATA[dunes://service.dunes.ch/Workflow?id='25688a4d-88c1-4adf-b14e-a7557aa4ac3b'&dunesName='Workflow']]></elm>
+<elm src-category='null'><![CDATA[dunes://service.dunes.ch/ResourceElement?id='288ff498-0244-4125-acde-d4c6e48de7e7'&dunesName='ResourceElement']]></elm>
+<elm src-category='null'><![CDATA[dunes://service.dunes.ch/Action?id='2f14d5cd-ab9b-4b4c-a2b7-362d4a0b141f'&dunesName='Action'&name='getResourceElementAttributeWithKeyByResourceElementCategoryPathAndResourceElementName'&category='com.vmware.coe.library.resourceElements']]></elm>
+<elm src-category='null'><![CDATA[dunes://service.dunes.ch/Action?id='329d4bd1-eb43-4759-b14c-0d6318032cbe'&dunesName='Action'&name='getScriptNames'&category='com.vmware.coe.copyAndRunScriptsInGuest']]></elm>
+<elm src-category='null'><![CDATA[dunes://service.dunes.ch/ResourceElement?id='352d998c-6af5-4af9-8c4f-da4a2a2dff2b'&dunesName='ResourceElement']]></elm>
+<elm src-category='null'><![CDATA[dunes://service.dunes.ch/Action?id='377d4001-bcc0-491f-820f-1e0b98dc4138'&dunesName='Action'&name='testVmToolsForGuestOps'&category='com.vmware.pso.GuestOps']]></elm>
+<elm src-category='null'><![CDATA[dunes://service.dunes.ch/Action?id='4524c2e9-d176-45f6-83bc-13dd90c0545c'&dunesName='Action'&name='setResourceElementAttributesFromProperties'&category='com.vmware.coe.library.resourceElements']]></elm>
+<elm src-category='null'><![CDATA[dunes://service.dunes.ch/Workflow?id='4c851d59-9ffe-4384-94b0-ed9d62c53b16'&dunesName='Workflow']]></elm>
+<elm src-category='null'><![CDATA[dunes://service.dunes.ch/Action?id='52c5025c-0197-47de-8feb-e221210c21d1'&dunesName='Action'&name='getResourceElementNamesFromCategoryPath'&category='com.vmware.coe.library.resourceElements']]></elm>
+<elm src-category='null'><![CDATA[dunes://service.dunes.ch/Workflow?id='7ced6eda-298e-4d62-9811-7cb9c61f382b'&dunesName='Workflow']]></elm>
+<elm src-category='null'><![CDATA[dunes://service.dunes.ch/Action?id='a788d9c8-e14b-4f7a-a87a-73e30965ce4a'&dunesName='Action'&name='getVmGuestFamily'&category='com.vmware.coe.vcenter.vm.guest']]></elm>
+<elm src-category='null'><![CDATA[dunes://service.dunes.ch/ConfigurationElement?id='a83c945b-6d8c-4e56-8469-36b4d908dcd8'&dunesName='ConfigurationElement']]></elm>
+<elm src-category='null'><![CDATA[dunes://service.dunes.ch/Action?id='ae5a3cc4-9cb8-4b06-9cf0-3c898ba40dc1'&dunesName='Action'&name='getDirectoryPathFromFilePath'&category='com.vmware.pso.helpers']]></elm>
+<elm src-category='null'><![CDATA[dunes://service.dunes.ch/Action?id='ba937b6a-d334-4d5b-a31c-6b4bfc793249'&dunesName='Action'&name='getResourceElementProperties'&category='com.vmware.coe.library.resourceElements']]></elm>
+<elm src-category='null'><![CDATA[dunes://service.dunes.ch/ResourceElement?id='bb3426c7-95c6-4833-90d6-5ae85ad5c99c'&dunesName='ResourceElement']]></elm>
+<elm src-category='null'><![CDATA[dunes://service.dunes.ch/Action?id='bdb05d62-c530-4e3f-8774-54150cf8fa95'&dunesName='Action'&name='encodeBase64Unicode2'&category='com.vmware.pso.util']]></elm>
+<elm src-category='null'><![CDATA[dunes://service.dunes.ch/Workflow?id='d67befad-32d0-4217-aa7f-afcd793a916c'&dunesName='Workflow']]></elm>
+<elm src-category='null'><![CDATA[dunes://service.dunes.ch/Action?id='ddb1dc5c-5237-4d50-9d02-1de19cb3ac0a'&dunesName='Action'&name='getDefaultScriptVariables'&category='com.vmware.coe.copyAndRunScriptsInGuest']]></elm>
+<elm src-category='null'><![CDATA[dunes://service.dunes.ch/Action?id='f1780034-d918-43ec-b3db-46682aed1875'&dunesName='Action'&name='getOrCreateResourceElement'&category='com.vmware.coe.library.resourceElements']]></elm>
+<elm src-category='null'><![CDATA[dunes://service.dunes.ch/Action?id='f69010f2-03fc-4960-9010-1d287afe0f17'&dunesName='Action'&name='getScriptConfigurationByName'&category='com.vmware.coe.copyAndRunScriptsInGuest']]></elm>
+<elm src-category='null'><![CDATA[dunes://service.dunes.ch/Workflow?id='f8cd5692-92a0-46b6-a98d-53ffd878d779'&dunesName='Workflow']]></elm>
+<elm src-category='null'><![CDATA[dunes://service.dunes.ch/Workflow?id='fbdbc56d-7573-442b-8b4c-0d59893bdc37'&dunesName='Workflow']]></elm>
+<used-plugin name='VC' version='7.0.0' />
+</package>

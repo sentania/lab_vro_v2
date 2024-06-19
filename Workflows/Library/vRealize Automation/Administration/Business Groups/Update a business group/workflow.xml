@@ -1,0 +1,138 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<workflow xmlns="http://vmware.com/vco/workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://vmware.com/vco/workflow http://vmware.com/vco/workflow/Workflow-v4.xsd" root-name="item1" object-name="workflow:name=generic" id="6fdc5bb7-1ab0-48c3-b282-853c5f9177d0" version="1.0.1" api-version="6.0.0" allowed-operations="vf" restartMode="1" resumeFromFailedMode="0">
+  <display-name><![CDATA[Update a business group]]></display-name>
+  <description><![CDATA[Updates a business group.]]></description>
+  <ref-types><![CDATA[(vCACCAFE:Subtenant)]]></ref-types>
+  <position y="50.0" x="100.0"/>
+  <input>
+    <param name="groupIn" type="vCACCAFE:Subtenant">
+      <description><![CDATA[Business group]]></description>
+    </param>
+    <param name="name" type="string">
+      <description><![CDATA[Name]]></description>
+    </param>
+    <param name="description" type="string">
+      <description><![CDATA[Description]]></description>
+    </param>
+    <param name="defaultMachinePrefix" type="vCACCAFE:MachinePrefix">
+      <description><![CDATA[Default machine prefix]]></description>
+    </param>
+    <param name="activeDirectoryContainer" type="string">
+      <description><![CDATA[Active directory container]]></description>
+    </param>
+    <param name="administrators" type="Array/string">
+      <description><![CDATA[Group manager role]]></description>
+    </param>
+    <param name="administratorEmail" type="string">
+      <description><![CDATA[Send manager emails to]]></description>
+    </param>
+    <param name="support" type="Array/string">
+      <description><![CDATA[Support role]]></description>
+    </param>
+    <param name="users" type="Array/string">
+      <description><![CDATA[User role]]></description>
+    </param>
+    <param name="sharedAccess" type="Array/string">
+      <description><![CDATA[Users with shared access role]]></description>
+    </param>
+  </input>
+  <output>
+    <param name="groupOut" type="vCACCAFE:Subtenant">
+      <description><![CDATA[Business group]]></description>
+    </param>
+  </output>
+  <workflow-item name="item0" type="end" end-mode="0">
+    <position y="45.40909090909091" x="384.5"/>
+  </workflow-item>
+  <workflow-item name="item1" out-name="item0" type="task" script-module="com.vmware.library.vcaccafe.subtenant/updateBusinessGroup">
+    <display-name><![CDATA[updateBusinessGroup]]></display-name>
+    <script encoded="false"><![CDATA[//Auto generated script, cannot be modified !
+actionResult = System.getModule("com.vmware.library.vcaccafe.subtenant").updateBusinessGroup(businessGroup,name,description,defaultMachinePrefix,activeDirectoryContainer,administrators,administratorEmail,support,users,sharedAccess) ;]]></script>
+    <in-binding>
+      <bind name="businessGroup" type="vCACCAFE:Subtenant" export-name="groupIn">
+        <description><![CDATA[Business group]]></description>
+      </bind>
+      <bind name="name" type="string" export-name="name">
+        <description><![CDATA[Name]]></description>
+      </bind>
+      <bind name="description" type="string" export-name="description">
+        <description><![CDATA[Description]]></description>
+      </bind>
+      <bind name="defaultMachinePrefix" type="vCACCAFE:MachinePrefix" export-name="defaultMachinePrefix">
+        <description><![CDATA[Default machine prefix]]></description>
+      </bind>
+      <bind name="administrators" type="Array/string" export-name="administrators">
+        <description><![CDATA[Administrator role]]></description>
+      </bind>
+      <bind name="administratorEmail" type="string" export-name="administratorEmail">
+        <description><![CDATA[Administrator email]]></description>
+      </bind>
+      <bind name="support" type="Array/string" export-name="support">
+        <description><![CDATA[Support role]]></description>
+      </bind>
+      <bind name="users" type="Array/string" export-name="users">
+        <description><![CDATA[User role]]></description>
+      </bind>
+      <bind name="activeDirectoryContainer" type="string" export-name="activeDirectoryContainer"/>
+      <bind name="sharedAccess" type="Array/string" export-name="sharedAccess"/>
+    </in-binding>
+    <out-binding>
+      <bind name="actionResult" type="vCACCAFE:Subtenant" export-name="groupOut"/>
+    </out-binding>
+    <description><![CDATA[Updates a business group.]]></description>
+    <position y="55.40909090909091" x="204.5"/>
+  </workflow-item>
+  <presentation>
+    <p-step>
+      <title><![CDATA[Busines Group]]></title>
+      <p-param name="groupIn">
+        <desc><![CDATA[Business group]]></desc>
+        <p-qual kind="static" name="mandatory" type="boolean"><![CDATA[true]]></p-qual>
+        <p-qual kind="static" name="show-select-as" type="string"><![CDATA[list]]></p-qual>
+        <p-qual name="contextualParameter" type="void"><![CDATA[__NULL__]]></p-qual>
+      </p-param>
+    </p-step>
+    <p-step>
+      <title><![CDATA[Properties]]></title>
+      <p-param name="name">
+        <desc><![CDATA[Name]]></desc>
+        <p-qual kind="static" name="mandatory" type="boolean"><![CDATA[true]]></p-qual>
+        <p-qual kind="ognl" name="dataBinding" type="string"><![CDATA[#groupIn.name]]></p-qual>
+      </p-param>
+      <p-param name="description">
+        <desc><![CDATA[Description]]></desc>
+        <p-qual kind="ognl" name="dataBinding" type="string"><![CDATA[#groupIn.description]]></p-qual>
+      </p-param>
+      <p-param name="administratorEmail">
+        <desc><![CDATA[Send manager emails to]]></desc>
+        <p-qual kind="ognl" name="dataBinding" type="string"><![CDATA[GetAction("com.vmware.library.vcaccafe.subtenant","getManagerEmail").call( #groupIn )]]></p-qual>
+        <p-qual kind="static" name="mandatory" type="boolean"><![CDATA[true]]></p-qual>
+      </p-param>
+      <p-param name="activeDirectoryContainer">
+        <desc><![CDATA[Active directory container]]></desc>
+        <p-qual kind="ognl" name="dataBinding" type="string"><![CDATA[GetAction("com.vmware.library.vcaccafe.subtenant","getADContainer").call( #groupIn )]]></p-qual>
+      </p-param>
+      <p-param name="administrators">
+        <desc><![CDATA[Group manager role]]></desc>
+        <p-qual kind="ognl" name="dataBinding" type="Array/string"><![CDATA[GetAction("com.vmware.library.vcaccafe.subtenant","getManagers").call( #groupIn )]]></p-qual>
+      </p-param>
+      <p-param name="support">
+        <desc><![CDATA[Support role]]></desc>
+        <p-qual kind="ognl" name="dataBinding" type="Array/string"><![CDATA[GetAction("com.vmware.library.vcaccafe.subtenant","getSupport").call( #groupIn )]]></p-qual>
+      </p-param>
+      <p-param name="users">
+        <desc><![CDATA[User role]]></desc>
+        <p-qual kind="ognl" name="dataBinding" type="Array/string"><![CDATA[GetAction("com.vmware.library.vcaccafe.subtenant","getUsers").call( #groupIn )]]></p-qual>
+      </p-param>
+      <p-param name="sharedAccess">
+        <desc><![CDATA[Users with shared access role]]></desc>
+        <p-qual kind="ognl" name="dataBinding" type="Array/string"><![CDATA[GetAction("com.vmware.library.vcaccafe.subtenant","getSharedAccessUsers").call( #groupIn )]]></p-qual>
+      </p-param>
+      <p-param name="defaultMachinePrefix">
+        <desc><![CDATA[Default machine prefix]]></desc>
+        <p-qual kind="ognl" name="dataBinding" type="vCACCAFE:MachinePrefix"><![CDATA[GetAction("com.vmware.library.vcaccafe.subtenant","getMachinePrefix").call(#groupIn)]]></p-qual>
+        <p-qual kind="ognl" name="linkedEnumeration" type="Array/vCACCAFE:MachinePrefix"><![CDATA[GetAction("com.vmware.library.vcaccafe.businessgroup","getAvailableMachinePrefixes").call(#groupIn, null)]]></p-qual>
+      </p-param>
+    </p-step>
+  </presentation>
+</workflow>

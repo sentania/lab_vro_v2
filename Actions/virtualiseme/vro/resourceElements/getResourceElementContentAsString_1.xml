@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dunes-script-module name="getResourceElementContentAsString_1" result-type="string" api-version="6.0.0" id="684dc4ec-fbc5-4dd3-ad2a-66e605588344" version="0.0.1" allowed-operations="evf" category-name="virtualiseme.vro.resourceElements">
+  <param n="resourceElement" t="ResourceElement"><![CDATA[]]></param>
+  <script encoded="false"><![CDATA[var content = resourceElement.getContentAsMimeAttachment();
+
+return content.content;]]></script>
+</dunes-script-module>

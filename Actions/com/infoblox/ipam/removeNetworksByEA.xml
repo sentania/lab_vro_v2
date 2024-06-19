@@ -1,0 +1,68 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dunes-script-module name="removeNetworksByEA" result-type="void" api-version="6.0.0" id="2e855da8-b4d1-4c63-8182-602ab8a30dc7" version="0.1.0" allowed-operations="evf" category-name="com.infoblox.ipam">
+  <description><![CDATA[Removes IPv4 and IPv6 networks from IPAM by specified extensible attributes.]]></description>
+  <param n="ipamConnection" t="InfobloxIPAM:IpamConnection"><![CDATA[Connection to the IPAM server]]></param>
+  <param n="networkView" t="string"><![CDATA[Network view, in which the networks reside]]></param>
+  <param n="searchEa1Definition" t="InfobloxIPAM:IpamExtensibleAttributeDefinition"><![CDATA[Definition of the Extensible Attribute #1]]></param>
+  <param n="searchEa1Value" t="string"><![CDATA[Value of the Extensible Attribute #1]]></param>
+  <param n="searchEa1Comparison" t="InfobloxIPAM:IpamSearchComparisonType"><![CDATA[Type of the comparison for Extensible Attribute #1]]></param>
+  <param n="searchEa2Definition" t="InfobloxIPAM:IpamExtensibleAttributeDefinition"><![CDATA[Definition of the Extensible Attribute #2]]></param>
+  <param n="searchEa2Value" t="string"><![CDATA[Value of the Extensible Attribute #2]]></param>
+  <param n="searchEa2Comparison" t="InfobloxIPAM:IpamSearchComparisonType"><![CDATA[Type of the comparison for Extensible Attribute #2]]></param>
+  <param n="searchEa3Definition" t="InfobloxIPAM:IpamExtensibleAttributeDefinition"><![CDATA[Definition of the Extensible Attribute #3]]></param>
+  <param n="searchEa3Value" t="string"><![CDATA[Value of the Extensible Attribute #3]]></param>
+  <param n="searchEa3Comparison" t="InfobloxIPAM:IpamSearchComparisonType"><![CDATA[Type of the comparison for Extensible Attribute #3]]></param>
+  <param n="searchEa4Definition" t="InfobloxIPAM:IpamExtensibleAttributeDefinition"><![CDATA[Definition of the Extensible Attribute #4]]></param>
+  <param n="searchEa4Value" t="string"><![CDATA[Value of the Extensible Attribute #4]]></param>
+  <param n="searchEa4Comparison" t="InfobloxIPAM:IpamSearchComparisonType"><![CDATA[Type of the comparison for Extensible Attribute #4]]></param>
+  <param n="searchEa5Definition" t="InfobloxIPAM:IpamExtensibleAttributeDefinition"><![CDATA[Definition of the Extensible Attribute #5]]></param>
+  <param n="searchEa5Value" t="string"><![CDATA[Value of the Extensible Attribute #5]]></param>
+  <param n="searchEa5Comparison" t="InfobloxIPAM:IpamSearchComparisonType"><![CDATA[Type of the comparison for Extensible Attribute #5]]></param>
+  <param n="searchEa6Definition" t="InfobloxIPAM:IpamExtensibleAttributeDefinition"><![CDATA[Definition of the Extensible Attribute #6]]></param>
+  <param n="searchEa6Value" t="string"><![CDATA[Value of the Extensible Attribute #6]]></param>
+  <param n="searchEa6Comparison" t="InfobloxIPAM:IpamSearchComparisonType"><![CDATA[Type of the comparison for Extensible Attribute #6]]></param>
+  <param n="searchEa7Definition" t="InfobloxIPAM:IpamExtensibleAttributeDefinition"><![CDATA[Definition of the Extensible Attribute #7]]></param>
+  <param n="searchEa7Value" t="string"><![CDATA[Value of the Extensible Attribute #7]]></param>
+  <param n="searchEa7Comparison" t="InfobloxIPAM:IpamSearchComparisonType"><![CDATA[Type of the comparison for Extensible Attribute #7]]></param>
+  <param n="searchEa8Definition" t="InfobloxIPAM:IpamExtensibleAttributeDefinition"><![CDATA[Definition of the Extensible Attribute #8]]></param>
+  <param n="searchEa8Value" t="string"><![CDATA[Value of the Extensible Attribute #8]]></param>
+  <param n="searchEa8Comparison" t="InfobloxIPAM:IpamSearchComparisonType"><![CDATA[Type of the comparison for Extensible Attribute #8]]></param>
+  <param n="searchEa9Definition" t="InfobloxIPAM:IpamExtensibleAttributeDefinition"><![CDATA[Definition of the Extensible Attribute #9]]></param>
+  <param n="searchEa9Value" t="string"><![CDATA[Value of the Extensible Attribute #9]]></param>
+  <param n="searchEa9Comparison" t="InfobloxIPAM:IpamSearchComparisonType"><![CDATA[Type of the comparison for Extensible Attribute #9]]></param>
+  <param n="searchEa10Definition" t="InfobloxIPAM:IpamExtensibleAttributeDefinition"><![CDATA[Definition of the Extensible Attribute #10]]></param>
+  <param n="searchEa10Value" t="string"><![CDATA[Value of the Extensible Attribute #10]]></param>
+  <param n="searchEa10Comparison" t="InfobloxIPAM:IpamSearchComparisonType"><![CDATA[Type of the comparison for Extensible Attribute #10]]></param>
+  <script encoded="false"><![CDATA[var foundNetworks = System.getModule("com.infoblox.ipam").findNetworksByEA(
+	ipamConnection, networkView,
+	searchEa1Definition, searchEa1Value, searchEa1Comparison,
+	searchEa2Definition, searchEa2Value, searchEa2Comparison,
+	searchEa3Definition, searchEa3Value, searchEa3Comparison,
+	searchEa4Definition, searchEa4Value, searchEa4Comparison,
+	searchEa5Definition, searchEa5Value, searchEa5Comparison,
+	searchEa6Definition, searchEa6Value, searchEa6Comparison,
+	searchEa7Definition, searchEa7Value, searchEa7Comparison,
+	searchEa8Definition, searchEa8Value, searchEa8Comparison,
+	searchEa9Definition, searchEa9Value, searchEa9Comparison,
+	searchEa10Definition, searchEa10Value, searchEa10Comparison);
+
+var networkManager = ipamConnection.getNetworkManager();
+
+var errorHasOccured;
+
+function removeNetwork(element, index) {
+    try {
+		networkManager.removeNetworkByRef(element.reference);
+		System.log("The network [" + element.address + "/" + element.cidr + "] was removed from IPAM.");
+	} catch (e) {
+		errorHasOccured = true;
+		System.log(e.message);
+	}
+}
+
+foundNetworks.forEach(removeNetwork);
+
+if (errorHasOccured) {
+	throw "An error has occurred while removing networks by extensible attributes.";
+}]]></script>
+</dunes-script-module>

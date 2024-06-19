@@ -1,0 +1,47 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dunes-script-module name="createBusinessGroup" result-type="vCACCAFE:Subtenant" api-version="6.0.0" id="47f88a3c-14d1-45ac-9c1c-69ca53cc53e4" version="1.0.2" allowed-operations="vf" category-name="com.vmware.library.vcaccafe.subtenant">
+  <description><![CDATA[Creates a business group.]]></description>
+  <param n="host" t="vCACCAFE:VCACHost"><![CDATA[vRA host]]></param>
+  <param n="name" t="string"><![CDATA[Name]]></param>
+  <param n="description" t="string"><![CDATA[Description]]></param>
+  <param n="defaultMachinePrefix" t="vCACCAFE:MachinePrefix"><![CDATA[Default machine prefix]]></param>
+  <param n="activeDirectoryContainer" t="string"><![CDATA[Active directory container]]></param>
+  <param n="administratorEmail" t="string"><![CDATA[Administrator email]]></param>
+  <param n="administrators" t="Array/string"><![CDATA[Group manager role]]></param>
+  <param n="support" t="Array/string"><![CDATA[Support role]]></param>
+  <param n="users" t="Array/string"><![CDATA[User role]]></param>
+  <param n="sharedAccess" t="Array/string"><![CDATA[Users with shared access]]></param>
+  <script encoded="false"><![CDATA[var subtenant = new vCACCAFESubtenant();
+
+subtenant.setName(name);
+subtenant.setDescription(description);
+
+if(administrators){
+	vCACCAFESubtenantHelper.setManagers(subtenant , administrators);
+}
+if(users){
+	vCACCAFESubtenantHelper.setUsers(subtenant , users);
+}
+if(support){
+	vCACCAFESubtenantHelper.setSupportMembers(subtenant , support);
+}
+if(sharedAccess){
+	vCACCAFESubtenantHelper.setSharedAccessUsers(subtenant , sharedAccess);
+}
+
+var extensionData = new vCACCAFELiteralMap();
+subtenant.setExtensionData(extensionData);
+vCACCAFESubtenantHelper.setManagerEmails(subtenant , administratorEmail);
+if(defaultMachinePrefix){
+	vCACCAFESubtenantHelper.setMachinePrefixId(subtenant , defaultMachinePrefix.getId());
+}
+if(activeDirectoryContainer){
+	vCACCAFESubtenantHelper.setADContainer(subtenant , activeDirectoryContainer);
+}
+
+System.log("Creating business group '" + name + "'...");
+var service = host.createAuthenticationClient().getAuthenticationSubtenantService();
+var subtenant = service.createSubtenant(host.tenant, subtenant);
+System.log("Business group created: " + subtenant.getId());
+return subtenant;]]></script>
+</dunes-script-module>

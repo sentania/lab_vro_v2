@@ -1,0 +1,10 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dunes-script-module name="getBlueprintComponentIds" result-type="Array/string" api-version="6.0.0" id="564082b5-b752-490b-926f-cfb3d2bc1058" version="1.0.1" allowed-operations="vf" category-name="com.vmware.library.vcac">
+  <description><![CDATA[Gets all component names of a composite blueprint]]></description>
+  <param n="blueprint" t="vCACCAFE:CompositeBlueprint"><![CDATA[Composite blueprint]]></param>
+  <script encoded="false"><![CDATA[if (!blueprint) {
+	throw "Composite blueprint cannot be null.";
+}
+var components = blueprint.getComponents();
+return components.keys;]]></script>
+</dunes-script-module>

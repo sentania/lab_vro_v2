@@ -1,0 +1,1 @@
+{"schema":{"resourceMimeAttachment":{"type":{"dataType":"file","isMultiple":false},"label":"Script to upload","id":"resourceMimeAttachment","constraints":{}}},"layout":{"pages":[{"id":"page_1","title":"General","sections":[{"id":"section_0","fields":[{"id":"resourceMimeAttachment","display":"fileUpload"}]}]}]},"itemId":""}

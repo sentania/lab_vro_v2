@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dunes-script-module name="getUsers" result-type="Array/string" api-version="6.0.0" id="c0a3cd8d-70a6-4764-abd4-8e9ebf5359ae" version="1.0.0" allowed-operations="vf" category-name="com.vmware.library.vcaccafe.subtenant">
+  <description><![CDATA[Returns the users of the business group.]]></description>
+  <param n="businessGroup" t="vCACCAFE:Subtenant"><![CDATA[Business group]]></param>
+  <script encoded="false"><![CDATA[return vCACCAFESubtenantHelper.getUsers(businessGroup);
+]]></script>
+</dunes-script-module>

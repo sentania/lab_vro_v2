@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dunes-script-module name="getAvailableMachinePrefixes" result-type="Array/vCACCAFE:MachinePrefix" api-version="6.0.0" id="63c417b2-b8a1-4fa7-92b3-af0521289ba3" version="1.0.1" allowed-operations="vf" category-name="com.vmware.library.vcaccafe.businessgroup">
+  <description><![CDATA[Gets available machine prefixes.]]></description>
+  <param n="parent" t="Any"><![CDATA[vRA host or business group]]></param>
+  <param n="query" t="string"><![CDATA[Query]]></param>
+  <script encoded="false"><![CDATA[var host = null;
+if (parent instanceof vCACCAFEHost) {
+	host = parent;
+} else if (parent instanceof vCACCAFEBusinessGroup) {
+	host = vCACCAFEEntitiesFinder.getHostForEntity(parent);
+} else {
+	throw "Invalid machine prefix parent, it must be a vCAC host or a Business group!";
+}
+return vCACCAFEEntitiesFinder.findMachinePrefixes(host, query);]]></script>
+</dunes-script-module>

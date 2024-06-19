@@ -1,0 +1,159 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<workflow xmlns="http://vmware.com/vco/workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://vmware.com/vco/workflow http://vmware.com/vco/workflow/Workflow-v4.xsd" root-name="item1" object-name="workflow:name=generic" id="9f5d259e-0856-45a3-b6f4-cd5d1fcc4446" version="1.1.1" api-version="6.0.0" allowed-operations="vf" restartMode="1" resumeFromFailedMode="0">
+  <display-name><![CDATA[Import vCenter Virtual Machine]]></display-name>
+  <description><![CDATA[Imports the selected virtual machine, maps it to a blueprint and inserts it into the catalog.]]></description>
+  <position y="50.0" x="100.0"/>
+  <input>
+    <param name="vm" type="VC:VirtualMachine">
+      <description><![CDATA[A virtual machine]]></description>
+    </param>
+    <param name="host" type="vCAC:VCACHost">
+      <description><![CDATA[vCAC host]]></description>
+    </param>
+    <param name="hostReservation" type="vCAC:Reservation">
+      <description><![CDATA[Host reservation]]></description>
+    </param>
+    <param name="owner" type="string">
+      <description><![CDATA[Machine owner]]></description>
+    </param>
+    <param name="identityUser" type="string">
+      <description><![CDATA[Identity user]]></description>
+    </param>
+    <param name="blueprint" type="vCACCAFE:CompositeBlueprint">
+      <description><![CDATA[Composite blueprint]]></description>
+    </param>
+    <param name="blueprintComponent" type="string">
+      <description><![CDATA[Composite blueprint component]]></description>
+    </param>
+    <param name="deploymentName" type="string">
+      <description><![CDATA[Deployment Name]]></description>
+    </param>
+  </input>
+  <attrib name="vmUuid" type="string" read-only="false">
+    <value encoded="n"><![CDATA[]]></value>
+    <description><![CDATA[A universally unique identifier (UUID) of the given virtual machine]]></description>
+  </attrib>
+  <attrib name="vitualMachineEntity" type="vCAC:Entity" read-only="false">
+    <description><![CDATA[The virtual machine entity, found by the vm unique id]]></description>
+  </attrib>
+  <attrib name="vcacVirtualMachine" type="vCAC:VirtualMachine" read-only="false">
+    <value encoded="n"><![CDATA[__NULL__]]></value>
+    <description><![CDATA[vCAC virtual machine]]></description>
+  </attrib>
+  <workflow-item name="item0" type="end" end-mode="0">
+    <position y="45.40909090909091" x="804.5"/>
+  </workflow-item>
+  <workflow-item name="item3" out-name="item4" type="task">
+    <display-name><![CDATA[Get vCAC Virtual Machine]]></display-name>
+    <script encoded="false"><![CDATA[if (vitualMachineEntity == null) throw "Couldn't find the select virtual machine in the IaaS model.";
+
+vcacVirtualMachine = vitualMachineEntity.getInventoryObject();]]></script>
+    <in-binding>
+      <bind name="vitualMachineEntity" type="vCAC:Entity" export-name="vitualMachineEntity">
+        <description><![CDATA[The virtual machine entity, found by the vm unique id]]></description>
+      </bind>
+    </in-binding>
+    <out-binding>
+      <bind name="vcacVirtualMachine" type="vCAC:VirtualMachine" export-name="vcacVirtualMachine">
+        <description><![CDATA[vCAC virtual machine]]></description>
+      </bind>
+    </out-binding>
+    <position y="55.40909090909091" x="484.5"/>
+  </workflow-item>
+  <workflow-item name="item4" out-name="item0" type="link" linked-workflow-id="98604a77-d7ec-42a1-8ec4-d449ded67bf4">
+    <display-name><![CDATA[Import vCAC Virtual Machine]]></display-name>
+    <in-binding>
+      <bind name="host" type="vCAC:VCACHost" export-name="host">
+        <description><![CDATA[vCAC host]]></description>
+      </bind>
+      <bind name="vm" type="vCAC:VirtualMachine" export-name="vcacVirtualMachine">
+        <description><![CDATA[A virtual machine]]></description>
+      </bind>
+      <bind name="hostReservation" type="vCAC:Reservation" export-name="hostReservation">
+        <description><![CDATA[Host reservation]]></description>
+      </bind>
+      <bind name="owner" type="string" export-name="owner">
+        <description><![CDATA[Machine owner]]></description>
+      </bind>
+      <bind name="identityUser" type="string" export-name="identityUser">
+        <description><![CDATA[Identity user]]></description>
+      </bind>
+      <bind name="blueprintComponent" type="string" export-name="blueprintComponent"/>
+      <bind name="blueprint" type="vCACCAFE:CompositeBlueprint" export-name="blueprint"/>
+      <bind name="deploymentName" type="string" export-name="deploymentName"/>
+    </in-binding>
+    <out-binding/>
+    <description><![CDATA[Imports the selected virtual machine, maps it to a blueprint and inserts it into the catalog.]]></description>
+    <position y="55.90909090909091" x="625.0"/>
+  </workflow-item>
+  <workflow-item name="item1" out-name="item2" type="task">
+    <display-name><![CDATA[Get VM Id]]></display-name>
+    <script encoded="false"><![CDATA[vmUuid = vm.config.instanceUuid;
+System.log("VM instanceUuid is: " + vmUuid);]]></script>
+    <in-binding>
+      <bind name="vm" type="VC:VirtualMachine" export-name="vm">
+        <description><![CDATA[A virtual machine]]></description>
+      </bind>
+    </in-binding>
+    <out-binding>
+      <bind name="vmUuid" type="string" export-name="vmUuid">
+        <description><![CDATA[A universally unique identifier (UUID) of the given virtual machine]]></description>
+      </bind>
+    </out-binding>
+    <position y="55.90909090909091" x="205.0"/>
+  </workflow-item>
+  <workflow-item name="item2" out-name="item3" type="task" script-module="com.vmware.library.vcac/getVirtualMachineByExternalRefId">
+    <display-name><![CDATA[getVirtualMachineByExternalRefId]]></display-name>
+    <script encoded="false"><![CDATA[//Auto generated script, cannot be modified !
+actionResult = System.getModule("com.vmware.library.vcac").getVirtualMachineByExternalRefId(host,uniqueId) ;]]></script>
+    <in-binding>
+      <bind name="host" type="vCAC:VCACHost" export-name="host">
+        <description><![CDATA[vCAC host]]></description>
+      </bind>
+      <bind name="uniqueId" type="string" export-name="vmUuid">
+        <description><![CDATA[VM unique Id]]></description>
+      </bind>
+    </in-binding>
+    <out-binding>
+      <bind name="actionResult" type="vCAC:Entity" export-name="vitualMachineEntity"/>
+    </out-binding>
+    <description><![CDATA[Gets a virtual machine entity filtered by its ExternalReferenceId property.]]></description>
+    <position y="55.90909090909091" x="345.0"/>
+  </workflow-item>
+  <presentation>
+    <p-step>
+      <title><![CDATA[Organizer]]></title>
+      <p-param name="vm">
+        <desc><![CDATA[A virtual machine]]></desc>
+        <p-qual kind="static" name="mandatory" type="boolean"><![CDATA[true]]></p-qual>
+      </p-param>
+      <p-param name="host">
+        <desc><![CDATA[vCAC host]]></desc>
+        <p-qual kind="static" name="mandatory" type="boolean"><![CDATA[true]]></p-qual>
+      </p-param>
+      <p-param name="hostReservation">
+        <desc><![CDATA[Host reservation]]></desc>
+        <p-qual kind="static" name="mandatory" type="boolean"><![CDATA[true]]></p-qual>
+      </p-param>
+      <p-param name="owner">
+        <desc><![CDATA[Machine owner]]></desc>
+        <p-qual kind="ognl" name="linkedEnumeration" type="Array/string"><![CDATA[GetAction("com.vmware.library.vcac","getUserNames").call( #host )]]></p-qual>
+        <p-qual kind="static" name="mandatory" type="boolean"><![CDATA[true]]></p-qual>
+      </p-param>
+      <p-param name="identityUser">
+        <desc><![CDATA[Identity user]]></desc>
+        <p-qual kind="static" name="mandatory" type="boolean"><![CDATA[true]]></p-qual>
+      </p-param>
+      <p-param name="blueprint">
+        <desc><![CDATA[Composite blueprint]]></desc>
+      </p-param>
+      <p-param name="blueprintComponent">
+        <desc><![CDATA[Composite blueprint component]]></desc>
+        <p-qual kind="ognl" name="linkedEnumeration" type="Array/string"><![CDATA[GetAction("com.vmware.library.vcac","getBlueprintComponentIds").call( #blueprint )]]></p-qual>
+      </p-param>
+      <p-param name="deploymentName">
+        <desc><![CDATA[Deployment Name]]></desc>
+      </p-param>
+    </p-step>
+  </presentation>
+</workflow>

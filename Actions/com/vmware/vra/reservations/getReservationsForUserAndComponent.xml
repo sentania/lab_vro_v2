@@ -1,0 +1,105 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dunes-script-module name="getReservationsForUserAndComponent" result-type="Array/Any" api-version="6.0.0" id="9a65e845-345f-4b24-8376-966185eb77c7" version="1.0.6" allowed-operations="vf" category-name="com.vmware.vra.reservations">
+  <param n="user" t="string"><![CDATA[]]></param>
+  <param n="tenant" t="string"><![CDATA[]]></param>
+  <param n="host" t="vCACCAFE:VCACHost"><![CDATA[]]></param>
+  <param n="blueprintId" t="string"><![CDATA[]]></param>
+  <param n="componentId" t="string"><![CDATA[]]></param>
+  <param n="subtenantId" t="string"><![CDATA[]]></param>
+  <script encoded="false"><![CDATA[
+
+var SUBTENANT_IDS_PER_PAGE_LIMIT = 10;
+var RESERVATIONS_PER_PAGE_LIMIT = 100;
+
+//create services
+var subTenantService = host.createAuthenticationClient().getAuthenticationSubtenantService();
+var reservationService = host.createReservationClient().getReservationReservationService();
+
+// get sub tenants for user
+var userPrincipal = splitUser(user);
+var principal = new vCACCAFEPrincipalId(userPrincipal.username, userPrincipal.domain);
+var subtenantIds = [];
+if (subtenantId) {
+	subtenantIds.push(subtenantId);
+} else {
+	var subtenants = subTenantService.getSubtenantsByPrincipalAndRole(tenant, principal, null, true, new vCACCAFEPageOdataRequest(1 , 2147483647));
+	for each (var subtenant in subtenants) {
+		subtenantIds.push(subtenant.getId());
+	}
+}
+
+// get reservation filtered by sub tenants
+var reservations = [];
+if (subtenantIds.length !== 0) {
+	var totalPages = subtenantIds.length / SUBTENANT_IDS_PER_PAGE_LIMIT;
+	for (var page = 0; page < totalPages; page++) {
+		var from = page * SUBTENANT_IDS_PER_PAGE_LIMIT;
+		var to = from + SUBTENANT_IDS_PER_PAGE_LIMIT;
+		Array.prototype.push.apply(reservations, getReservationsForSubtenants(subtenantIds.slice(from, to)));
+	}
+}
+
+return reservations
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+function splitUser(userParam) {
+	var indexOfAt = userParam.lastIndexOf("@");
+	if(indexOfAt > 0) {
+		return {
+			username: userParam.substring(0, userParam.lastIndexOf("@")),
+			domain: userParam.substring(userParam.lastIndexOf("@") +1)
+		}
+	}
+}
+
+function getReservationsForSubtenants(subtenantsIds){
+	var reservations = [];
+	// loop until reservation service does not return an empty array
+	for(var page = 1; true; page++){
+		var reservationFilter = getReservationFilterForSubTenants(subtenantsIds, page);
+		if (reservationFilter) {
+			reservationsResponse = reservationService.getAllReservations(reservationFilter).getContent();
+			Array.prototype.push.apply(reservations, reservationsResponse);
+			if(typeof reservationsResponse === "undefined" || reservationsResponse.length < RESERVATIONS_PER_PAGE_LIMIT){
+				return reservations;
+			}
+		}
+	}
+}
+
+// constructs a filter clause taking into account all the subtenants and the pagination
+// the filter then can be used in a call to get all reservations that matches
+function getReservationFilterForSubTenants(subtenantIds, page) {
+	var query = new vCACCAFEOdataQuery();
+
+	var queryParams = [];
+	for each (var subtenantId in subtenantIds) {
+		var paramGroup =getParamGroupForSubtenant(subtenantId);
+		queryParams.push(paramGroup);
+	}
+	if(queryParams.length > 1) {
+		query.addFilter([vCACCAFEFilterParam.or(queryParams)]);
+	} else if(queryParams.length == 1){
+		query.addFilter(queryParams);
+	} else {
+		return null;
+	}
+	return new vCACCAFEPageOdataRequest(page, RESERVATIONS_PER_PAGE_LIMIT, query);
+}
+
+function getParamGroupForSubtenant(subtenantId) {
+	var subTenantIdParam = vCACCAFEFilterParam.equal("subTenantId" , vCACCAFEFilterParam.string(subtenantId));
+	// call the action to get resrvation type
+	// check for null....
+	var activeReservationParam = vCACCAFEFilterParam.equal("enabled" , true);
+	var IdAndActiveParam = vCACCAFEFilterParam.and([subTenantIdParam,activeReservationParam]);
+	var reservationTypeId = System.getModule("com.vmware.vra.reservations").getReservationTypeIdForComponent(host, blueprintId, componentId);
+	if(reservationTypeId) {
+		var reservationTypeParam = vCACCAFEFilterParam.equal("reservationTypeId" , vCACCAFEFilterParam.string(reservationTypeId));
+		IdAndActiveParam = vCACCAFEFilterParam.and([IdAndActiveParam, reservationTypeParam]);
+	}
+	var paramGroup = vCACCAFEFilterParam.group([IdAndActiveParam]);
+	return paramGroup;
+}]]></script>
+</dunes-script-module>

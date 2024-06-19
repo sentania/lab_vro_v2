@@ -1,0 +1,6 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dunes-script-module name="getManagerEmail" result-type="string" api-version="6.0.0" id="135f8605-3610-4ae6-a36b-a286c4251cbe" version="1.0.0" allowed-operations="vf" category-name="com.vmware.library.vcaccafe.subtenant">
+  <description><![CDATA[Returns the manager emails of the business group.]]></description>
+  <param n="businessGroup" t="vCACCAFE:Subtenant"><![CDATA[Business group]]></param>
+  <script encoded="false"><![CDATA[return vCACCAFESubtenantHelper.getManagerEmails(businessGroup);]]></script>
+</dunes-script-module>

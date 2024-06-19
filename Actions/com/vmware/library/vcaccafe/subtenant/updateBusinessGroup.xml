@@ -1,0 +1,54 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dunes-script-module name="updateBusinessGroup" result-type="vCACCAFE:Subtenant" api-version="6.0.0" id="2356cad9-cb9d-4d23-a7dd-a14be326e170" version="1.0.2" allowed-operations="vf" category-name="com.vmware.library.vcaccafe.subtenant">
+  <description><![CDATA[Updates a business group.]]></description>
+  <param n="businessGroup" t="vCACCAFE:Subtenant"><![CDATA[Business group]]></param>
+  <param n="name" t="string"><![CDATA[Name]]></param>
+  <param n="description" t="string"><![CDATA[Description]]></param>
+  <param n="defaultMachinePrefix" t="vCACCAFE:MachinePrefix"><![CDATA[Default machine prefix]]></param>
+  <param n="activeDirectoryContainer" t="string"><![CDATA[Active directory container]]></param>
+  <param n="administrators" t="Array/string"><![CDATA[Administrator role]]></param>
+  <param n="administratorEmail" t="string"><![CDATA[Administrator email]]></param>
+  <param n="support" t="Array/string"><![CDATA[Support role]]></param>
+  <param n="users" t="Array/string"><![CDATA[User role]]></param>
+  <param n="sharedAccess" t="Array/string"><![CDATA[Users with shared access role]]></param>
+  <script encoded="false"><![CDATA[System.getModule("com.vmware.library.vcaccafe.util").validateObject(businessGroup, "Business group");
+var host = vCACCAFEEntitiesFinder.getHostForEntity(businessGroup);
+var service = host.createAuthenticationClient().getAuthenticationSubtenantService();
+
+businessGroup.setName(name);
+businessGroup.setDescription(description);
+
+vCACCAFEEntityHelper.removeAllFromList(businessGroup , "getSubtenantRoles");
+var roles = service.getSubtenantRoles(businessGroup.getTenant(), businessGroup.getId(), null);
+for(var i = 0; i < roles.length; i++) {
+	service.deleteSubtenantRole(host.tenant , businessGroup.getId() , roles[i].getScopeRoleRef());
+}
+if(administrators){
+	vCACCAFESubtenantHelper.setManagers(businessGroup , administrators);
+}
+if(users){
+	vCACCAFESubtenantHelper.setUsers(businessGroup , users);
+}
+if(support){
+	vCACCAFESubtenantHelper.setSupportMembers(businessGroup , support);
+}
+if(sharedAccess){
+	vCACCAFESubtenantHelper.setSharedAccessUsers(businessGroup , sharedAccess);
+}
+
+vCACCAFESubtenantHelper.setManagerEmails(businessGroup , administratorEmail);
+
+if(defaultMachinePrefix){
+	vCACCAFESubtenantHelper.setMachinePrefixId(businessGroup , defaultMachinePrefix.getId());
+} else {
+	vCACCAFESubtenantHelper.setMachinePrefixId(businessGroup , "");
+}
+vCACCAFESubtenantHelper.setADContainer(businessGroup , activeDirectoryContainer);
+
+
+System.log("Updating business group '" + name + "'...");
+service.updateSubtenant(host.tenant, businessGroup);
+service.addRoles(host.tenant, businessGroup.getId(), businessGroup.getSubtenantRoles());
+System.log("Business group updated: " + businessGroup.getName());
+return vCACCAFEEntitiesFinder.getSubtenant(host, businessGroup.getId());]]></script>
+</dunes-script-module>

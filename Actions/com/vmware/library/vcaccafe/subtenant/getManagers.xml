@@ -1,0 +1,6 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dunes-script-module name="getManagers" result-type="Array/string" api-version="6.0.0" id="246fe79e-43d6-4b59-8761-f38a1e992d90" version="1.0.0" allowed-operations="vf" category-name="com.vmware.library.vcaccafe.subtenant">
+  <description><![CDATA[Returns the managers of the business group.]]></description>
+  <param n="businessGroup" t="vCACCAFE:Subtenant"><![CDATA[Business group]]></param>
+  <script encoded="false"><![CDATA[return vCACCAFESubtenantHelper.getManagers(businessGroup);]]></script>
+</dunes-script-module>

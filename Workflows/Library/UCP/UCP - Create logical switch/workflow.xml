@@ -1,0 +1,75 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<workflow xmlns="http://vmware.com/vco/workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://vmware.com/vco/workflow http://vmware.com/vco/workflow/Workflow-v4.xsd" root-name="item1" object-name="workflow:name=generic" id="06b03e24-d558-47c5-853d-9ff6b41dcb10" version="0.0.4" api-version="6.0.0" allowed-operations="evf" restartMode="1" resumeFromFailedMode="0">
+  <display-name><![CDATA[UCP - Create logical switch]]></display-name>
+  <description><![CDATA[Creates a logical switch]]></description>
+  <position y="50.0" x="100.0"/>
+  <input>
+    <param name="connection" type="NSX:Connection">
+      <description><![CDATA[NSX endpoint]]></description>
+    </param>
+    <param name="scopeId" type="string">
+      <description><![CDATA[Transport zone]]></description>
+    </param>
+    <param name="logicalSwitchName" type="string">
+      <description><![CDATA[Name of the logical switch]]></description>
+    </param>
+    <param name="description" type="string">
+      <description><![CDATA[Description]]></description>
+    </param>
+    <param name="tenantId" type="string">
+      <description><![CDATA[Tenant id]]></description>
+    </param>
+  </input>
+  <output>
+    <param name="logicalSwitch" type="NSX:VirtualWire">
+      <description><![CDATA[Logicl switch]]></description>
+    </param>
+    <param name="logicalSwitchId" type="string"/>
+  </output>
+  <workflow-item name="item0" type="end" end-mode="0">
+    <position y="45.40909090909091" x="384.5"/>
+  </workflow-item>
+  <workflow-item name="item1" out-name="item0" type="task">
+    <display-name><![CDATA[Scriptable task]]></display-name>
+    <script encoded="false"><![CDATA[var spec = new NSXVirtualWireCreateSpec();
+spec.name = logicalSwitchName;
+spec.description = description;
+spec.tenantId = tenantId;
+logicalSwitch = NSXVirtualWireManager.createVirtualWire(connection, scopeId, spec);
+logicalSwitchId = logicalSwitch.objectId;]]></script>
+    <in-binding>
+      <bind name="connection" type="NSX:Connection" export-name="connection"/>
+      <bind name="scopeId" type="string" export-name="scopeId"/>
+      <bind name="description" type="string" export-name="description"/>
+      <bind name="tenantId" type="string" export-name="tenantId"/>
+      <bind name="logicalSwitchName" type="string" export-name="logicalSwitchName"/>
+    </in-binding>
+    <out-binding>
+      <bind name="logicalSwitch" type="NSX:VirtualWire" export-name="logicalSwitch"/>
+      <bind name="logicalSwitchId" type="string" export-name="logicalSwitchId"/>
+    </out-binding>
+    <description><![CDATA[Creates a logical switch]]></description>
+    <position y="55.40909090909091" x="204.5"/>
+  </workflow-item>
+  <presentation>
+    <p-param name="connection">
+      <desc><![CDATA[NSX Endpoint - NSX Connection object (Select from the NSX inventory, from the vRO inventory view)]]></desc>
+      <p-qual kind="static" name="mandatory" type="boolean"><![CDATA[true]]></p-qual>
+    </p-param>
+    <p-param name="scopeId">
+      <desc><![CDATA[Transport zone id]]></desc>
+      <p-qual kind="static" name="mandatory" type="boolean"><![CDATA[true]]></p-qual>
+    </p-param>
+    <p-param name="logicalSwitchName">
+      <desc><![CDATA[Logical switch name]]></desc>
+      <p-qual kind="static" name="mandatory" type="boolean"><![CDATA[true]]></p-qual>
+    </p-param>
+    <p-param name="description">
+      <desc><![CDATA[Description]]></desc>
+      <p-qual kind="static" name="textInput" type="void"><![CDATA[__NULL__]]></p-qual>
+    </p-param>
+    <p-param name="tenantId">
+      <desc><![CDATA[Tenant id]]></desc>
+    </p-param>
+  </presentation>
+</workflow>

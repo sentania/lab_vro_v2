@@ -1,0 +1,18 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dunes-script-module name="returnReclaimMemForm" result-type="number" api-version="6.0.0" id="28ef7db0-2258-450c-afd0-85dab102d907" version="0.0.0" allowed-operations="evf" category-name="virtualiseme.rightSize">
+  <param n="businessGroup" t="string"><![CDATA[]]></param>
+  <script encoded="false"><![CDATA[const configurationElementPath = "RightSize";
+const configurationElementName = "elementPath";
+const configurationAttributeName = "businessGroupPath";
+const configurationAttributeType = "string"
+
+var resourceElementPath = System.getModule("virtualiseme.utilities").getConfigurationAttributeValueByPath(configurationElementPath,configurationElementName,configurationAttributeName,configurationAttributeType);
+System.debug(resourceElementPath);
+
+var resourceElement = System.getModule("virtualiseme.vro.resourceElements").getResourceElementByPath_1(resourceElementPath,businessGroup);
+var elementContent = System.getModule("virtualiseme.vro.resourceElements").getResourceElementContentAsString_1(resourceElement);
+
+var payload = JSON.parse(elementContent);
+
+return payload.reclaimMem;]]></script>
+</dunes-script-module>

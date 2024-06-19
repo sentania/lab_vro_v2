@@ -1,0 +1,8 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dunes-script-module name="getResourceElementsFromCategoryPath" result-type="Array/ResourceElement" api-version="6.0.0" id="09bc4327-6c69-437f-b43e-bb1804dbe63c" version="0.0.1" allowed-operations="vfe" category-name="com.vmware.coe.library.resourceElements">
+  <description><![CDATA[Get the other resource element names in the category of the resource elements passed as input]]></description>
+  <param n="resourceElementCategoryPath" t="string"><![CDATA[]]></param>
+  <script encoded="false"><![CDATA[resourceElementCategory = Server.getResourceElementCategoryWithPath(resourceElementCategoryPath);
+if (resourceElementCategory == null) return null;
+return resourceElementCategory.resourceElements;]]></script>
+</dunes-script-module>

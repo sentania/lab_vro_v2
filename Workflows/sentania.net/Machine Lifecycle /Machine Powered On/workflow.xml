@@ -1,0 +1,118 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<workflow xmlns="http://vmware.com/vco/workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://vmware.com/vco/workflow http://vmware.com/vco/workflow/Workflow-v4.xsd" root-name="item5" object-name="workflow:name=generic" id="06fa7d36-2253-4cae-9b8b-fe35ce1f8fe8" version="0.1.0" api-version="6.0.0" allowed-operations="vfe" editor-version="2.0" restartMode="1" resumeFromFailedMode="0">
+  <display-name><![CDATA[Machine Powered On]]></display-name>
+  <position y="50.0" x="100.0"/>
+  <input>
+    <param name="inputProperties" type="Properties"/>
+  </input>
+  <attrib name="macAddress" type="string" read-only="false">
+    <value encoded="n"><![CDATA[]]></value>
+  </attrib>
+  <attrib name="vmIPAddress" type="Array/string" read-only="false">
+    <value encoded="n"><![CDATA[]]></value>
+  </attrib>
+  <attrib name="vmName" type="string" read-only="false">
+    <value encoded="n"><![CDATA[]]></value>
+  </attrib>
+  <attrib name="vmUUID" type="string" read-only="false">
+    <value encoded="n"><![CDATA[]]></value>
+  </attrib>
+  <attrib name="vmObject" type="VC:VirtualMachine" read-only="false">
+    <value encoded="n"><![CDATA[]]></value>
+  </attrib>
+  <attrib name="vmCluster" type="VC:ClusterComputeResource" read-only="false">
+    <value encoded="n"><![CDATA[]]></value>
+  </attrib>
+  <workflow-item name="item0" type="end" end-mode="0">
+    <in-binding/>
+    <position y="50.0" x="640.0"/>
+  </workflow-item>
+  <workflow-item name="item2" out-name="item3" type="task">
+    <display-name><![CDATA[Scriptable task]]></display-name>
+    <script encoded="false"><![CDATA[//This will have problems if there are multiple machines!!!!!!!!
+
+var customProperties = inputProperties.customProperties || new Properties();
+
+
+vmIPAddress = inputProperties.get("addresses");
+var macAddressArray = new Array();
+macAddressArray = inputProperties.get("macAddresses");
+macAddress = macAddressArray[0][0];
+vmUUID = customProperties.instanceUUID;
+var vmNameArray = new Array();
+
+vmNameArray = inputProperties.get("resourceNames");
+
+vmName = vmNameArray[0]
+
+System.log("Debugging Mac Address:" + macAddress)
+
+
+
+]]></script>
+    <in-binding>
+      <bind name="inputProperties" type="Properties" export-name="inputProperties"/>
+    </in-binding>
+    <out-binding>
+      <bind name="macAddress" type="string" export-name="macAddress"/>
+      <bind name="vmName" type="string" export-name="vmName"/>
+      <bind name="vmUUID" type="string" export-name="vmUUID"/>
+      <bind name="vmIPAddress" type="Array/string" export-name="vmIPAddress"/>
+    </out-binding>
+    <description><![CDATA[Gather key details to feed to later places
+]]></description>
+    <position y="60.0" x="300.0"/>
+  </workflow-item>
+  <workflow-item name="item3" out-name="item4" type="link" linked-workflow-id="4d154442-1118-4111-934b-8e314315344a">
+    <display-name><![CDATA[Get VM by Name and Uuid]]></display-name>
+    <in-binding>
+      <bind name="name" type="string" export-name="vmName">
+        <description><![CDATA[A name of virtual machine]]></description>
+      </bind>
+      <bind name="uuid" type="string" export-name="vmUUID">
+        <description><![CDATA[A universally unique identifier (UUID) of virtual machine]]></description>
+      </bind>
+    </in-binding>
+    <out-binding>
+      <bind name="outVm" type="VC:VirtualMachine" export-name="vmObject">
+        <description><![CDATA[A virtual machine that matches the name and uuid given as input]]></description>
+      </bind>
+    </out-binding>
+    <description><![CDATA[ ]]></description>
+    <position y="60.0" x="400.0"/>
+  </workflow-item>
+  <workflow-item name="item4" out-name="item0" type="task">
+    <display-name><![CDATA[getVMCluster]]></display-name>
+    <script encoded="false"><![CDATA[var parent = vmObject.runtime.host;
+while (parent !== null && ! (parent instanceof VcClusterComputeResource)) {
+	parent = parent.parent;
+}
+System.log("VcClusterComputeResource of VM: " + parent.name);
+
+vmCluster = parent;
+]]></script>
+    <in-binding>
+      <bind name="vmObject" type="VC:VirtualMachine" export-name="vmObject"/>
+    </in-binding>
+    <out-binding>
+      <bind name="vmCluster" type="VC:ClusterComputeResource" export-name="vmCluster"/>
+    </out-binding>
+    <description><![CDATA[Simple task with custom script capability.]]></description>
+    <position y="60.0" x="510.0"/>
+  </workflow-item>
+  <workflow-item name="item5" out-name="item2" type="task" script-module="net.sentania.Actions/logInputProperties">
+    <display-name><![CDATA[logInputProperties]]></display-name>
+    <script encoded="false"><![CDATA[//Auto generated script, cannot be modified !
+actionResult = System.getModule("net.sentania.Actions").logInputProperties(inputProperties);
+]]></script>
+    <in-binding>
+      <bind name="inputProperties" type="Properties" export-name="inputProperties"/>
+    </in-binding>
+    <out-binding>
+      <bind name="actionResult" type="string" export-name=""/>
+    </out-binding>
+    <description><![CDATA[Add a note to the workflow schema.]]></description>
+    <position y="60.0" x="160.0"/>
+  </workflow-item>
+  <presentation/>
+</workflow>

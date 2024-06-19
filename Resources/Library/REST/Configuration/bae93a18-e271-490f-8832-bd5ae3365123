@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<endpoint nativeId="da97ad56-f333-40f0-bdbd-b3be50a3508f" pluginVersion="2.3.3">
+    <properties>
+        <property type="string" name="schema">&lt;com.vmware.o11n.plugin.rest.schema.SchemaRespository&gt;
+  &lt;sources/&gt;
+&lt;/com.vmware.o11n.plugin.rest.schema.SchemaRespository&gt;</property>
+        <property type="string" name="proxyAuthenticationType">NONE</property>
+        <property type="integer" name="operationTimeout">60</property>
+        <property type="string" name="proxySessionMode">Shared Session</property>
+        <property type="bool" name="useProxy">true</property>
+        <property type="string" name="proxyHost"></property>
+        <property type="string" name="url">https://hooks.slack.com</property>
+        <property type="bool" name="automaticUrlRedirection">false</property>
+        <property type="integer" name="proxyPort">0</property>
+        <property type="string" name="operations">&lt;list&gt;
+  &lt;com.vmware.o11n.plugin.rest.RESTOperation&gt;
+    &lt;id&gt;1d97273d-f20a-4708-942f-6cc66af81c64&lt;/id&gt;
+    &lt;name&gt;Onboarding Notification&lt;/name&gt;
+    &lt;host&gt;
+      &lt;name&gt;Slack UCP Webhook&lt;/name&gt;
+      &lt;id&gt;bae93a18-e271-490f-8832-bd5ae3365123&lt;/id&gt;
+      &lt;url&gt;https://hooks.slack.com&lt;/url&gt;
+      &lt;operations class="tree-map"&gt;
+        &lt;entry&gt;
+          &lt;string&gt;bae93a18-e271-490f-8832-bd5ae3365123:1d97273d-f20a-4708-942f-6cc66af81c64&lt;/string&gt;
+          &lt;com.vmware.o11n.plugin.rest.RESTOperation reference="../../../.."/&gt;
+        &lt;/entry&gt;
+        &lt;entry&gt;
+          &lt;string&gt;bae93a18-e271-490f-8832-bd5ae3365123:3de1976a-b4cb-4fc2-b352-ff324c5bedc9&lt;/string&gt;
+          &lt;com.vmware.o11n.plugin.rest.RESTOperation&gt;
+            &lt;id&gt;3de1976a-b4cb-4fc2-b352-ff324c5bedc9&lt;/id&gt;
+            &lt;name&gt;UCP Alerts&lt;/name&gt;
+            &lt;host reference="../../../.."/&gt;
+            &lt;urlTemplate&gt;/services/T08JDUYRY/BBNHXGZAA/PotzyIDMf86NhP7FMpWixuar&lt;/urlTemplate&gt;
+            &lt;method&gt;POST&lt;/method&gt;
+            &lt;inParameters/&gt;
+            &lt;pathParamsCount&gt;0&lt;/pathParamsCount&gt;
+            &lt;headerParameters/&gt;
+            &lt;defaultContentType&gt;application/json&lt;/defaultContentType&gt;
+            &lt;commonHeaders/&gt;
+            &lt;supportedAcceptHeaderMediaTypes/&gt;
+            &lt;supportedContentTypes/&gt;
+            &lt;mandatoryPathParamNames/&gt;
+            &lt;mandatoryQueryParamNames/&gt;
+            &lt;mandatoryHeaderParamNames/&gt;
+          &lt;/com.vmware.o11n.plugin.rest.RESTOperation&gt;
+        &lt;/entry&gt;
+        &lt;entry&gt;
+          &lt;string&gt;bae93a18-e271-490f-8832-bd5ae3365123:c3c8935e-3eca-4378-8d81-e53fb335dfa8&lt;/string&gt;
+          &lt;com.vmware.o11n.plugin.rest.RESTOperation&gt;
+            &lt;id&gt;c3c8935e-3eca-4378-8d81-e53fb335dfa8&lt;/id&gt;
+            &lt;name&gt;VIP Alerts&lt;/name&gt;
+            &lt;host reference="../../../.."/&gt;
+            &lt;urlTemplate&gt;/services/T08JDUYRY/BS7BE2EE5/lyPfgWebMsOgYiqd1kEM8q1u&lt;/urlTemplate&gt;
+            &lt;method&gt;POST&lt;/method&gt;
+            &lt;inParameters/&gt;
+            &lt;pathParamsCount&gt;0&lt;/pathParamsCount&gt;
+            &lt;headerParameters/&gt;
+            &lt;defaultContentType&gt;application/json&lt;/defaultContentType&gt;
+            &lt;commonHeaders/&gt;
+            &lt;supportedAcceptHeaderMediaTypes/&gt;
+            &lt;supportedContentTypes/&gt;
+            &lt;mandatoryPathParamNames/&gt;
+            &lt;mandatoryQueryParamNames/&gt;
+            &lt;mandatoryHeaderParamNames/&gt;
+          &lt;/com.vmware.o11n.plugin.rest.RESTOperation&gt;
+        &lt;/entry&gt;
+      &lt;/operations&gt;
+      &lt;authentication class="com.vmware.o11n.plugin.rest.NoneAuthentication"&gt;
+        &lt;type&gt;NONE&lt;/type&gt;
+        &lt;sessionMode&gt;Shared Session&lt;/sessionMode&gt;
+        &lt;isValid&gt;true&lt;/isValid&gt;
+        &lt;validationMessage&gt;&lt;/validationMessage&gt;
+      &lt;/authentication&gt;
+      &lt;connectionTimeout&gt;30&lt;/connectionTimeout&gt;
+      &lt;operationTimeout&gt;60&lt;/operationTimeout&gt;
+      &lt;hostVerification&gt;true&lt;/hostVerification&gt;
+      &lt;proxyHost&gt;&lt;/proxyHost&gt;
+      &lt;proxyPort&gt;0&lt;/proxyPort&gt;
+      &lt;schemaRepo&gt;
+        &lt;sources/&gt;
+      &lt;/schemaRepo&gt;
+      &lt;cleanHttpContextPerRequest&gt;false&lt;/cleanHttpContextPerRequest&gt;
+      &lt;automaticUrlRedirection&gt;false&lt;/automaticUrlRedirection&gt;
+      &lt;proxyAuthentication class="com.vmware.o11n.plugin.rest.NoneAuthentication"&gt;
+        &lt;type&gt;NONE&lt;/type&gt;
+        &lt;sessionMode&gt;Shared Session&lt;/sessionMode&gt;
+        &lt;isValid&gt;true&lt;/isValid&gt;
+        &lt;validationMessage&gt;&lt;/validationMessage&gt;
+      &lt;/proxyAuthentication&gt;
+    &lt;/host&gt;
+    &lt;urlTemplate&gt;/services/T08JDUYRY/BETEH6QKV/8EFcUUbqn5JmR2t4YPyt4Pae&lt;/urlTemplate&gt;
+    &lt;method&gt;POST&lt;/method&gt;
+    &lt;inParameters/&gt;
+    &lt;pathParamsCount&gt;0&lt;/pathParamsCount&gt;
+    &lt;headerParameters/&gt;
+    &lt;defaultContentType&gt;application/Json&lt;/defaultContentType&gt;
+    &lt;commonHeaders/&gt;
+    &lt;supportedAcceptHeaderMediaTypes/&gt;
+    &lt;supportedContentTypes/&gt;
+    &lt;mandatoryPathParamNames/&gt;
+    &lt;mandatoryQueryParamNames/&gt;
+    &lt;mandatoryHeaderParamNames/&gt;
+  &lt;/com.vmware.o11n.plugin.rest.RESTOperation&gt;
+  &lt;com.vmware.o11n.plugin.rest.RESTOperation reference="../com.vmware.o11n.plugin.rest.RESTOperation/host/operations/entry[2]/com.vmware.o11n.plugin.rest.RESTOperation"/&gt;
+  &lt;com.vmware.o11n.plugin.rest.RESTOperation reference="../com.vmware.o11n.plugin.rest.RESTOperation/host/operations/entry[3]/com.vmware.o11n.plugin.rest.RESTOperation"/&gt;
+&lt;/list&gt;</property>
+        <property type="bool" name="hostVerification">true</property>
+        <property type="string" name="name">Slack UCP Webhook</property>
+        <property type="string" name="authenticationType">NONE</property>
+        <property type="string" name="sessionMode">Shared Session</property>
+        <property type="integer" name="connectionTimeout">30</property>
+    </properties>
+</endpoint>

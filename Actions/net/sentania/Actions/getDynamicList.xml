@@ -1,0 +1,39 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dunes-script-module name="getDynamicList" result-type="Array/string" api-version="6.0.0" id="205ae051-2b54-46c8-aff1-bdd5fe762c7e" version="1.2.0" allowed-operations="vfe" category-name="net.sentania.Actions">
+  <param n="fileName" t="string"><![CDATA[Which list file to select]]></param>
+  <script encoded="false"><![CDATA[//Returns an array of values from a file in github.
+
+// Returns a collection of REST:RESTHost object types from the inventory service plugin
+var restHost = RESTHostManager.getHost('366eadef-2385-4c63-9120-6e5c5c726163')
+var restOperation = restHost.getOperation('366eadef-2385-4c63-9120-6e5c5c726163:a8145dc2-a513-4af6-a619-407adbe50e92')
+var request = restOperation.createRequest([fileName]);
+
+//set the request content type
+request.contentType = "application\/json";
+System.log(request.urlTemplate)
+//Customize the request here
+request.setHeader("accept", "application/vnd.github.VERSION.raw");
+var response = request.execute();
+//prepare output parameters
+
+statusCode = response.statusCode;
+statusCodeAttribute = statusCode;
+
+contentLength = response.contentLength;
+headers = response.getAllHeaders();
+contentAsString = response.contentAsString;
+var outputarray = [];
+
+var contentArray = contentAsString.split("\n");
+for (index = 0; index < contentArray.length; ++index)
+{
+ 	var friendlyName = contentArray[index].split(',')[0];
+	if (friendlyName != '')
+	{
+		outputarray.push(friendlyName);
+	}
+}
+return outputarray
+
+]]></script>
+</dunes-script-module>

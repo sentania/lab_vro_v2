@@ -1,0 +1,28 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dunes-script-module name="addCustomProperty" result-type="vCACCAFE:BusinessGroup" api-version="6.0.0" id="2b2e29d7-a37b-4083-9c5c-b184d63a7150" version="1.0.1" allowed-operations="vf" category-name="com.vmware.library.vcaccafe.businessgroup">
+  <description><![CDATA[Adds a custom property to a business group.]]></description>
+  <param n="group" t="vCACCAFE:BusinessGroup"><![CDATA[Business group]]></param>
+  <param n="name" t="string"><![CDATA[Name]]></param>
+  <param n="value" t="string"><![CDATA[Value]]></param>
+  <param n="isEncrypted" t="boolean"><![CDATA[Encrypted]]></param>
+  <param n="isRuntime" t="boolean"><![CDATA[Runtime]]></param>
+  <script encoded="false"><![CDATA[System.getModule("com.vmware.library.vcaccafe.util").validateObject(group, "Business group");
+var property = new vCACCAFECustomProperty();
+property.setName(name);
+property.setValue(value);
+property.setIsEncrypted(isEncrypted);
+property.setIsRuntime(isRuntime);
+
+var properties = group.getCustomProperties();
+properties[properties.length] = property;
+
+group.setCustomProperties(properties);
+
+System.log("Updating business group '" + group.getName() + "'...");
+var host = vCACCAFEEntitiesFinder.getHostForEntity(group);
+var service = host.createInfrastructureClient().getInfrastructureBusinessGroupsService();
+service.update(group);
+System.log("Business group updated: " + group.getId().toString());
+
+return vCACCAFEEntitiesFinder.getBusinessGroup(host, group.getId().toString());]]></script>
+</dunes-script-module>

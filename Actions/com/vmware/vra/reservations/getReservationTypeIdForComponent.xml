@@ -1,0 +1,26 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dunes-script-module name="getReservationTypeIdForComponent" result-type="void" api-version="6.0.0" id="7ef3ee1e-9bd9-4331-a5a2-75e78ce44232" version="1.0.0" allowed-operations="vf" category-name="com.vmware.vra.reservations">
+  <param n="host" t="vCACCAFE:VCACHost"><![CDATA[]]></param>
+  <param n="blueprintId" t="string"><![CDATA[]]></param>
+  <param n="componentId" t="string"><![CDATA[]]></param>
+  <script encoded="false"><![CDATA[var compositionService = host.createCompositionClient().getCompositionCompositeBlueprintService();
+
+var blueprint = compositionService.getBlueprint(blueprintId);
+var component = blueprint.getComponents().get(componentId);
+
+if  (component != null) {
+	var configurationElementCategory = Server.getConfigurationElementCategoryWithPath("System/vRealize Automation/XaaS/Resource Mappings/vCenter");
+	for each(var configElem in configurationElementCategory.configurationElements) {
+		if(configElem.name == "ReservationMappingConfigurationElement") {
+			var reservationProps = configElem.getAttributeWithKey("ComponentTypeToReservationTypeMapper");
+			var match = reservationProps.value.get(component.getType());
+			if (match == null) {
+				System.warn("No matching reservation type for the type '" + component.getType() + "' for component '" + componentId + "' of blueprint '" + blueprintId + "' has been found.");
+			}
+			return match;
+		}
+	}
+}
+System.warn("The selected component '" + componentId + "' of blueprint '" + blueprintId + "' is null");
+return null;]]></script>
+</dunes-script-module>

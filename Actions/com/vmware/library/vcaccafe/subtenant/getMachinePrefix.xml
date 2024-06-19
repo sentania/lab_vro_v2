@@ -1,0 +1,12 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dunes-script-module name="getMachinePrefix" result-type="vCACCAFE:MachinePrefix" api-version="6.0.0" id="f33e0244-4143-499f-a66a-08200ee8ccbe" version="1.0.0" allowed-operations="vf" category-name="com.vmware.library.vcaccafe.subtenant">
+  <description><![CDATA[Returns the machine prefix for the business group.]]></description>
+  <param n="businessGroup" t="vCACCAFE:Subtenant"><![CDATA[BusinessGroup]]></param>
+  <script encoded="false"><![CDATA[var host = vCACCAFEEntitiesFinder.getHostForEntity(businessGroup);
+var machinePrefixId = vCACCAFESubtenantHelper.getMachinePrefixId(businessGroup);
+if (machinePrefixId){
+	return vCACCAFEEntitiesFinder.getMachinePrefix(host, machinePrefixId);
+} else {
+	return null;
+}]]></script>
+</dunes-script-module>

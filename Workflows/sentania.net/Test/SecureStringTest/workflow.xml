@@ -1,0 +1,43 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<workflow xmlns="http://vmware.com/vco/workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://vmware.com/vco/workflow http://vmware.com/vco/workflow/Workflow-v4.xsd" root-name="item1" object-name="workflow:name=generic" id="00707eb1-c3d1-4456-aae7-72997fb7b835" version="0.1.0" api-version="6.0.0" editor-version="2.0" restartMode="1" resumeFromFailedMode="0">
+  <display-name><![CDATA[SecureStringTest]]></display-name>
+  <position y="50.0" x="100.0"/>
+  <attrib name="configurationElement" type="ConfigurationElement" read-only="false">
+    <value encoded="n"><![CDATA[]]></value>
+  </attrib>
+  <attrib name="var_0" type="string" read-only="false">
+    <value encoded="n"><![CDATA[]]></value>
+  </attrib>
+  <workflow-item name="item0" type="end" end-mode="0">
+    <in-binding/>
+    <position y="60.0" x="340.0"/>
+  </workflow-item>
+  <workflow-item name="item1" out-name="item0" type="task">
+    <display-name><![CDATA[Scriptable task]]></display-name>
+    <script encoded="false"><![CDATA[var configurationElementPath  = "UCP";
+var configurationElementName  = "SecureTst";
+var attributeName = "passwd";
+try{
+var category = Server.getConfigurationElementCategoryWithPath(configurationElementPath);
+}
+catch(e){
+    System.log(e);
+}
+
+for each ( var element in category.configurationElements) { 
+    if (element.name == configurationElementName) {
+        var configurationElement = element;
+    }
+ } 
+
+ attributeValue = configurationElement.getAttributeWithKey(attributeName).value;
+System.log(attributeValue);]]></script>
+    <in-binding/>
+    <out-binding>
+      <bind name="var_0" type="string" export-name="var_0"/>
+    </out-binding>
+    <description><![CDATA[Simple task with custom script capability.]]></description>
+    <position y="70.0" x="180.0"/>
+  </workflow-item>
+  <presentation/>
+</workflow>

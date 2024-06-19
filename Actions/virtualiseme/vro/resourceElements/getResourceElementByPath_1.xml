@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dunes-script-module name="getResourceElementByPath_1" result-type="ResourceElement" api-version="6.0.0" id="e79b7d61-fd23-411d-9e0e-b76eab184102" version="0.1.4" allowed-operations="evf" category-name="virtualiseme.vro.resourceElements">
+  <param n="categoryPath" t="string"><![CDATA[]]></param>
+  <param n="name" t="string"><![CDATA[]]></param>
+  <script encoded="false"><![CDATA[var resourceElementCategory = Server.getResourceElementCategoryWithPath(categoryPath);
+
+for each (var resourceElement in resourceElementCategory.resourceElements) {
+	if(name === resourceElement.name) {
+		return resourceElement;
+	}
+}
+
+throw "No resource element (" + categoryPath + "/" + name + ") found";
+]]></script>
+</dunes-script-module>

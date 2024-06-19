@@ -1,0 +1,818 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<workflow xmlns="http://vmware.com/vco/workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://vmware.com/vco/workflow http://vmware.com/vco/workflow/Workflow-v4.xsd" root-name="item5" object-name="workflow:name=generic" id="b2e98c12-b7b6-484b-a034-819e148b2d2a" version="0.0.7" api-version="6.0.0" allowed-operations="evf" restartMode="1" resumeFromFailedMode="0">
+  <display-name><![CDATA[Remove network]]></display-name>
+  <description><![CDATA[Removes a network from IPAM.
+User can specify either network address with network mask or extensible attributes to search and remove all networks, which have specified extensible attributes.]]></description>
+  <position y="18.136363636363633" x="245.0"/>
+  <input>
+    <param name="ipamConnection" type="InfobloxIPAM:IpamConnection">
+      <description><![CDATA[Connection to the IPAM server]]></description>
+    </param>
+    <param name="netaddr" type="string">
+      <description><![CDATA[IPv4 or IPv6 network address]]></description>
+    </param>
+    <param name="cidr" type="number">
+      <description><![CDATA[CIDR number of the network range]]></description>
+    </param>
+    <param name="networkView" type="string">
+      <description><![CDATA[Network view, in which the network resides]]></description>
+    </param>
+    <param name="removeByEa" type="boolean">
+      <description><![CDATA[If true, then removing of the networks will be by extensible attributes, otherwise - by network address]]></description>
+    </param>
+    <param name="eaNumber" type="number">
+      <description><![CDATA[Number of specified extensible attributes]]></description>
+    </param>
+    <param name="searchEa1Definition" type="InfobloxIPAM:IpamExtensibleAttributeDefinition">
+      <description><![CDATA[Definition of the extensible attribute #1]]></description>
+    </param>
+    <param name="searchEa1Value" type="string">
+      <description><![CDATA[Value of the extensible attribute #1]]></description>
+    </param>
+    <param name="searchEa1Comparison" type="InfobloxIPAM:IpamSearchComparisonType">
+      <description><![CDATA[Type of the comparison for extensible attribute #1]]></description>
+    </param>
+    <param name="searchEa2Definition" type="InfobloxIPAM:IpamExtensibleAttributeDefinition">
+      <description><![CDATA[Definition of the extensible attribute #2]]></description>
+    </param>
+    <param name="searchEa2Value" type="string">
+      <description><![CDATA[Value of the extensible attribute #2]]></description>
+    </param>
+    <param name="searchEa2Comparison" type="InfobloxIPAM:IpamSearchComparisonType">
+      <description><![CDATA[Type of the comparison for extensible attribute #2]]></description>
+    </param>
+    <param name="searchEa3Definition" type="InfobloxIPAM:IpamExtensibleAttributeDefinition">
+      <description><![CDATA[Definition of the extensible attribute #3]]></description>
+    </param>
+    <param name="searchEa3Value" type="string">
+      <description><![CDATA[Value of the extensible attribute #3]]></description>
+    </param>
+    <param name="searchEa3Comparison" type="InfobloxIPAM:IpamSearchComparisonType">
+      <description><![CDATA[Type of the comparison for extensible attribute #3]]></description>
+    </param>
+    <param name="searchEa4Definition" type="InfobloxIPAM:IpamExtensibleAttributeDefinition">
+      <description><![CDATA[Definition of the extensible attribute #4]]></description>
+    </param>
+    <param name="searchEa4Value" type="string">
+      <description><![CDATA[Value of the extensible attribute #4]]></description>
+    </param>
+    <param name="searchEa4Comparison" type="InfobloxIPAM:IpamSearchComparisonType">
+      <description><![CDATA[Type of the comparison for extensible attribute #4]]></description>
+    </param>
+    <param name="searchEa5Definition" type="InfobloxIPAM:IpamExtensibleAttributeDefinition">
+      <description><![CDATA[Definition of the extensible attribute #5]]></description>
+    </param>
+    <param name="searchEa5Value" type="string">
+      <description><![CDATA[Value of the extensible attribute #5]]></description>
+    </param>
+    <param name="searchEa5Comparison" type="InfobloxIPAM:IpamSearchComparisonType">
+      <description><![CDATA[Type of the comparison for extensible attribute #5]]></description>
+    </param>
+    <param name="searchEa6Definition" type="InfobloxIPAM:IpamExtensibleAttributeDefinition">
+      <description><![CDATA[Definition of the extensible attribute #6]]></description>
+    </param>
+    <param name="searchEa6Value" type="string">
+      <description><![CDATA[Value of the extensible attribute #6]]></description>
+    </param>
+    <param name="searchEa6Comparison" type="InfobloxIPAM:IpamSearchComparisonType">
+      <description><![CDATA[Type of the comparison for extensible attribute #6]]></description>
+    </param>
+    <param name="searchEa7Definition" type="InfobloxIPAM:IpamExtensibleAttributeDefinition">
+      <description><![CDATA[Definition of the extensible attribute #7]]></description>
+    </param>
+    <param name="searchEa7Value" type="string">
+      <description><![CDATA[Value of the extensible attribute #7]]></description>
+    </param>
+    <param name="searchEa7Comparison" type="InfobloxIPAM:IpamSearchComparisonType">
+      <description><![CDATA[Type of the comparison for extensible attribute #7]]></description>
+    </param>
+    <param name="searchEa8Definition" type="InfobloxIPAM:IpamExtensibleAttributeDefinition">
+      <description><![CDATA[Definition of the extensible attribute #8]]></description>
+    </param>
+    <param name="searchEa8Value" type="string">
+      <description><![CDATA[Value of the extensible attribute #8]]></description>
+    </param>
+    <param name="searchEa8Comparison" type="InfobloxIPAM:IpamSearchComparisonType">
+      <description><![CDATA[Type of the comparison for extensible attribute #8]]></description>
+    </param>
+    <param name="searchEa9Definition" type="InfobloxIPAM:IpamExtensibleAttributeDefinition">
+      <description><![CDATA[Definition of the extensible attribute #9]]></description>
+    </param>
+    <param name="searchEa9Value" type="string">
+      <description><![CDATA[Value of the extensible attribute #9]]></description>
+    </param>
+    <param name="searchEa9Comparison" type="InfobloxIPAM:IpamSearchComparisonType">
+      <description><![CDATA[Type of the comparison for extensible attribute #9]]></description>
+    </param>
+    <param name="searchEa10Definition" type="InfobloxIPAM:IpamExtensibleAttributeDefinition">
+      <description><![CDATA[Definition of the extensible attribute #10]]></description>
+    </param>
+    <param name="searchEa10Value" type="string">
+      <description><![CDATA[Value of the extensible attribute #10]]></description>
+    </param>
+    <param name="searchEa10Comparison" type="InfobloxIPAM:IpamSearchComparisonType">
+      <description><![CDATA[Type of the comparison for extensible attribute #10]]></description>
+    </param>
+  </input>
+  <attrib name="attrIpamConnection" type="InfobloxIPAM:IpamConnection" read-only="false">
+    <value encoded="n"><![CDATA[__NULL__]]></value>
+    <description><![CDATA[Connection to the IPAM server]]></description>
+  </attrib>
+  <attrib name="attrErrorMsg" type="string" read-only="false">
+    <value encoded="n"><![CDATA[]]></value>
+    <description><![CDATA[Error message]]></description>
+  </attrib>
+  <attrib name="attrSearchEa1Definition" type="InfobloxIPAM:IpamExtensibleAttributeDefinition" read-only="false">
+    <value encoded="n"><![CDATA[__NULL__]]></value>
+    <description><![CDATA[Definition of the extensible attribute #1]]></description>
+  </attrib>
+  <attrib name="attrSearchEa1Value" type="string" read-only="false">
+    <value encoded="n"><![CDATA[]]></value>
+    <description><![CDATA[Value of the extensible attribute #1]]></description>
+  </attrib>
+  <attrib name="attrSearchEa1Comparison" type="InfobloxIPAM:IpamSearchComparisonType" read-only="false">
+    <value encoded="n"><![CDATA[__NULL__]]></value>
+    <description><![CDATA[Type of the comparison for extensible attribute #1]]></description>
+  </attrib>
+  <attrib name="attrSearchEa2Definition" type="InfobloxIPAM:IpamExtensibleAttributeDefinition" read-only="false">
+    <value encoded="n"><![CDATA[__NULL__]]></value>
+    <description><![CDATA[Definition of the extensible attribute #2]]></description>
+  </attrib>
+  <attrib name="attrSearchEa2Value" type="string" read-only="false">
+    <value encoded="n"><![CDATA[]]></value>
+    <description><![CDATA[Value of the extensible attribute #2]]></description>
+  </attrib>
+  <attrib name="attrSearchEa2Comparison" type="InfobloxIPAM:IpamSearchComparisonType" read-only="false">
+    <value encoded="n"><![CDATA[__NULL__]]></value>
+    <description><![CDATA[Type of the comparison for extensible attribute #2]]></description>
+  </attrib>
+  <attrib name="attrSearchEa3Definition" type="InfobloxIPAM:IpamExtensibleAttributeDefinition" read-only="false">
+    <value encoded="n"><![CDATA[__NULL__]]></value>
+    <description><![CDATA[Definition of the extensible attribute #3]]></description>
+  </attrib>
+  <attrib name="attrSearchEa3Value" type="string" read-only="false">
+    <value encoded="n"><![CDATA[]]></value>
+    <description><![CDATA[Value of the extensible attribute #3]]></description>
+  </attrib>
+  <attrib name="attrSearchEa3Comparison" type="InfobloxIPAM:IpamSearchComparisonType" read-only="false">
+    <value encoded="n"><![CDATA[__NULL__]]></value>
+    <description><![CDATA[Type of the comparison for extensible attribute #3]]></description>
+  </attrib>
+  <attrib name="attrSearchEa4Definition" type="InfobloxIPAM:IpamExtensibleAttributeDefinition" read-only="false">
+    <value encoded="n"><![CDATA[__NULL__]]></value>
+    <description><![CDATA[Definition of the extensible attribute #4]]></description>
+  </attrib>
+  <attrib name="attrSearchEa4Value" type="string" read-only="false">
+    <value encoded="n"><![CDATA[]]></value>
+    <description><![CDATA[Value of the extensible attribute #4]]></description>
+  </attrib>
+  <attrib name="attrSearchEa4Comparison" type="InfobloxIPAM:IpamSearchComparisonType" read-only="false">
+    <value encoded="n"><![CDATA[__NULL__]]></value>
+    <description><![CDATA[Type of the comparison for extensible attribute #4]]></description>
+  </attrib>
+  <attrib name="attrSearchEa5Definition" type="InfobloxIPAM:IpamExtensibleAttributeDefinition" read-only="false">
+    <value encoded="n"><![CDATA[__NULL__]]></value>
+    <description><![CDATA[Definition of the extensible attribute #5]]></description>
+  </attrib>
+  <attrib name="attrSearchEa5Value" type="string" read-only="false">
+    <value encoded="n"><![CDATA[]]></value>
+    <description><![CDATA[Value of the extensible attribute #5]]></description>
+  </attrib>
+  <attrib name="attrSearchEa5Comparison" type="InfobloxIPAM:IpamSearchComparisonType" read-only="false">
+    <value encoded="n"><![CDATA[__NULL__]]></value>
+    <description><![CDATA[Type of the comparison for extensible attribute #5]]></description>
+  </attrib>
+  <attrib name="attrSearchEa6Definition" type="InfobloxIPAM:IpamExtensibleAttributeDefinition" read-only="false">
+    <value encoded="n"><![CDATA[__NULL__]]></value>
+    <description><![CDATA[Definition of the extensible attribute #6]]></description>
+  </attrib>
+  <attrib name="attrSearchEa6Value" type="string" read-only="false">
+    <value encoded="n"><![CDATA[]]></value>
+    <description><![CDATA[Value of the extensible attribute #6]]></description>
+  </attrib>
+  <attrib name="attrSearchEa6Comparison" type="InfobloxIPAM:IpamSearchComparisonType" read-only="false">
+    <value encoded="n"><![CDATA[__NULL__]]></value>
+    <description><![CDATA[Type of the comparison for extensible attribute #6]]></description>
+  </attrib>
+  <attrib name="attrSearchEa7Definition" type="InfobloxIPAM:IpamExtensibleAttributeDefinition" read-only="false">
+    <value encoded="n"><![CDATA[__NULL__]]></value>
+    <description><![CDATA[Definition of the extensible attribute #7]]></description>
+  </attrib>
+  <attrib name="attrSearchEa7Value" type="string" read-only="false">
+    <value encoded="n"><![CDATA[]]></value>
+    <description><![CDATA[Value of the extensible attribute #7]]></description>
+  </attrib>
+  <attrib name="attrSearchEa7Comparison" type="InfobloxIPAM:IpamSearchComparisonType" read-only="false">
+    <value encoded="n"><![CDATA[__NULL__]]></value>
+    <description><![CDATA[Type of the comparison for extensible attribute #7]]></description>
+  </attrib>
+  <attrib name="attrSearchEa8Definition" type="InfobloxIPAM:IpamExtensibleAttributeDefinition" read-only="false">
+    <value encoded="n"><![CDATA[__NULL__]]></value>
+    <description><![CDATA[Definition of the extensible attribute #8]]></description>
+  </attrib>
+  <attrib name="attrSearchEa8Value" type="string" read-only="false">
+    <value encoded="n"><![CDATA[]]></value>
+    <description><![CDATA[Value of the extensible attribute #8]]></description>
+  </attrib>
+  <attrib name="attrSearchEa8Comparison" type="InfobloxIPAM:IpamSearchComparisonType" read-only="false">
+    <value encoded="n"><![CDATA[__NULL__]]></value>
+    <description><![CDATA[Type of the comparison for extensible attribute #8]]></description>
+  </attrib>
+  <attrib name="attrSearchEa9Definition" type="InfobloxIPAM:IpamExtensibleAttributeDefinition" read-only="false">
+    <value encoded="n"><![CDATA[__NULL__]]></value>
+    <description><![CDATA[Definition of the extensible attribute #9]]></description>
+  </attrib>
+  <attrib name="attrSearchEa9Value" type="string" read-only="false">
+    <value encoded="n"><![CDATA[]]></value>
+    <description><![CDATA[Value of the extensible attribute #9]]></description>
+  </attrib>
+  <attrib name="attrSearchEa9Comparison" type="InfobloxIPAM:IpamSearchComparisonType" read-only="false">
+    <value encoded="n"><![CDATA[__NULL__]]></value>
+    <description><![CDATA[Type of the comparison for extensible attribute #9]]></description>
+  </attrib>
+  <attrib name="attrSearchEa10Definition" type="InfobloxIPAM:IpamExtensibleAttributeDefinition" read-only="false">
+    <value encoded="n"><![CDATA[__NULL__]]></value>
+    <description><![CDATA[Definition of the extensible attribute #10]]></description>
+  </attrib>
+  <attrib name="attrSearchEa10Value" type="string" read-only="false">
+    <value encoded="n"><![CDATA[]]></value>
+    <description><![CDATA[Value of the extensible attribute #10]]></description>
+  </attrib>
+  <attrib name="attrSearchEa10Comparison" type="InfobloxIPAM:IpamSearchComparisonType" read-only="false">
+    <value encoded="n"><![CDATA[__NULL__]]></value>
+    <description><![CDATA[Type of the comparison for extensible attribute #10]]></description>
+  </attrib>
+  <workflow-item name="item3" out-name="item7" catch-name="item0" throw-bind-name="attrErrorMsg" type="task" script-module="com.infoblox.ipam/getDefaultIpamConnection">
+    <display-name><![CDATA[getDefaultIpamConnection]]></display-name>
+    <script encoded="false"><![CDATA[//Auto generated script, cannot be modified !
+actionResult = System.getModule("com.infoblox.ipam").getDefaultIpamConnection() ;]]></script>
+    <in-binding/>
+    <out-binding>
+      <bind name="actionResult" type="InfobloxIPAM:IpamConnection" export-name="attrIpamConnection"/>
+    </out-binding>
+    <description><![CDATA[Returns a default connection to the IPAM server]]></description>
+    <position y="155.4090909090909" x="44.5"/>
+  </workflow-item>
+  <workflow-item name="item6" out-name="item7" type="condition" alt-out-name="item3" comparator="0">
+    <display-name><![CDATA[Is Connection Specified?]]></display-name>
+    <script encoded="false"><![CDATA[//Generated by the system, cannot be edited
+return (attrIpamConnection  != null ) ;]]></script>
+    <in-binding>
+      <bind name="attrIpamConnection" type="InfobloxIPAM:IpamConnection" export-name="attrIpamConnection"/>
+    </in-binding>
+    <condition name="attrIpamConnection" type="InfobloxIPAM:IpamConnection" comparator="0" label="null"/>
+    <position y="145.4090909090909" x="204.5"/>
+  </workflow-item>
+  <workflow-item name="item7" out-name="item11" type="condition" alt-out-name="item4" comparator="0">
+    <display-name><![CDATA[Is Remove by EA]]></display-name>
+    <script encoded="false"><![CDATA[//Generated by the system, cannot be edited
+return (removeByEa == true) ;]]></script>
+    <in-binding>
+      <bind name="removeByEa" type="boolean" export-name="removeByEa"/>
+    </in-binding>
+    <condition name="removeByEa" type="boolean" comparator="0" label="null">false</condition>
+    <position y="209.04545454545453" x="204.5"/>
+  </workflow-item>
+  <workflow-item name="item4" out-name="item1" catch-name="item0" throw-bind-name="attrErrorMsg" type="task" script-module="com.infoblox.ipam/removeNetwork">
+    <display-name><![CDATA[removeNetwork]]></display-name>
+    <script encoded="false"><![CDATA[//Auto generated script, cannot be modified !
+System.getModule("com.infoblox.ipam").removeNetwork(ipamConnection,networkView,netaddr,cidr) ;]]></script>
+    <in-binding>
+      <bind name="ipamConnection" type="InfobloxIPAM:IpamConnection" export-name="attrIpamConnection">
+        <description><![CDATA[Connection to the IPAM server]]></description>
+      </bind>
+      <bind name="netaddr" type="string" export-name="netaddr">
+        <description><![CDATA[IPv4 or IPv6 address of the network]]></description>
+      </bind>
+      <bind name="cidr" type="number" export-name="cidr">
+        <description><![CDATA[CIDR number of the network range]]></description>
+      </bind>
+      <bind name="networkView" type="string" export-name="networkView">
+        <description><![CDATA[Network view, in which the network resides]]></description>
+      </bind>
+    </in-binding>
+    <out-binding/>
+    <description><![CDATA[Deletes a network in NIOS with all of its associated information]]></description>
+    <position y="219.04545454545453" x="44.5"/>
+  </workflow-item>
+  <workflow-item name="item0" prototype-id="system-server-error" out-name="item10" type="task" interaction="l">
+    <display-name><![CDATA[System+Server error]]></display-name>
+    <script encoded="false"><![CDATA[//Auto-generated script
+System.error(text);
+Server.error(text);
+]]></script>
+    <in-binding>
+      <bind name="text" type="string" export-name="attrErrorMsg">
+        <description><![CDATA[The text to log]]></description>
+      </bind>
+    </in-binding>
+    <out-binding/>
+    <description><![CDATA[Log the input text to the console and the server log with level 'error']]></description>
+    <position y="91.77272727272727" x="524.5"/>
+  </workflow-item>
+  <workflow-item name="item10" throw-bind-name="attrErrorMsg" type="end" end-mode="1">
+    <position y="81.77272727272727" x="725.0"/>
+  </workflow-item>
+  <workflow-item name="item5" out-name="item6" catch-name="item0" throw-bind-name="attrErrorMsg" type="task">
+    <display-name><![CDATA[Initialize Data]]></display-name>
+    <script encoded="false"><![CDATA[attrIpamConnection = ipamConnection;
+if (attrIpamConnection) {
+	System.log("Infoblox IPAM connection: " + attrIpamConnection.hostName);
+} else {
+	System.log("Infoblox IPAM connection is not specified");
+}
+
+if (!removeByEa) {
+	eaNumber = 0;
+}
+
+if (eaNumber >= 1) {
+	attrSearchEa1Definition = searchEa1Definition;
+	attrSearchEa1Value = searchEa1Value;
+	attrSearchEa1Comparison = searchEa1Comparison;
+}
+
+if (eaNumber >= 2) {
+	attrSearchEa2Definition = searchEa2Definition;
+	attrSearchEa2Value = searchEa2Value;
+	attrSearchEa2Comparison = searchEa2Comparison;
+}
+
+if (eaNumber >= 3) {
+	attrSearchEa3Definition = searchEa3Definition;
+	attrSearchEa3Value = searchEa3Value;
+	attrSearchEa3Comparison = searchEa3Comparison;
+}
+
+if (eaNumber >= 4) {
+	attrSearchEa4Definition = searchEa4Definition;
+	attrSearchEa4Value = searchEa4Value;
+	attrSearchEa4Comparison = searchEa4Comparison;
+}
+
+if (eaNumber >= 5) {
+	attrSearchEa5Definition = searchEa5Definition;
+	attrSearchEa5Value = searchEa5Value;
+	attrSearchEa5Comparison = searchEa5Comparison;
+}
+
+if (eaNumber >= 6) {
+	attrSearchEa6Definition = searchEa6Definition;
+	attrSearchEa6Value = searchEa6Value;
+	attrSearchEa6Comparison = searchEa6Comparison;
+}
+
+if (eaNumber >= 7) {
+	attrSearchEa7Definition = searchEa7Definition;
+	attrSearchEa7Value = searchEa7Value;
+	attrSearchEa7Comparison = searchEa7Comparison;
+}
+
+if (eaNumber >= 8) {
+	attrSearchEa8Definition = searchEa8Definition;
+	attrSearchEa8Value = searchEa8Value;
+	attrSearchEa8Comparison = searchEa8Comparison;
+}
+
+if (eaNumber >= 9) {
+	attrSearchEa9Definition = searchEa9Definition;
+	attrSearchEa9Value = searchEa9Value;
+	attrSearchEa9Comparison = searchEa9Comparison;
+}
+
+if (eaNumber >= 10) {
+	attrSearchEa10Definition = searchEa10Definition;
+	attrSearchEa10Value = searchEa10Value;
+	attrSearchEa10Comparison = searchEa10Comparison;
+}]]></script>
+    <in-binding>
+      <bind name="ipamConnection" type="InfobloxIPAM:IpamConnection" export-name="ipamConnection"/>
+      <bind name="removeByEa" type="boolean" export-name="removeByEa"/>
+      <bind name="eaNumber" type="number" export-name="eaNumber"/>
+      <bind name="searchEa1Definition" type="InfobloxIPAM:IpamExtensibleAttributeDefinition" export-name="searchEa1Definition"/>
+      <bind name="searchEa1Value" type="string" export-name="searchEa1Value"/>
+      <bind name="searchEa1Comparison" type="InfobloxIPAM:IpamSearchComparisonType" export-name="searchEa1Comparison"/>
+      <bind name="searchEa2Definition" type="InfobloxIPAM:IpamExtensibleAttributeDefinition" export-name="searchEa2Definition"/>
+      <bind name="searchEa2Value" type="string" export-name="searchEa2Value"/>
+      <bind name="searchEa2Comparison" type="InfobloxIPAM:IpamSearchComparisonType" export-name="searchEa2Comparison"/>
+      <bind name="searchEa3Definition" type="InfobloxIPAM:IpamExtensibleAttributeDefinition" export-name="searchEa3Definition"/>
+      <bind name="searchEa3Value" type="string" export-name="searchEa3Value"/>
+      <bind name="searchEa3Comparison" type="InfobloxIPAM:IpamSearchComparisonType" export-name="searchEa3Comparison"/>
+      <bind name="searchEa4Definition" type="InfobloxIPAM:IpamExtensibleAttributeDefinition" export-name="searchEa4Definition"/>
+      <bind name="searchEa4Value" type="string" export-name="searchEa4Value"/>
+      <bind name="searchEa4Comparison" type="InfobloxIPAM:IpamSearchComparisonType" export-name="searchEa4Comparison"/>
+      <bind name="searchEa5Definition" type="InfobloxIPAM:IpamExtensibleAttributeDefinition" export-name="searchEa5Definition"/>
+      <bind name="searchEa5Value" type="string" export-name="searchEa5Value"/>
+      <bind name="searchEa5Comparison" type="InfobloxIPAM:IpamSearchComparisonType" export-name="searchEa5Comparison"/>
+      <bind name="searchEa6Definition" type="InfobloxIPAM:IpamExtensibleAttributeDefinition" export-name="searchEa6Definition"/>
+      <bind name="searchEa6Value" type="string" export-name="searchEa6Value"/>
+      <bind name="searchEa6Comparison" type="InfobloxIPAM:IpamSearchComparisonType" export-name="searchEa6Comparison"/>
+      <bind name="searchEa7Definition" type="InfobloxIPAM:IpamExtensibleAttributeDefinition" export-name="searchEa7Definition"/>
+      <bind name="searchEa7Value" type="string" export-name="searchEa7Value"/>
+      <bind name="searchEa7Comparison" type="InfobloxIPAM:IpamSearchComparisonType" export-name="searchEa7Comparison"/>
+      <bind name="searchEa8Definition" type="InfobloxIPAM:IpamExtensibleAttributeDefinition" export-name="searchEa8Definition"/>
+      <bind name="searchEa8Value" type="string" export-name="searchEa8Value"/>
+      <bind name="searchEa8Comparison" type="InfobloxIPAM:IpamSearchComparisonType" export-name="searchEa8Comparison"/>
+      <bind name="searchEa9Definition" type="InfobloxIPAM:IpamExtensibleAttributeDefinition" export-name="searchEa9Definition"/>
+      <bind name="searchEa9Value" type="string" export-name="searchEa9Value"/>
+      <bind name="searchEa9Comparison" type="InfobloxIPAM:IpamSearchComparisonType" export-name="searchEa9Comparison"/>
+      <bind name="searchEa10Definition" type="InfobloxIPAM:IpamExtensibleAttributeDefinition" export-name="searchEa10Definition"/>
+      <bind name="searchEa10Value" type="string" export-name="searchEa10Value"/>
+      <bind name="searchEa10Comparison" type="InfobloxIPAM:IpamSearchComparisonType" export-name="searchEa10Comparison"/>
+    </in-binding>
+    <out-binding>
+      <bind name="attrIpamConnection" type="InfobloxIPAM:IpamConnection" export-name="attrIpamConnection"/>
+      <bind name="attrSearchEa1Definition" type="InfobloxIPAM:IpamExtensibleAttributeDefinition" export-name="attrSearchEa1Definition"/>
+      <bind name="attrSearchEa1Value" type="string" export-name="attrSearchEa1Value"/>
+      <bind name="attrSearchEa1Comparison" type="InfobloxIPAM:IpamSearchComparisonType" export-name="attrSearchEa1Comparison"/>
+      <bind name="attrSearchEa2Definition" type="InfobloxIPAM:IpamExtensibleAttributeDefinition" export-name="attrSearchEa2Definition"/>
+      <bind name="attrSearchEa2Value" type="string" export-name="attrSearchEa2Value"/>
+      <bind name="attrSearchEa2Comparison" type="InfobloxIPAM:IpamSearchComparisonType" export-name="attrSearchEa2Comparison"/>
+      <bind name="attrSearchEa3Definition" type="InfobloxIPAM:IpamExtensibleAttributeDefinition" export-name="attrSearchEa3Definition"/>
+      <bind name="attrSearchEa3Value" type="string" export-name="attrSearchEa3Value"/>
+      <bind name="attrSearchEa3Comparison" type="InfobloxIPAM:IpamSearchComparisonType" export-name="attrSearchEa3Comparison"/>
+      <bind name="attrSearchEa4Definition" type="InfobloxIPAM:IpamExtensibleAttributeDefinition" export-name="attrSearchEa4Definition"/>
+      <bind name="attrSearchEa4Value" type="string" export-name="attrSearchEa4Value"/>
+      <bind name="attrSearchEa4Comparison" type="InfobloxIPAM:IpamSearchComparisonType" export-name="attrSearchEa4Comparison"/>
+      <bind name="attrSearchEa5Definition" type="InfobloxIPAM:IpamExtensibleAttributeDefinition" export-name="attrSearchEa5Definition"/>
+      <bind name="attrSearchEa5Value" type="string" export-name="attrSearchEa5Value"/>
+      <bind name="attrSearchEa5Comparison" type="InfobloxIPAM:IpamSearchComparisonType" export-name="attrSearchEa5Comparison"/>
+      <bind name="attrSearchEa6Definition" type="InfobloxIPAM:IpamExtensibleAttributeDefinition" export-name="attrSearchEa6Definition"/>
+      <bind name="attrSearchEa6Value" type="string" export-name="attrSearchEa6Value"/>
+      <bind name="attrSearchEa6Comparison" type="InfobloxIPAM:IpamSearchComparisonType" export-name="attrSearchEa6Comparison"/>
+      <bind name="attrSearchEa7Definition" type="InfobloxIPAM:IpamExtensibleAttributeDefinition" export-name="attrSearchEa7Definition"/>
+      <bind name="attrSearchEa7Value" type="string" export-name="attrSearchEa7Value"/>
+      <bind name="attrSearchEa7Comparison" type="InfobloxIPAM:IpamSearchComparisonType" export-name="attrSearchEa7Comparison"/>
+      <bind name="attrSearchEa8Definition" type="InfobloxIPAM:IpamExtensibleAttributeDefinition" export-name="attrSearchEa8Definition"/>
+      <bind name="attrSearchEa8Value" type="string" export-name="attrSearchEa8Value"/>
+      <bind name="attrSearchEa8Comparison" type="InfobloxIPAM:IpamSearchComparisonType" export-name="attrSearchEa8Comparison"/>
+      <bind name="attrSearchEa9Definition" type="InfobloxIPAM:IpamExtensibleAttributeDefinition" export-name="attrSearchEa9Definition"/>
+      <bind name="attrSearchEa9Value" type="string" export-name="attrSearchEa9Value"/>
+      <bind name="attrSearchEa9Comparison" type="InfobloxIPAM:IpamSearchComparisonType" export-name="attrSearchEa9Comparison"/>
+      <bind name="attrSearchEa10Definition" type="InfobloxIPAM:IpamExtensibleAttributeDefinition" export-name="attrSearchEa10Definition"/>
+      <bind name="attrSearchEa10Value" type="string" export-name="attrSearchEa10Value"/>
+      <bind name="attrSearchEa10Comparison" type="InfobloxIPAM:IpamSearchComparisonType" export-name="attrSearchEa10Comparison"/>
+    </out-binding>
+    <position y="91.77272727272727" x="204.5"/>
+  </workflow-item>
+  <workflow-item name="item11" out-name="item1" catch-name="item0" throw-bind-name="attrErrorMsg" type="task" script-module="com.infoblox.ipam/removeNetworksByEA">
+    <display-name><![CDATA[removeNetworksByEA]]></display-name>
+    <script encoded="false"><![CDATA[//Auto generated script, cannot be modified !
+System.getModule("com.infoblox.ipam").removeNetworksByEA(ipamConnection,networkView,searchEa1Definition,searchEa1Value,searchEa1Comparison,searchEa2Definition,searchEa2Value,searchEa2Comparison,searchEa3Definition,searchEa3Value,searchEa3Comparison,searchEa4Definition,searchEa4Value,searchEa4Comparison,searchEa5Definition,searchEa5Value,searchEa5Comparison,searchEa6Definition,searchEa6Value,searchEa6Comparison,searchEa7Definition,searchEa7Value,searchEa7Comparison,searchEa8Definition,searchEa8Value,searchEa8Comparison,searchEa9Definition,searchEa9Value,searchEa9Comparison,searchEa10Definition,searchEa10Value,searchEa10Comparison) ;]]></script>
+    <in-binding>
+      <bind name="ipamConnection" type="InfobloxIPAM:IpamConnection" export-name="attrIpamConnection">
+        <description><![CDATA[Connection to the IPAM server]]></description>
+      </bind>
+      <bind name="networkView" type="string" export-name="networkView">
+        <description><![CDATA[Network view, in which the networks reside]]></description>
+      </bind>
+      <bind name="searchEa1Definition" type="InfobloxIPAM:IpamExtensibleAttributeDefinition" export-name="attrSearchEa1Definition">
+        <description><![CDATA[Definition of the Extensible Attribute #1]]></description>
+      </bind>
+      <bind name="searchEa1Value" type="string" export-name="attrSearchEa1Value">
+        <description><![CDATA[Value of the Extensible Attribute #1]]></description>
+      </bind>
+      <bind name="searchEa1Comparison" type="InfobloxIPAM:IpamSearchComparisonType" export-name="attrSearchEa1Comparison">
+        <description><![CDATA[Type of the comparison for Extensible Attribute #1]]></description>
+      </bind>
+      <bind name="searchEa2Definition" type="InfobloxIPAM:IpamExtensibleAttributeDefinition" export-name="attrSearchEa2Definition">
+        <description><![CDATA[Definition of the Extensible Attribute #2]]></description>
+      </bind>
+      <bind name="searchEa2Value" type="string" export-name="attrSearchEa2Value">
+        <description><![CDATA[Value of the Extensible Attribute #2]]></description>
+      </bind>
+      <bind name="searchEa2Comparison" type="InfobloxIPAM:IpamSearchComparisonType" export-name="attrSearchEa2Comparison">
+        <description><![CDATA[Type of the comparison for Extensible Attribute #2]]></description>
+      </bind>
+      <bind name="searchEa3Definition" type="InfobloxIPAM:IpamExtensibleAttributeDefinition" export-name="attrSearchEa3Definition">
+        <description><![CDATA[Definition of the Extensible Attribute #3]]></description>
+      </bind>
+      <bind name="searchEa3Value" type="string" export-name="attrSearchEa3Value">
+        <description><![CDATA[Value of the Extensible Attribute #3]]></description>
+      </bind>
+      <bind name="searchEa3Comparison" type="InfobloxIPAM:IpamSearchComparisonType" export-name="attrSearchEa3Comparison">
+        <description><![CDATA[Type of the comparison for Extensible Attribute #3]]></description>
+      </bind>
+      <bind name="searchEa4Definition" type="InfobloxIPAM:IpamExtensibleAttributeDefinition" export-name="attrSearchEa4Definition">
+        <description><![CDATA[Definition of the Extensible Attribute #4]]></description>
+      </bind>
+      <bind name="searchEa4Value" type="string" export-name="attrSearchEa4Value">
+        <description><![CDATA[Value of the Extensible Attribute #4]]></description>
+      </bind>
+      <bind name="searchEa4Comparison" type="InfobloxIPAM:IpamSearchComparisonType" export-name="attrSearchEa4Comparison">
+        <description><![CDATA[Type of the comparison for Extensible Attribute #4]]></description>
+      </bind>
+      <bind name="searchEa5Definition" type="InfobloxIPAM:IpamExtensibleAttributeDefinition" export-name="attrSearchEa5Definition">
+        <description><![CDATA[Definition of the Extensible Attribute #5]]></description>
+      </bind>
+      <bind name="searchEa5Value" type="string" export-name="attrSearchEa5Value">
+        <description><![CDATA[Value of the Extensible Attribute #5]]></description>
+      </bind>
+      <bind name="searchEa5Comparison" type="InfobloxIPAM:IpamSearchComparisonType" export-name="attrSearchEa5Comparison">
+        <description><![CDATA[Type of the comparison for Extensible Attribute #5]]></description>
+      </bind>
+      <bind name="searchEa6Definition" type="InfobloxIPAM:IpamExtensibleAttributeDefinition" export-name="attrSearchEa6Definition">
+        <description><![CDATA[Definition of the Extensible Attribute #6]]></description>
+      </bind>
+      <bind name="searchEa6Value" type="string" export-name="attrSearchEa6Value">
+        <description><![CDATA[Value of the Extensible Attribute #6]]></description>
+      </bind>
+      <bind name="searchEa6Comparison" type="InfobloxIPAM:IpamSearchComparisonType" export-name="attrSearchEa6Comparison">
+        <description><![CDATA[Type of the comparison for Extensible Attribute #6]]></description>
+      </bind>
+      <bind name="searchEa7Definition" type="InfobloxIPAM:IpamExtensibleAttributeDefinition" export-name="attrSearchEa7Definition">
+        <description><![CDATA[Definition of the Extensible Attribute #7]]></description>
+      </bind>
+      <bind name="searchEa7Value" type="string" export-name="attrSearchEa7Value">
+        <description><![CDATA[Value of the Extensible Attribute #7]]></description>
+      </bind>
+      <bind name="searchEa7Comparison" type="InfobloxIPAM:IpamSearchComparisonType" export-name="attrSearchEa7Comparison">
+        <description><![CDATA[Type of the comparison for Extensible Attribute #7]]></description>
+      </bind>
+      <bind name="searchEa8Definition" type="InfobloxIPAM:IpamExtensibleAttributeDefinition" export-name="attrSearchEa8Definition">
+        <description><![CDATA[Definition of the Extensible Attribute #8]]></description>
+      </bind>
+      <bind name="searchEa8Value" type="string" export-name="attrSearchEa8Value">
+        <description><![CDATA[Value of the Extensible Attribute #8]]></description>
+      </bind>
+      <bind name="searchEa8Comparison" type="InfobloxIPAM:IpamSearchComparisonType" export-name="attrSearchEa8Comparison">
+        <description><![CDATA[Type of the comparison for Extensible Attribute #8]]></description>
+      </bind>
+      <bind name="searchEa9Definition" type="InfobloxIPAM:IpamExtensibleAttributeDefinition" export-name="attrSearchEa9Definition">
+        <description><![CDATA[Definition of the Extensible Attribute #9]]></description>
+      </bind>
+      <bind name="searchEa9Value" type="string" export-name="attrSearchEa9Value">
+        <description><![CDATA[Value of the Extensible Attribute #9]]></description>
+      </bind>
+      <bind name="searchEa9Comparison" type="InfobloxIPAM:IpamSearchComparisonType" export-name="attrSearchEa9Comparison">
+        <description><![CDATA[Type of the comparison for Extensible Attribute #9]]></description>
+      </bind>
+      <bind name="searchEa10Definition" type="InfobloxIPAM:IpamExtensibleAttributeDefinition" export-name="attrSearchEa10Definition">
+        <description><![CDATA[Definition of the Extensible Attribute #10]]></description>
+      </bind>
+      <bind name="searchEa10Value" type="string" export-name="attrSearchEa10Value">
+        <description><![CDATA[Value of the Extensible Attribute #10]]></description>
+      </bind>
+      <bind name="searchEa10Comparison" type="InfobloxIPAM:IpamSearchComparisonType" export-name="attrSearchEa10Comparison">
+        <description><![CDATA[Type of the comparison for Extensible Attribute #10]]></description>
+      </bind>
+    </in-binding>
+    <out-binding/>
+    <description><![CDATA[Removes IPv4 and IPv6 networks from IPAM by specified Extensible attributes.]]></description>
+    <position y="219.04545454545453" x="365.0"/>
+  </workflow-item>
+  <workflow-item name="item1" type="end" end-mode="0">
+    <position y="272.68181818181813" x="245.0"/>
+  </workflow-item>
+  <presentation>
+    <p-step>
+      <title><![CDATA[Connection]]></title>
+      <p-param name="ipamConnection">
+        <desc><![CDATA[Connection to the IPAM server]]></desc>
+      </p-param>
+    </p-step>
+    <p-step>
+      <title><![CDATA[Remove criteria]]></title>
+      <p-param name="removeByEa">
+        <desc><![CDATA[Use extensible attributes for removing of the networks? (Network address is used by default)]]></desc>
+        <p-qual kind="static" name="defaultValue" type="boolean"><![CDATA[false]]></p-qual>
+      </p-param>
+      <p-param name="eaNumber">
+        <desc><![CDATA[Number of specified extensible attributes]]></desc>
+        <p-qual kind="static" name="genericEnumeration" type="Array/number"><![CDATA[#{#number#1.0#;#number#2.0#;#number#3.0#;#number#4.0#;#number#5.0#;#number#6.0#;#number#7.0#;#number#8.0#;#number#9.0#;#number#10.0#}#]]></p-qual>
+        <p-qual kind="static" name="numberFormat" type="String"><![CDATA[##]]></p-qual>
+        <p-qual kind="ognl" name="visible" type="boolean"><![CDATA[#removeByEa]]></p-qual>
+      </p-param>
+      <p-param name="netaddr">
+        <desc><![CDATA[IPv4 or IPv6 network address]]></desc>
+        <p-qual kind="ognl" name="notVisible" type="boolean"><![CDATA[#removeByEa]]></p-qual>
+        <p-qual kind="static" name="mandatory" type="boolean"><![CDATA[true]]></p-qual>
+        <p-qual kind="static" name="inetAddress" type="String"><![CDATA[IP address]]></p-qual>
+      </p-param>
+      <p-param name="cidr">
+        <desc><![CDATA[Network CIDR]]></desc>
+        <p-qual kind="static" name="mandatory" type="boolean"><![CDATA[true]]></p-qual>
+        <p-qual kind="ognl" name="notVisible" type="boolean"><![CDATA[#removeByEa]]></p-qual>
+        <p-qual kind="static" name="numberFormat" type="String"><![CDATA[##]]></p-qual>
+      </p-param>
+      <p-param name="networkView">
+        <desc><![CDATA[Network view, in which the network resides]]></desc>
+        <p-qual kind="ognl" name="linkedEnumeration" type="Array/string"><![CDATA[GetAction("com.infoblox.ipam.util", "getNetworkViews").call( #ipamConnection )]]></p-qual>
+      </p-param>
+    </p-step>
+    <p-step>
+      <title><![CDATA[Extensible attributes]]></title>
+      <p-qual kind="ognl" name="visible" type="boolean"><![CDATA[#removeByEa]]></p-qual>
+      <p-group>
+        <title><![CDATA[Extensible attribute #1]]></title>
+        <p-qual kind="ognl" name="visible" type="boolean"><![CDATA[#eaNumber > 0]]></p-qual>
+        <p-param name="searchEa1Definition">
+          <desc><![CDATA[Definition of the extensible attribute #1]]></desc>
+          <p-qual kind="static" name="mandatory" type="boolean"><![CDATA[true]]></p-qual>
+          <p-qual kind="ognl" name="sdkRootObject" type="any"><![CDATA[#ipamConnection == null ? GetAction("com.infoblox.ipam", "getDefaultIpamConnection").call() : #ipamConnection]]></p-qual>
+          <p-qual kind="static" name="show-select-as" type="string"><![CDATA[tree]]></p-qual>
+          <p-qual kind="ognl" name="ognlValidator" type="String"><![CDATA[(#searchEa1Definition==null || GetAction("com.infoblox.ipam.util","connectionContainsDefinition").call( #ipamConnection, #searchEa1Definition )) ? true : "IPAM connection does not contain this definition."]]></p-qual>
+        </p-param>
+        <p-param name="searchEa1Value">
+          <desc><![CDATA[Value of the extensible attribute #1]]></desc>
+          <p-qual kind="static" name="mandatory" type="boolean"><![CDATA[true]]></p-qual>
+          <p-qual kind="ognl" name="dataBinding" type="string"><![CDATA[#searchEa1Definition ? #searchEa1Definition.defaultValue : ""]]></p-qual>
+        </p-param>
+        <p-param name="searchEa1Comparison">
+          <desc><![CDATA[Type of the comparison for extensible attribute #1]]></desc>
+          <p-qual kind="static" name="mandatory" type="boolean"><![CDATA[true]]></p-qual>
+          <p-qual kind="static" name="defaultValue" type="InfobloxIPAM:IpamSearchComparisonType"><![CDATA[dunes://service.dunes.ch/CustomSDKObject?id='EQUAL'&dunesName='InfobloxIPAM:IpamSearchComparisonType']]></p-qual>
+        </p-param>
+      </p-group>
+      <p-group>
+        <title><![CDATA[Extensible attribute #2]]></title>
+        <p-qual kind="ognl" name="visible" type="boolean"><![CDATA[#eaNumber > 1]]></p-qual>
+        <p-param name="searchEa2Definition">
+          <desc><![CDATA[Definition of the extensible attribute #2]]></desc>
+          <p-qual kind="static" name="mandatory" type="boolean"><![CDATA[true]]></p-qual>
+          <p-qual kind="ognl" name="sdkRootObject" type="any"><![CDATA[#ipamConnection == null ? GetAction("com.infoblox.ipam", "getDefaultIpamConnection").call() : #ipamConnection]]></p-qual>
+          <p-qual kind="static" name="show-select-as" type="string"><![CDATA[tree]]></p-qual>
+          <p-qual kind="ognl" name="ognlValidator" type="String"><![CDATA[(#searchEa2Definition==null || GetAction("com.infoblox.ipam.util","connectionContainsDefinition").call( #ipamConnection, #searchEa2Definition )) ? true : "IPAM connection does not contain this definition."]]></p-qual>
+        </p-param>
+        <p-param name="searchEa2Value">
+          <desc><![CDATA[Value of the extensible attribute #2]]></desc>
+          <p-qual kind="static" name="mandatory" type="boolean"><![CDATA[true]]></p-qual>
+          <p-qual kind="ognl" name="dataBinding" type="string"><![CDATA[#searchEa2Definition ? #searchEa2Definition.defaultValue : ""]]></p-qual>
+        </p-param>
+        <p-param name="searchEa2Comparison">
+          <desc><![CDATA[Type of the comparison for extensible attribute #2]]></desc>
+          <p-qual kind="static" name="mandatory" type="boolean"><![CDATA[true]]></p-qual>
+          <p-qual kind="static" name="defaultValue" type="InfobloxIPAM:IpamSearchComparisonType"><![CDATA[dunes://service.dunes.ch/CustomSDKObject?id='EQUAL'&dunesName='InfobloxIPAM:IpamSearchComparisonType']]></p-qual>
+        </p-param>
+      </p-group>
+      <p-group>
+        <title><![CDATA[Extensible attribute #3]]></title>
+        <p-qual kind="ognl" name="visible" type="boolean"><![CDATA[#eaNumber > 2]]></p-qual>
+        <p-param name="searchEa3Definition">
+          <desc><![CDATA[Definition of the extensible attribute #3]]></desc>
+          <p-qual kind="static" name="mandatory" type="boolean"><![CDATA[true]]></p-qual>
+          <p-qual kind="ognl" name="sdkRootObject" type="any"><![CDATA[#ipamConnection == null ? GetAction("com.infoblox.ipam", "getDefaultIpamConnection").call() : #ipamConnection]]></p-qual>
+          <p-qual kind="static" name="show-select-as" type="string"><![CDATA[tree]]></p-qual>
+          <p-qual kind="ognl" name="ognlValidator" type="String"><![CDATA[(#searchEa3Definition==null || GetAction("com.infoblox.ipam.util","connectionContainsDefinition").call( #ipamConnection, #searchEa3Definition )) ? true : "IPAM connection does not contain this definition."]]></p-qual>
+        </p-param>
+        <p-param name="searchEa3Value">
+          <desc><![CDATA[Value of the extensible attribute #3]]></desc>
+          <p-qual kind="static" name="mandatory" type="boolean"><![CDATA[true]]></p-qual>
+          <p-qual kind="ognl" name="dataBinding" type="string"><![CDATA[#searchEa3Definition ? #searchEa3Definition.defaultValue : ""]]></p-qual>
+        </p-param>
+        <p-param name="searchEa3Comparison">
+          <desc><![CDATA[Type of the comparison for extensible attribute #3]]></desc>
+          <p-qual kind="static" name="mandatory" type="boolean"><![CDATA[true]]></p-qual>
+          <p-qual kind="static" name="defaultValue" type="InfobloxIPAM:IpamSearchComparisonType"><![CDATA[dunes://service.dunes.ch/CustomSDKObject?id='EQUAL'&dunesName='InfobloxIPAM:IpamSearchComparisonType']]></p-qual>
+        </p-param>
+      </p-group>
+      <p-group>
+        <title><![CDATA[Extensible attribute #4]]></title>
+        <p-qual kind="ognl" name="visible" type="boolean"><![CDATA[#eaNumber > 3]]></p-qual>
+        <p-param name="searchEa4Definition">
+          <desc><![CDATA[Definition of the extensible attribute #4]]></desc>
+          <p-qual kind="static" name="mandatory" type="boolean"><![CDATA[true]]></p-qual>
+          <p-qual kind="ognl" name="sdkRootObject" type="any"><![CDATA[#ipamConnection == null ? GetAction("com.infoblox.ipam", "getDefaultIpamConnection").call() : #ipamConnection]]></p-qual>
+          <p-qual kind="static" name="show-select-as" type="string"><![CDATA[tree]]></p-qual>
+          <p-qual kind="ognl" name="ognlValidator" type="String"><![CDATA[(#searchEa4Definition==null || GetAction("com.infoblox.ipam.util","connectionContainsDefinition").call( #ipamConnection, #searchEa4Definition )) ? true : "IPAM connection does not contain this definition."]]></p-qual>
+        </p-param>
+        <p-param name="searchEa4Value">
+          <desc><![CDATA[Value of the extensible attribute #4]]></desc>
+          <p-qual kind="static" name="mandatory" type="boolean"><![CDATA[true]]></p-qual>
+          <p-qual kind="ognl" name="dataBinding" type="string"><![CDATA[#searchEa4Definition ? #searchEa4Definition.defaultValue : ""]]></p-qual>
+        </p-param>
+        <p-param name="searchEa4Comparison">
+          <desc><![CDATA[Type of the comparison for extensible attribute #4]]></desc>
+          <p-qual kind="static" name="mandatory" type="boolean"><![CDATA[true]]></p-qual>
+          <p-qual kind="static" name="defaultValue" type="InfobloxIPAM:IpamSearchComparisonType"><![CDATA[dunes://service.dunes.ch/CustomSDKObject?id='EQUAL'&dunesName='InfobloxIPAM:IpamSearchComparisonType']]></p-qual>
+        </p-param>
+      </p-group>
+      <p-group>
+        <title><![CDATA[Extensible attribute #5]]></title>
+        <p-qual kind="ognl" name="visible" type="boolean"><![CDATA[#eaNumber > 4]]></p-qual>
+        <p-param name="searchEa5Definition">
+          <desc><![CDATA[Definition of the extensible attribute #5]]></desc>
+          <p-qual kind="static" name="mandatory" type="boolean"><![CDATA[true]]></p-qual>
+          <p-qual kind="ognl" name="sdkRootObject" type="any"><![CDATA[#ipamConnection == null ? GetAction("com.infoblox.ipam", "getDefaultIpamConnection").call() : #ipamConnection]]></p-qual>
+          <p-qual kind="static" name="show-select-as" type="string"><![CDATA[tree]]></p-qual>
+          <p-qual kind="ognl" name="ognlValidator" type="String"><![CDATA[(#searchEa5Definition==null || GetAction("com.infoblox.ipam.util","connectionContainsDefinition").call( #ipamConnection, #searchEa5Definition )) ? true : "IPAM connection does not contain this definition."]]></p-qual>
+        </p-param>
+        <p-param name="searchEa5Value">
+          <desc><![CDATA[Value of the extensible attribute #5]]></desc>
+          <p-qual kind="static" name="mandatory" type="boolean"><![CDATA[true]]></p-qual>
+          <p-qual kind="ognl" name="dataBinding" type="string"><![CDATA[#searchEa5Definition ? #searchEa5Definition.defaultValue : ""]]></p-qual>
+        </p-param>
+        <p-param name="searchEa5Comparison">
+          <desc><![CDATA[Type of the comparison for extensible attribute #5]]></desc>
+          <p-qual kind="static" name="mandatory" type="boolean"><![CDATA[true]]></p-qual>
+          <p-qual kind="static" name="defaultValue" type="InfobloxIPAM:IpamSearchComparisonType"><![CDATA[dunes://service.dunes.ch/CustomSDKObject?id='EQUAL'&dunesName='InfobloxIPAM:IpamSearchComparisonType']]></p-qual>
+        </p-param>
+      </p-group>
+      <p-group>
+        <title><![CDATA[Extensible attribute #6]]></title>
+        <p-qual kind="ognl" name="visible" type="boolean"><![CDATA[#eaNumber > 5]]></p-qual>
+        <p-param name="searchEa6Definition">
+          <desc><![CDATA[Definition of the extensible attribute #6]]></desc>
+          <p-qual kind="static" name="mandatory" type="boolean"><![CDATA[true]]></p-qual>
+          <p-qual kind="ognl" name="sdkRootObject" type="any"><![CDATA[#ipamConnection == null ? GetAction("com.infoblox.ipam", "getDefaultIpamConnection").call() : #ipamConnection]]></p-qual>
+          <p-qual kind="static" name="show-select-as" type="string"><![CDATA[tree]]></p-qual>
+          <p-qual kind="ognl" name="ognlValidator" type="String"><![CDATA[(#searchEa6Definition==null || GetAction("com.infoblox.ipam.util","connectionContainsDefinition").call( #ipamConnection, #searchEa6Definition )) ? true : "IPAM connection does not contain this definition."]]></p-qual>
+        </p-param>
+        <p-param name="searchEa6Value">
+          <desc><![CDATA[Value of the extensible attribute #6]]></desc>
+          <p-qual kind="static" name="mandatory" type="boolean"><![CDATA[true]]></p-qual>
+          <p-qual kind="ognl" name="dataBinding" type="string"><![CDATA[#searchEa6Definition ? #searchEa6Definition.defaultValue : ""]]></p-qual>
+        </p-param>
+        <p-param name="searchEa6Comparison">
+          <desc><![CDATA[Type of the comparison for extensible attribute #6]]></desc>
+          <p-qual kind="static" name="mandatory" type="boolean"><![CDATA[true]]></p-qual>
+          <p-qual kind="static" name="defaultValue" type="InfobloxIPAM:IpamSearchComparisonType"><![CDATA[dunes://service.dunes.ch/CustomSDKObject?id='EQUAL'&dunesName='InfobloxIPAM:IpamSearchComparisonType']]></p-qual>
+        </p-param>
+      </p-group>
+      <p-group>
+        <title><![CDATA[Extensible attribute #7]]></title>
+        <p-qual kind="ognl" name="visible" type="boolean"><![CDATA[#eaNumber > 6]]></p-qual>
+        <p-param name="searchEa7Definition">
+          <desc><![CDATA[Definition of the extensible attribute #7]]></desc>
+          <p-qual kind="static" name="mandatory" type="boolean"><![CDATA[true]]></p-qual>
+          <p-qual kind="ognl" name="sdkRootObject" type="any"><![CDATA[#ipamConnection == null ? GetAction("com.infoblox.ipam", "getDefaultIpamConnection").call() : #ipamConnection]]></p-qual>
+          <p-qual kind="static" name="show-select-as" type="string"><![CDATA[tree]]></p-qual>
+          <p-qual kind="ognl" name="ognlValidator" type="String"><![CDATA[(#searchEa7Definition==null || GetAction("com.infoblox.ipam.util","connectionContainsDefinition").call( #ipamConnection, #searchEa7Definition )) ? true : "IPAM connection does not contain this definition."]]></p-qual>
+        </p-param>
+        <p-param name="searchEa7Value">
+          <desc><![CDATA[Value of the extensible attribute #7]]></desc>
+          <p-qual kind="static" name="mandatory" type="boolean"><![CDATA[true]]></p-qual>
+          <p-qual kind="ognl" name="dataBinding" type="string"><![CDATA[#searchEa7Definition ? #searchEa7Definition.defaultValue : ""]]></p-qual>
+        </p-param>
+        <p-param name="searchEa7Comparison">
+          <desc><![CDATA[Type of the comparison for extensible attribute #7]]></desc>
+          <p-qual kind="static" name="mandatory" type="boolean"><![CDATA[true]]></p-qual>
+          <p-qual kind="static" name="defaultValue" type="InfobloxIPAM:IpamSearchComparisonType"><![CDATA[dunes://service.dunes.ch/CustomSDKObject?id='EQUAL'&dunesName='InfobloxIPAM:IpamSearchComparisonType']]></p-qual>
+        </p-param>
+      </p-group>
+      <p-group>
+        <title><![CDATA[Extensible attribute #8]]></title>
+        <p-qual kind="ognl" name="visible" type="boolean"><![CDATA[#eaNumber > 7]]></p-qual>
+        <p-param name="searchEa8Definition">
+          <desc><![CDATA[Definition of the extensible attribute #8]]></desc>
+          <p-qual kind="static" name="mandatory" type="boolean"><![CDATA[true]]></p-qual>
+          <p-qual kind="ognl" name="sdkRootObject" type="any"><![CDATA[#ipamConnection == null ? GetAction("com.infoblox.ipam", "getDefaultIpamConnection").call() : #ipamConnection]]></p-qual>
+          <p-qual kind="static" name="show-select-as" type="string"><![CDATA[tree]]></p-qual>
+          <p-qual kind="ognl" name="ognlValidator" type="String"><![CDATA[(#searchEa8Definition==null || GetAction("com.infoblox.ipam.util","connectionContainsDefinition").call( #ipamConnection, #searchEa8Definition )) ? true : "IPAM connection does not contain this definition."]]></p-qual>
+        </p-param>
+        <p-param name="searchEa8Value">
+          <desc><![CDATA[Value of the extensible attribute #8]]></desc>
+          <p-qual kind="static" name="mandatory" type="boolean"><![CDATA[true]]></p-qual>
+          <p-qual kind="ognl" name="dataBinding" type="string"><![CDATA[#searchEa8Definition ? #searchEa8Definition.defaultValue : ""]]></p-qual>
+        </p-param>
+        <p-param name="searchEa8Comparison">
+          <desc><![CDATA[Type of the comparison for extensible attribute #8]]></desc>
+          <p-qual kind="static" name="mandatory" type="boolean"><![CDATA[true]]></p-qual>
+          <p-qual kind="static" name="defaultValue" type="InfobloxIPAM:IpamSearchComparisonType"><![CDATA[dunes://service.dunes.ch/CustomSDKObject?id='EQUAL'&dunesName='InfobloxIPAM:IpamSearchComparisonType']]></p-qual>
+        </p-param>
+      </p-group>
+      <p-group>
+        <title><![CDATA[Extensible attribute #9]]></title>
+        <p-qual kind="ognl" name="visible" type="boolean"><![CDATA[#eaNumber > 8]]></p-qual>
+        <p-param name="searchEa9Definition">
+          <desc><![CDATA[Definition of the extensible attribute #9]]></desc>
+          <p-qual kind="static" name="mandatory" type="boolean"><![CDATA[true]]></p-qual>
+          <p-qual kind="ognl" name="sdkRootObject" type="any"><![CDATA[#ipamConnection == null ? GetAction("com.infoblox.ipam", "getDefaultIpamConnection").call() : #ipamConnection]]></p-qual>
+          <p-qual kind="static" name="show-select-as" type="string"><![CDATA[tree]]></p-qual>
+          <p-qual kind="ognl" name="ognlValidator" type="String"><![CDATA[(#searchEa9Definition==null || GetAction("com.infoblox.ipam.util","connectionContainsDefinition").call( #ipamConnection, #searchEa9Definition )) ? true : "IPAM connection does not contain this definition."]]></p-qual>
+        </p-param>
+        <p-param name="searchEa9Value">
+          <desc><![CDATA[Value of the extensible attribute #9]]></desc>
+          <p-qual kind="static" name="mandatory" type="boolean"><![CDATA[true]]></p-qual>
+          <p-qual kind="ognl" name="dataBinding" type="string"><![CDATA[#searchEa9Definition ? #searchEa9Definition.defaultValue : ""]]></p-qual>
+        </p-param>
+        <p-param name="searchEa9Comparison">
+          <desc><![CDATA[Type of the comparison for extensible attribute #9]]></desc>
+          <p-qual kind="static" name="mandatory" type="boolean"><![CDATA[true]]></p-qual>
+          <p-qual kind="static" name="defaultValue" type="InfobloxIPAM:IpamSearchComparisonType"><![CDATA[dunes://service.dunes.ch/CustomSDKObject?id='EQUAL'&dunesName='InfobloxIPAM:IpamSearchComparisonType']]></p-qual>
+        </p-param>
+      </p-group>
+      <p-group>
+        <title><![CDATA[Extensible attribute #10]]></title>
+        <p-qual kind="ognl" name="visible" type="boolean"><![CDATA[#eaNumber > 9]]></p-qual>
+        <p-param name="searchEa10Definition">
+          <desc><![CDATA[Definition of the extensible attribute #10]]></desc>
+          <p-qual kind="static" name="mandatory" type="boolean"><![CDATA[true]]></p-qual>
+          <p-qual kind="ognl" name="sdkRootObject" type="any"><![CDATA[#ipamConnection == null ? GetAction("com.infoblox.ipam", "getDefaultIpamConnection").call() : #ipamConnection]]></p-qual>
+          <p-qual kind="static" name="show-select-as" type="string"><![CDATA[tree]]></p-qual>
+          <p-qual kind="ognl" name="ognlValidator" type="String"><![CDATA[(#searchEa10Definition==null || GetAction("com.infoblox.ipam.util","connectionContainsDefinition").call( #ipamConnection, #searchEa10Definition )) ? true : "IPAM connection does not contain this definition."]]></p-qual>
+        </p-param>
+        <p-param name="searchEa10Value">
+          <desc><![CDATA[Value of the extensible attribute #10]]></desc>
+          <p-qual kind="static" name="mandatory" type="boolean"><![CDATA[true]]></p-qual>
+          <p-qual kind="ognl" name="dataBinding" type="string"><![CDATA[#searchEa10Definition ? #searchEa10Definition.defaultValue : ""]]></p-qual>
+        </p-param>
+        <p-param name="searchEa10Comparison">
+          <desc><![CDATA[Type of the comparison for extensible attribute #10]]></desc>
+          <p-qual kind="static" name="mandatory" type="boolean"><![CDATA[true]]></p-qual>
+          <p-qual kind="static" name="defaultValue" type="InfobloxIPAM:IpamSearchComparisonType"><![CDATA[dunes://service.dunes.ch/CustomSDKObject?id='EQUAL'&dunesName='InfobloxIPAM:IpamSearchComparisonType']]></p-qual>
+        </p-param>
+      </p-group>
+    </p-step>
+  </presentation>
+</workflow>

@@ -1,0 +1,8 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dunes-script-module name="addElementToList" result-type="void" api-version="6.0.0" id="5caf374c-7280-4dbf-89d7-87fdeccd0cc5" version="1.0.0" allowed-operations="vf" category-name="com.vmware.library.vcaccafe.util">
+  <description><![CDATA[Adds element to a list.]]></description>
+  <param n="objectContainingList" t="Any"><![CDATA[Object containing a list]]></param>
+  <param n="methodName" t="string"><![CDATA[Method name that returns a list]]></param>
+  <param n="elementToAdd" t="Any"><![CDATA[Element to be added to the list]]></param>
+  <script encoded="false"><![CDATA[vCACCAFEEntityHelper.addElementToList(objectContainingList , methodName, elementToAdd);]]></script>
+</dunes-script-module>

@@ -1,0 +1,22 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dunes-script-module name="getResourcesByResourceKind" result-type="string" api-version="6.0.0" id="56d977a1-eb25-4cfe-9185-36e45f760a63" version="3.0.0" allowed-operations="vfe" category-name="com.stevenbright.vrops.resources">
+  <description><![CDATA[Get all vRealize Operations managed resources via REST for a specific vRealize Operations resourceKind.]]></description>
+  <param n="resourceKind" t="string"><![CDATA[]]></param>
+  <param n="restAuthData" t="Properties"><![CDATA[]]></param>
+  <param n="restHost" t="REST:RESTHost"><![CDATA[]]></param>
+  <param n="pageSize" t="number"><![CDATA[]]></param>
+  <script encoded="false"><![CDATA[//Request all objects from vROPs with a specified resourceKind
+var request = restHost.createRequest("GET", "/suite-api/api/resources?resourceKind=" + resourceKind + ";pageSize=" + pageSize, null);
+request.contentType = "application/json";
+request.setHeader("accept", "application/json");
+request.setHeader("Authorization", "vRealizeOpsToken " + restAuthData.get("authToken"));
+
+try {
+    var restResponse = request.execute();
+    jsonResponse = JSON.parse(restResponse.contentAsString);
+    return jsonResponse;
+}
+catch (e) {
+    throw("Error executing the REST operation: " + e);
+}]]></script>
+</dunes-script-module>

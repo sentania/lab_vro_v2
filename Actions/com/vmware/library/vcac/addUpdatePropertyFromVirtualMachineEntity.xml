@@ -1,0 +1,56 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dunes-script-module name="addUpdatePropertyFromVirtualMachineEntity" result-type="vCAC:Entity" api-version="6.0.0" id="d8a44cb0-e40a-4d52-947d-4c771028ee90" version="0.0.5" allowed-operations="vf" category-name="com.vmware.library.vcac">
+  <param n="host" t="vCAC:VCACHost"><![CDATA[vCloud Automation Center host]]></param>
+  <param n="virtualMachineEntity" t="vCAC:Entity"><![CDATA[vCloud Automation Center virtual machine instance]]></param>
+  <param n="propertyName" t="string"><![CDATA[Blueprint update property name]]></param>
+  <param n="propertyValue" t="string"><![CDATA[Blueprint update property value]]></param>
+  <param n="propertyIsHidden" t="boolean"><![CDATA[Blueprint property 'isHidden' flag]]></param>
+  <param n="propertyIsRuntime" t="boolean"><![CDATA[Blueprint property 'isRuntime' flag]]></param>
+  <param n="propertyIsEncrypted" t="boolean"><![CDATA[Blueprint property 'isHidden' flag]]></param>
+  <param n="doNotUpdate" t="boolean"><![CDATA[Update flag]]></param>
+  <script encoded="false"><![CDATA[var model = "ManagementModelEntities.svc"
+var entitySet = "VirtualMachineProperties";
+
+
+var found = false;
+
+//Find property by propety name
+var virtualMachinePropertiesEntities = virtualMachineEntity.getLink(host, entitySet);
+for each (var virtualMachinePropertiesEntity in virtualMachinePropertiesEntities) {
+	if (virtualMachinePropertiesEntity.getProperty("PropertyName") == propertyName) {
+		found = true;
+		System.log("Found existing property " + propertyName);
+		break;
+	}	
+}
+
+
+var properties = new Properties();
+properties.put("PropertyName", propertyName);
+properties.put("PropertyValue", propertyValue);
+
+properties.put("IsHidden", propertyIsHidden == null ? false : propertyIsHidden);
+properties.put("IsRuntime", propertyIsRuntime == null ? false : propertyIsRuntime);
+properties.put("IsEncrypted", propertyIsEncrypted == null ? false : propertyIsEncrypted);
+
+var links = new Properties();
+links.put("VirtualMachine",virtualMachineEntity);
+
+
+if (found == true) {
+	if (doNotUpdate == false && propertyValue != "") {
+		var entityKey = virtualMachinePropertiesEntity.entityKey;
+		var entityKeyId = entityKey.get("Id");
+		System.log("Update entity id " + entityKeyId + " with property " + propertyName + " : " + propertyValue + " on virtualMachine entity " + virtualMachineEntity.getProperty("VirtualMachineName"));
+		return vCACEntityManager.updateModelEntityBySerializedKey(host.id , model , entitySet , entityKeyId , properties, links);
+		}
+		else	{
+			if (doNotUpdate == true) System.log("doNotUpdate set to true - not updating property " + propertyName);
+			if (propertyValue == "") System.log("not updating property " + propertyName + " with empty value");		
+		}
+}
+else {
+	System.log("Create property " + propertyName + " : " + propertyValue + " on virtualMachine entity " + virtualMachineEntity.getProperty("VirtualMachineName"));
+	return vCACEntityManager.createModelEntity(host.id, model, entitySet, properties, links);
+}]]></script>
+</dunes-script-module>

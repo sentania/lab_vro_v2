@@ -1,0 +1,31 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dunes-script-module name="getResourceAllocationInfo" result-type="Any" api-version="6.0.0" id="16f963d4-03e0-45e3-8c23-771e45dc2063" version="0.2.0" allowed-operations="vfp" category-name="com.vmware.library.vc.spec">
+  <description><![CDATA[The ResourceAllocationInfo specifies the reserved resource requirement as well as the limit (maximum allowed usage) for a given kind of resource. This is specified for both memory allocation (specified in MB) and CPU allocation (specified in MHz). 
+For a resource pool, the reservation is specified as a value and a flag. The reservation is the guaranteed amount of a resource that the resource pool has. If expandableReservation is true, then the resource pool is allowed to grow its reservation dynamically by borrowing unreserved resources from its parent resource pool. 
+If the limit is configured, it must be greater than or equal to the reservation.]]></description>
+  <param n="expandableReservation" t="boolean"><![CDATA[[Optional] In a resource pool with an expandable reservation, the reservation on a resource pool can grow beyond the specified value, if the parent resource pool has unreserved resources. A non-expandable reservation is called a fixed reservation. This property is ignored for virtual machines. ]]></param>
+  <param n="limit" t="number"><![CDATA[[Optional] The utilization of a virtual machine/resource pool will not exceed this limit, even if there are available resources. This is typically used to ensure a consistent performance of virtual machines / resource pools independent of available resources. If set to -1, then there is no fixed limit on resource usage (only bounded by available resources and shares). Units are MB for memory, MHz for CPU]]></param>
+  <param n="reservation" t="number"><![CDATA[[Optional] Amount of resource that is guaranteed available to the virtual machine or resource pool. Reserved resources are not wasted if they are not used. If the utilization is less than the reservation, the resources can be utilized by other running virtual machines. Units are MB for memory, MHz for CPU. ]]></param>
+  <param n="shares" t="string"><![CDATA[[Optional] VimSharesInfo: Memory shares are used in case of resource contention. ]]></param>
+  <script encoded="false"><![CDATA[var info = new VcResourceAllocationInfo();
+info.limit = -1;
+if (expandableReservation != null) {
+	info.expandableReservation = expandableReservation;
+}
+if (limit != null && limit >= 0) {
+	info.limit = limit;
+}
+if (reservation != null) {
+	info.reservation = reservation;
+}
+if (shares != null) {
+	if (shares instanceof VcSharesInfo) {
+		info.shares = shares;
+	}
+	else {
+		throw "TypeError: shares must be of type 'VcSharesInfo'";
+	}
+}
+return info;
+]]></script>
+</dunes-script-module>

@@ -1,0 +1,39 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dunes-script-module name="getvROPSauthSource" result-type="string" api-version="6.0.0" id="6f7730f4-9172-4185-b396-10d72cf7e19a" version="1.1.0" category-name="net.sentania.Actions.vROPS.AdvSettings">
+  <script encoded="false"><![CDATA[// Action Inputs: None
+
+// Configuration element details
+var configElementCategoryPath = "vROPS";
+var configElementName = "AdvancedSettingsConfig";
+
+// Function to get the configuration element
+function getConfigElement(categoryPath, name) {
+    var configElementCategory = Server.getConfigurationElementCategoryWithPath(categoryPath);
+    if (!configElementCategory) {
+        throw "Configuration element category " + categoryPath + " does not exist.";
+    }
+
+    var configElements = configElementCategory.configurationElements;
+    for (var i = 0; i < configElements.length; i++) {
+        if (configElements[i].name === name) {
+            return configElements[i];
+        }
+    }
+
+    throw "Configuration element " + name + " does not exist in category " + categoryPath + ".";
+}
+
+// Get the configuration element
+try {
+    var configElement = getConfigElement(configElementCategoryPath, configElementName);
+    var authsource = configElement.getAttributeWithKey("authsource").value;
+    if (!authsource) {
+        authsource = "Local";
+    }
+} catch (e) {
+    var authsource = "Local";
+}
+
+return authsource;
+]]></script>
+</dunes-script-module>

@@ -1,0 +1,14 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dunes-script-module name="removeNetwork" result-type="void" api-version="6.0.0" id="165ceb72-50b5-4ac3-91f0-7ce8c9f0bc46" version="0.0.2" allowed-operations="evf" category-name="com.infoblox.ipam">
+  <description><![CDATA[Removes a network from IPAM.]]></description>
+  <param n="ipamConnection" t="InfobloxIPAM:IpamConnection"><![CDATA[Connection to the IPAM server]]></param>
+  <param n="networkView" t="string"><![CDATA[Network view, in which the network resides]]></param>
+  <param n="netaddr" t="string"><![CDATA[IPv4 or IPv6 address of the network]]></param>
+  <param n="cidr" t="number"><![CDATA[CIDR number of the network range]]></param>
+  <script encoded="false"><![CDATA[var networkManager = ipamConnection.getNetworkManager();
+
+networkManager.removeNetwork(netaddr, cidr, networkView);
+
+System.log("The network [" + netaddr + "/"+ cidr + "] was removed from IPAM.");
+]]></script>
+</dunes-script-module>

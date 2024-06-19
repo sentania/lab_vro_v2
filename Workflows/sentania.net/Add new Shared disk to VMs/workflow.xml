@@ -1,0 +1,214 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<workflow xmlns="http://vmware.com/vco/workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://vmware.com/vco/workflow http://vmware.com/vco/workflow/Workflow-v4.xsd" root-name="item1" object-name="workflow:name=generic" id="e30fbb56-6e8d-48b3-b776-dac5b42dafb8" version="0.1.0" api-version="6.0.0" allowed-operations="vfe" editor-version="2.0" restartMode="1" resumeFromFailedMode="0">
+  <display-name><![CDATA[Add new Shared disk to VMs]]></display-name>
+  <position y="50.0" x="100.0"/>
+  <input>
+    <param name="managedObject" type="VC:VirtualMachine"/>
+    <param name="managedObject2" type="VC:VirtualMachine"/>
+  </input>
+  <attrib name="vmdkBacking" type="string" read-only="false">
+    <value encoded="n"><![CDATA[]]></value>
+  </attrib>
+  <attrib name="task" type="VC:Task" read-only="false">
+    <value encoded="n"><![CDATA[]]></value>
+  </attrib>
+  <attrib name="progress" type="boolean" read-only="false">
+    <value encoded="n"><![CDATA[false]]></value>
+  </attrib>
+  <attrib name="pollRate" type="number" read-only="false">
+    <value encoded="n"><![CDATA[]]></value>
+  </attrib>
+  <workflow-item name="item0" type="end" end-mode="0">
+    <in-binding/>
+    <position y="270.0" x="520.0"/>
+  </workflow-item>
+  <workflow-item name="item1" out-name="item2" type="task">
+    <display-name><![CDATA[Add Disk to the First VM]]></display-name>
+    <script encoded="false"><![CDATA[var spec = new VcVirtualMachineConfigSpec();
+var deviceChange = new Array();
+deviceChange[0] = new VcVirtualDeviceConfigSpec();
+deviceChange[0].fileOperation = VcVirtualDeviceConfigSpecFileOperation.create;
+deviceChange[0].device = new VcVirtualDisk();
+deviceChange[0].device.capacityInBytes = 2147483648;
+deviceChange[0].device.storageIOAllocation = new VcStorageIOAllocationInfo();
+deviceChange[0].device.storageIOAllocation.shares = new VcSharesInfo();
+deviceChange[0].device.storageIOAllocation.shares.shares = 1000;
+deviceChange[0].device.storageIOAllocation.shares.level = VcSharesLevel.normal;
+deviceChange[0].device.storageIOAllocation.limit = -1;
+deviceChange[0].device.backing = new VcVirtualDiskFlatVer2BackingInfo();
+deviceChange[0].device.backing.fileName = '';
+deviceChange[0].device.backing.eagerlyScrub = true;
+deviceChange[0].device.backing.thinProvisioned = false;
+deviceChange[0].device.backing.diskMode = 'persistent';
+deviceChange[0].device.backing.sharing = 'sharingMultiWriter';
+deviceChange[0].device.controllerKey = -102;
+deviceChange[0].device.unitNumber = 0;
+deviceChange[0].device.capacityInKB = 2097152;
+deviceChange[0].device.deviceInfo = new VcDescription();
+deviceChange[0].device.deviceInfo.summary = 'New Hard disk';
+deviceChange[0].device.deviceInfo.label = 'New Hard disk';
+deviceChange[0].device.key = -103;
+deviceChange[0].operation = VcVirtualDeviceConfigSpecOperation.add;
+deviceChange[1] = new VcVirtualDeviceConfigSpec();
+deviceChange[1].device = new VcParaVirtualSCSIController();
+deviceChange[1].device.sharedBus = VcVirtualSCSISharing.physicalSharing;
+deviceChange[1].device.scsiCtlrUnitNumber = 7;
+deviceChange[1].device.deviceInfo = new VcDescription();
+deviceChange[1].device.deviceInfo.summary = 'New SCSI controller';
+deviceChange[1].device.deviceInfo.label = 'New SCSI controller';
+deviceChange[1].device.key = -102;
+deviceChange[1].device.busNumber = 1;
+deviceChange[1].operation = VcVirtualDeviceConfigSpecOperation.add;
+spec.deviceChange = deviceChange;
+task = managedObject.reconfigVM_Task(spec);   // VirtualMachine-vm-95317
+]]></script>
+    <in-binding>
+      <bind name="managedObject" type="VC:VirtualMachine" export-name="managedObject"/>
+    </in-binding>
+    <out-binding>
+      <bind name="task" type="VC:Task" export-name="task"/>
+    </out-binding>
+    <description><![CDATA[Simple task with custom script capability.]]></description>
+    <position y="60.0" x="200.0"/>
+  </workflow-item>
+  <workflow-item name="item2" out-name="item3" type="task" script-module="com.vmware.library.vc.basic/vim3WaitTaskEnd">
+    <display-name><![CDATA[vim3WaitTaskEnd]]></display-name>
+    <script encoded="false"><![CDATA[//Auto generated script, cannot be modified !
+actionResult = System.getModule("com.vmware.library.vc.basic").vim3WaitTaskEnd(task,progress,pollRate);
+]]></script>
+    <in-binding>
+      <bind name="task" type="VC:Task" export-name="task">
+        <description><![CDATA[Task to Wait for]]></description>
+      </bind>
+      <bind name="progress" type="boolean" export-name="progress">
+        <description><![CDATA[Log progess while waiting for the task]]></description>
+      </bind>
+      <bind name="pollRate" type="number" export-name="pollRate">
+        <description><![CDATA[Polling rate for the task state [seconds]]]></description>
+      </bind>
+    </in-binding>
+    <out-binding>
+      <bind name="actionResult" type="Any" export-name=""/>
+    </out-binding>
+    <description><![CDATA[Add a note to the workflow schema.]]></description>
+    <position y="60.0" x="360.0"/>
+  </workflow-item>
+  <workflow-item name="item3" out-name="item4" type="task">
+    <display-name><![CDATA[Scriptable task]]></display-name>
+    <script encoded="false"><![CDATA[
+for each (var device in managedObject.config.hardware.device) 
+{
+    if (device instanceof VcVirtualDisk) 
+    {
+        if (device.capacityInKB == 2097152)
+        {
+            vmdkBacking = device.backing.fileName
+        }
+    }
+}
+System.log(vmdkBacking)]]></script>
+    <in-binding>
+      <bind name="managedObject" type="VC:VirtualMachine" export-name="managedObject"/>
+    </in-binding>
+    <out-binding>
+      <bind name="vmdkBacking" type="string" export-name="vmdkBacking"/>
+    </out-binding>
+    <description><![CDATA[Simple task with custom script capability.]]></description>
+    <position y="60.0" x="480.0"/>
+  </workflow-item>
+  <workflow-item name="item4" out-name="item5" type="task">
+    <display-name><![CDATA[Add Disk to Second VM]]></display-name>
+    <script encoded="false"><![CDATA[managedObject2.config
+
+var spec = new VcVirtualMachineConfigSpec();
+var deviceChange = new Array();
+deviceChange[0] = new VcVirtualDeviceConfigSpec();
+deviceChange[0].device = new VcVirtualDisk();
+deviceChange[0].device.capacityInBytes = 2147483648;
+deviceChange[0].device.storageIOAllocation = new VcStorageIOAllocationInfo();
+deviceChange[0].device.storageIOAllocation.shares = new VcSharesInfo();
+deviceChange[0].device.storageIOAllocation.shares.shares = 1000;
+deviceChange[0].device.storageIOAllocation.shares.level = VcSharesLevel.normal;
+deviceChange[0].device.storageIOAllocation.limit = -1;
+deviceChange[0].device.backing = new VcVirtualDiskFlatVer2BackingInfo();
+deviceChange[0].device.backing.fileName = vmdkBacking;
+deviceChange[0].device.backing.eagerlyScrub = false;
+deviceChange[0].device.backing.thinProvisioned = false;
+deviceChange[0].device.backing.diskMode = 'persistent';
+deviceChange[0].device.controllerKey = 1000;
+deviceChange[0].device.unitNumber = 1;
+deviceChange[0].device.capacityInKB = 2097152;
+deviceChange[0].device.deviceInfo = new VcDescription();
+deviceChange[0].device.deviceInfo.summary = 'New Hard disk';
+deviceChange[0].device.deviceInfo.label = 'New Hard disk';
+deviceChange[0].device.key = -103;
+deviceChange[0].operation = VcVirtualDeviceConfigSpecOperation.add;
+deviceChange[1] = new VcVirtualDeviceConfigSpec();
+deviceChange[1].device = new VcParaVirtualSCSIController();
+deviceChange[1].device.sharedBus = VcVirtualSCSISharing.physicalSharing;
+deviceChange[1].device.scsiCtlrUnitNumber = 7;
+deviceChange[1].device.deviceInfo = new VcDescription();
+deviceChange[1].device.deviceInfo.summary = 'New SCSI controller';
+deviceChange[1].device.deviceInfo.label = 'New SCSI controller';
+deviceChange[1].device.key = -102;
+deviceChange[1].device.busNumber = 1;
+deviceChange[1].operation = VcVirtualDeviceConfigSpecOperation.add;
+spec.deviceChange = deviceChange;
+task = managedObject2.reconfigVM_Task(spec); ]]></script>
+    <in-binding>
+      <bind name="managedObject2" type="VC:VirtualMachine" export-name="managedObject2"/>
+      <bind name="vmdkBacking" type="string" export-name="vmdkBacking"/>
+    </in-binding>
+    <out-binding>
+      <bind name="task" type="VC:Task" export-name="task"/>
+    </out-binding>
+    <description><![CDATA[Simple task with custom script capability.]]></description>
+    <position y="120.0" x="480.0"/>
+  </workflow-item>
+  <workflow-item name="item5" out-name="item6" type="task" script-module="com.vmware.library.vc.basic/vim3WaitTaskEnd">
+    <display-name><![CDATA[vim3WaitTaskEnd]]></display-name>
+    <script encoded="false"><![CDATA[//Auto generated script, cannot be modified !
+actionResult = System.getModule("com.vmware.library.vc.basic").vim3WaitTaskEnd(task,progress,pollRate);
+]]></script>
+    <in-binding>
+      <bind name="task" type="VC:Task" export-name="task">
+        <description><![CDATA[Task to Wait for]]></description>
+      </bind>
+      <bind name="progress" type="boolean" export-name="progress">
+        <description><![CDATA[Log progess while waiting for the task]]></description>
+      </bind>
+      <bind name="pollRate" type="number" export-name="pollRate">
+        <description><![CDATA[Polling rate for the task state [seconds]]]></description>
+      </bind>
+    </in-binding>
+    <out-binding>
+      <bind name="actionResult" type="Any" export-name=""/>
+    </out-binding>
+    <description><![CDATA[Add a note to the workflow schema.]]></description>
+    <position y="170.0" x="480.0"/>
+  </workflow-item>
+  <workflow-item name="item6" out-name="item0" type="task">
+    <display-name><![CDATA[Scriptable task]]></display-name>
+    <script encoded="false"><![CDATA[
+for each (var device in managedObject2.config.hardware.device) 
+{
+    if (device instanceof VcVirtualDisk) 
+    {
+        if (device.capacityInKB == 2097152)
+        {
+            vmdkBacking = device.backing.fileName
+        }
+    }
+}
+System.log(vmdkBacking)]]></script>
+    <in-binding>
+      <bind name="managedObject2" type="VC:VirtualMachine" export-name="managedObject2"/>
+    </in-binding>
+    <out-binding>
+      <bind name="vmdkBacking" type="string" export-name="vmdkBacking"/>
+    </out-binding>
+    <description><![CDATA[Simple task with custom script capability.]]></description>
+    <position y="220.0" x="480.0"/>
+  </workflow-item>
+  <presentation/>
+</workflow>

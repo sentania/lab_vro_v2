@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dunes-script-module name="calculateDefaultSnapshotExpiration" result-type="Date" api-version="6.0.0" id="a82009fe-d6eb-41d1-bffb-1b1a64cd65be" version="0.2.0" allowed-operations="vfe" category-name="net.sentania.Actions">
+  <script encoded="false"><![CDATA[var date = new Date();
+date.setDate(date.getDate() + 7);
+System.log(date)
+return date;]]></script>
+</dunes-script-module>

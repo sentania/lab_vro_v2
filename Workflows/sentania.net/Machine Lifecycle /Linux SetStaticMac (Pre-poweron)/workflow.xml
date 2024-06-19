@@ -1,0 +1,223 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<workflow xmlns="http://vmware.com/vco/workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://vmware.com/vco/workflow http://vmware.com/vco/workflow/Workflow-v4.xsd" root-name="item1" object-name="workflow:name=generic" id="b3ef02db-1c15-44ab-89ef-3891258bdc36" version="0.1.0" api-version="6.0.0" allowed-operations="vfe" editor-version="2.0" restartMode="1" resumeFromFailedMode="0">
+  <display-name><![CDATA[Linux SetStaticMac (Pre-poweron)]]></display-name>
+  <description><![CDATA[Assigns a static MAC Address and a customization spec.]]></description>
+  <position y="50.0" x="100.0"/>
+  <input>
+    <param name="inputProperties" type="Properties"/>
+  </input>
+  <attrib name="actionResult" type="string" read-only="false">
+    <value encoded="n"><![CDATA[]]></value>
+  </attrib>
+  <attrib name="macAddress" type="string" read-only="false">
+    <value encoded="n"><![CDATA[]]></value>
+  </attrib>
+  <attrib name="vmName" type="string" read-only="false">
+    <value encoded="n"><![CDATA[]]></value>
+  </attrib>
+  <attrib name="vmUUID" type="string" read-only="false">
+    <value encoded="n"><![CDATA[]]></value>
+  </attrib>
+  <attrib name="vmIPAddress" type="string" read-only="false">
+    <value encoded="n"><![CDATA[]]></value>
+  </attrib>
+  <attrib name="outVm" type="VC:VirtualMachine" read-only="false">
+    <value encoded="n"><![CDATA[]]></value>
+  </attrib>
+  <attrib name="task" type="VC:Task" read-only="false">
+    <value encoded="n"><![CDATA[]]></value>
+  </attrib>
+  <attrib name="progress" type="boolean" read-only="false">
+    <value encoded="n"><![CDATA[false]]></value>
+  </attrib>
+  <attrib name="pollRate" type="number" read-only="false">
+    <value encoded="n"><![CDATA[]]></value>
+  </attrib>
+  <workflow-item name="item0" type="end" end-mode="0">
+    <in-binding/>
+    <position y="130.0" x="80.0"/>
+  </workflow-item>
+  <workflow-item name="item1" out-name="item2" type="task" script-module="net.sentania.Actions/logInputProperties">
+    <display-name><![CDATA[logInputProperties]]></display-name>
+    <script encoded="false"><![CDATA[//Auto generated script, cannot be modified !
+actionResult = System.getModule("net.sentania.Actions").logInputProperties(inputProperties);
+]]></script>
+    <in-binding>
+      <bind name="inputProperties" type="Properties" export-name="inputProperties"/>
+    </in-binding>
+    <out-binding>
+      <bind name="actionResult" type="string" export-name="actionResult"/>
+    </out-binding>
+    <description><![CDATA[Add a note to the workflow schema.]]></description>
+    <position y="60.0" x="280.0"/>
+  </workflow-item>
+  <workflow-item name="item2" out-name="item3" type="task">
+    <display-name><![CDATA[Set Workflow Variables]]></display-name>
+    <script encoded="false"><![CDATA[
+
+var customProperties = inputProperties.customProperties || new Properties();
+
+
+vmIPAddress = customProperties.get("natProps.vmIP");
+var macString = customProperties.get("natProps.macAddress");
+macAddress = "00:50:56:" + macString.substr(0,2) + ":" + macString.substr(2,2) + ":" + macString.substr(4,2);
+vmUUID = customProperties.instanceUUID;
+var vmNameArray = new Array();
+
+vmNameArray = inputProperties.get("resourceNames");
+
+vmName = vmNameArray[0]
+
+System.log("Debugging VM IPaddress:" + vmIPAddress);
+System.log("Debugging Mac Address:" + macAddress);
+
+]]></script>
+    <in-binding>
+      <bind name="inputProperties" type="Properties" export-name="inputProperties"/>
+    </in-binding>
+    <out-binding>
+      <bind name="macAddress" type="string" export-name="macAddress"/>
+      <bind name="vmName" type="string" export-name="vmName"/>
+      <bind name="vmUUID" type="string" export-name="vmUUID"/>
+      <bind name="vmIPAddress" type="string" export-name="vmIPAddress"/>
+    </out-binding>
+    <description><![CDATA[Simple task with custom script capability.]]></description>
+    <position y="60.0" x="420.0"/>
+  </workflow-item>
+  <workflow-item name="item3" out-name="item4" type="link" linked-workflow-id="4d154442-1118-4111-934b-8e314315344a">
+    <display-name><![CDATA[Get VM by Name and Uuid]]></display-name>
+    <in-binding>
+      <bind name="name" type="string" export-name="vmName">
+        <description><![CDATA[A name of virtual machine]]></description>
+      </bind>
+      <bind name="uuid" type="string" export-name="vmUUID">
+        <description><![CDATA[A universally unique identifier (UUID) of virtual machine]]></description>
+      </bind>
+    </in-binding>
+    <out-binding>
+      <bind name="outVm" type="VC:VirtualMachine" export-name="outVm">
+        <description><![CDATA[A virtual machine that matches the name and uuid given as input]]></description>
+      </bind>
+    </out-binding>
+    <description><![CDATA[ ]]></description>
+    <position y="60.0" x="560.0"/>
+  </workflow-item>
+  <workflow-item name="item4" out-name="item5" type="task">
+    <display-name><![CDATA[Set Static Mac Address]]></display-name>
+    <script encoded="false"><![CDATA[var managedObject = outVm;
+var spec = new VcVirtualMachineConfigSpec();
+System.log("VM Object: " + managedObject);
+spec.cpuAllocation = new VcResourceAllocationInfo();
+spec.cpuAllocation.shares = new VcSharesInfo();
+spec.cpuAllocation.shares.shares = 2000;
+spec.cpuAllocation.shares.level = VcSharesLevel.normal;
+var deviceChange = new Array();
+deviceChange[0] = new VcVirtualDeviceConfigSpec();
+deviceChange[0].device = new VcVirtualVmxnet3();
+deviceChange[0].device.macAddress = macAddress;
+deviceChange[0].device.addressType = 'manual';
+deviceChange[0].device.controllerKey = 100;
+deviceChange[0].device.key = 4000;
+deviceChange[0].operation = VcVirtualDeviceConfigSpecOperation.edit;
+spec.deviceChange = deviceChange;
+
+task = managedObject.reconfigVM_Task(spec); ]]></script>
+    <in-binding>
+      <bind name="outVm" type="VC:VirtualMachine" export-name="outVm"/>
+      <bind name="macAddress" type="string" export-name="macAddress"/>
+    </in-binding>
+    <out-binding>
+      <bind name="task" type="VC:Task" export-name="task"/>
+    </out-binding>
+    <description><![CDATA[Simple task with custom script capability.]]></description>
+    <position y="140.0" x="560.0"/>
+  </workflow-item>
+  <workflow-item name="item5" out-name="item6" type="task" script-module="com.vmware.library.vc.basic/vim3WaitTaskEnd">
+    <display-name><![CDATA[vim3WaitTaskEnd]]></display-name>
+    <script encoded="false"><![CDATA[//Auto generated script, cannot be modified !
+actionResult = System.getModule("com.vmware.library.vc.basic").vim3WaitTaskEnd(task,progress,pollRate);
+]]></script>
+    <in-binding>
+      <bind name="task" type="VC:Task" export-name="task">
+        <description><![CDATA[Task to Wait for]]></description>
+      </bind>
+      <bind name="progress" type="boolean" export-name="progress">
+        <description><![CDATA[Log progess while waiting for the task]]></description>
+      </bind>
+      <bind name="pollRate" type="number" export-name="pollRate">
+        <description><![CDATA[Polling rate for the task state [seconds]]]></description>
+      </bind>
+    </in-binding>
+    <out-binding>
+      <bind name="actionResult" type="string" export-name="actionResult"/>
+    </out-binding>
+    <description><![CDATA[Add a note to the workflow schema.]]></description>
+    <position y="140.0" x="440.0"/>
+  </workflow-item>
+  <workflow-item name="item6" out-name="item7" type="task">
+    <display-name><![CDATA[Add Customization Spec]]></display-name>
+    <script encoded="false"><![CDATA[managedObject = outVm;
+//convert the cidr to a netmask
+
+var spec = new VcCustomizationSpec();
+var nicSettingMap = new Array();
+nicSettingMap[0] = new VcCustomizationAdapterMapping();
+nicSettingMap[0].adapter = new VcCustomizationIPSettings();
+nicSettingMap[0].adapter.ip = new VcCustomizationFixedIp();
+nicSettingMap[0].adapter.ip.ipAddress = vmIPAddress;
+nicSettingMap[0].adapter.subnetMask = "255.255.255.0";
+var gateway = new Array();
+gateway[0] = '192.168.1.1';
+nicSettingMap[0].adapter.gateway = gateway;
+spec.nicSettingMap = nicSettingMap;
+spec.identity = new VcCustomizationLinuxPrep();
+spec.identity.hostName = new VcCustomizationVirtualMachineName();
+spec.identity.hwClockUTC = true;
+spec.identity.domain = 'lab.sentania.net';
+spec.identity.timeZone = 'America/Chicago';
+spec.options = new VcCustomizationLinuxOptions();
+spec.globalIPSettings = new VcCustomizationGlobalIPSettings();
+var dnsServerList = new Array();
+dnsServerList[0] = '172.25.1.8';
+dnsServerList[1] = '172.25.1.9';
+spec.globalIPSettings.dnsServerList = dnsServerList;
+var dnsSuffixList = new Array();
+dnsSuffixList[0] = 'lab.sentania.net';
+dnsSuffixList[1] = 'int.sentania.net';
+dnsSuffixList[2] = 'sentania.net';
+spec.globalIPSettings.dnsSuffixList = dnsSuffixList;
+task = managedObject.customizeVM_Task(spec);  ]]></script>
+    <in-binding>
+      <bind name="outVm" type="VC:VirtualMachine" export-name="outVm"/>
+      <bind name="vmIPAddress" type="string" export-name="vmIPAddress"/>
+    </in-binding>
+    <out-binding>
+      <bind name="task" type="VC:Task" export-name="task"/>
+    </out-binding>
+    <description><![CDATA[Simple task with custom script capability.]]></description>
+    <position y="140.0" x="280.0"/>
+  </workflow-item>
+  <workflow-item name="item7" out-name="item0" type="task" script-module="com.vmware.library.vc.basic/vim3WaitTaskEnd">
+    <display-name><![CDATA[vim3WaitTaskEnd]]></display-name>
+    <script encoded="false"><![CDATA[//Auto generated script, cannot be modified !
+actionResult = System.getModule("com.vmware.library.vc.basic").vim3WaitTaskEnd(task,progress,pollRate);
+]]></script>
+    <in-binding>
+      <bind name="task" type="VC:Task" export-name="task">
+        <description><![CDATA[Task to Wait for]]></description>
+      </bind>
+      <bind name="progress" type="boolean" export-name="progress">
+        <description><![CDATA[Log progess while waiting for the task]]></description>
+      </bind>
+      <bind name="pollRate" type="number" export-name="pollRate">
+        <description><![CDATA[Polling rate for the task state [seconds]]]></description>
+      </bind>
+    </in-binding>
+    <out-binding>
+      <bind name="actionResult" type="string" export-name="actionResult"/>
+    </out-binding>
+    <description><![CDATA[Add a note to the workflow schema.]]></description>
+    <position y="140.0" x="160.0"/>
+  </workflow-item>
+  <presentation/>
+</workflow>

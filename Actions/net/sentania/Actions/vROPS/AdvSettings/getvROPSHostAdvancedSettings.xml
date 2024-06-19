@@ -1,0 +1,63 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dunes-script-module name="getvROPSHostAdvancedSettings" result-type="Array/string" api-version="6.0.0" id="feea673a-8118-4d20-882b-39d8bab56451" version="1.1.0" category-name="net.sentania.Actions.vROPS.AdvSettings">
+  <script encoded="false"><![CDATA[// This action does not require any inputs
+
+// Initialize an object to store all unique advanced settings keys
+var masterAdvancedSettings = {};
+
+// Get all vCenter connections
+var vcConnections = VcPlugin.allSdkConnections;
+
+if (vcConnections.length === 0) {
+    throw "No vCenter connections available. Please define at least one vCenter connection.";
+}
+
+try {
+    // Get all hosts from all vCenters
+    var hosts = VcPlugin.getAllHostSystems();
+
+    // Iterate through each host
+    for (var hostIndex = 0; hostIndex < hosts.length; hostIndex++) {
+        var host = hosts[hostIndex];
+        var hostName = host.name;
+
+        try {
+            // Retrieve all advanced settings for the host
+            var allAdvancedSettings = host.configManager.advancedOption.queryOptions();
+
+            // Iterate through each setting and add to the master list if not already present
+            for (var settingIndex = 0; settingIndex < allAdvancedSettings.length; settingIndex++) {
+                var setting = allAdvancedSettings[settingIndex];
+                var key = setting.key;
+
+                // Add to master list if the key does not already exist
+                if (!masterAdvancedSettings.hasOwnProperty(key)) {
+                    masterAdvancedSettings[key] = true; // Using true as a placeholder value
+                }
+            }
+        } catch (e) {
+            // Silently ignore errors for this host
+            System.warn("Failed to get advanced settings for host " + hostName + ": " + e.message);
+        }
+    }
+} catch (e) {
+    // Silently ignore errors for getting hosts
+    System.warn("Failed to get hosts: " + e.message);
+}
+
+// Convert the master advanced settings object to an array of keys
+var masterAdvancedSettingsArray = [];
+for (var key in masterAdvancedSettings) {
+    if (masterAdvancedSettings.hasOwnProperty(key)) {
+        masterAdvancedSettingsArray.push(key);
+    }
+}
+
+if (masterAdvancedSettingsArray.length === 0) {
+    throw "No advanced settings found. Ensure that vCenters and hosts are accessible and properly configured.";
+}
+
+// Return the master list of advanced settings
+return masterAdvancedSettingsArray;
+]]></script>
+</dunes-script-module>

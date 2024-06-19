@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dunes-script-module name="getSupport" result-type="Array/string" api-version="6.0.0" id="82d18a92-6fe9-4932-99d1-45c12d408b2b" version="1.0.0" allowed-operations="vf" category-name="com.vmware.library.vcaccafe.subtenant">
+  <description><![CDATA[Returns the support of the business group.]]></description>
+  <param n="businessGroup" t="vCACCAFE:Subtenant"><![CDATA[Business group]]></param>
+  <script encoded="false"><![CDATA[return vCACCAFESubtenantHelper.getSupport(businessGroup);
+]]></script>
+</dunes-script-module>

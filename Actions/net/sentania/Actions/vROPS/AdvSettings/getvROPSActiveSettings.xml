@@ -1,0 +1,46 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dunes-script-module name="getvROPSActiveSettings" result-type="Array/string" api-version="6.0.0" id="8feb68d9-e0b1-4fb0-8feb-d4de3ff6568a" version="1.1.0" category-name="net.sentania.Actions.vROPS.AdvSettings">
+  <script encoded="false"><![CDATA[// Action Inputs: None
+
+// Configuration element details
+var configElementCategoryPath = "vROPS";
+var configElementName = "AdvancedSettingsConfig";
+
+// Function to get the configuration element
+function getConfigElement(categoryPath, name) {
+    var configElementCategory = Server.getConfigurationElementCategoryWithPath(categoryPath);
+    if (!configElementCategory) {
+        throw "Configuration element category " + categoryPath + " does not exist.";
+    }
+
+    var configElements = configElementCategory.configurationElements;
+    for (var i = 0; i < configElements.length; i++) {
+        if (configElements[i].name === name) {
+            return configElements[i];
+        }
+    }
+
+    throw "Configuration element " + name + " does not exist in category " + categoryPath + ".";
+}
+
+// Get the configuration element
+try {
+    var configElement = getConfigElement(configElementCategoryPath, configElementName);
+    var advancedSettingsProperties = configElement.getAttributeWithKey("advancedSettings").value;
+    var advancedSettings = [];
+    
+    var keys = advancedSettingsProperties.keys;
+    for (var i = 0; i < keys.length; i++) {
+        var key = keys[i];
+        var value = advancedSettingsProperties.get(key);
+        if (value === true) {
+            advancedSettings.push(key);
+        }
+    }
+} catch (e) {
+    var advancedSettings = [];
+}
+
+return advancedSettings;
+]]></script>
+</dunes-script-module>

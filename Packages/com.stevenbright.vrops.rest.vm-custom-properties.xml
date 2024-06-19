@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<package>
+<description><![CDATA[Add custom properties to VMs in vRealize Operations using the REST API]]></description>
+<elm src-category='null'><![CDATA[dunes://service.dunes.ch/Action?id='526335ad-cb59-41e7-be62-50d43f3f7054'&dunesName='Action'&name='acquireToken'&category='com.stevenbright.vrops.auth']]></elm>
+<elm src-category='null'><![CDATA[dunes://service.dunes.ch/Action?id='56d977a1-eb25-4cfe-9185-36e45f760a63'&dunesName='Action'&name='getResourcesByResourceKind'&category='com.stevenbright.vrops.resources']]></elm>
+<elm src-category='null'><![CDATA[dunes://service.dunes.ch/Action?id='85a57195-86ee-4585-a5e4-f665777f97f3'&dunesName='Action'&name='addProperties'&category='com.stevenbright.vrops.resources']]></elm>
+<elm src-category='null'><![CDATA[dunes://service.dunes.ch/Workflow?id='9161b864-acdf-40e5-a853-ce4ee800a5d9'&dunesName='Workflow']]></elm>
+<used-plugin name='REST' version='2.3.2' />
+</package>

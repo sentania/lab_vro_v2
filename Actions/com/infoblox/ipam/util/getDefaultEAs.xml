@@ -1,0 +1,18 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dunes-script-module name="getDefaultEAs" result-type="Array/Any" api-version="6.0.0" id="4983e880-ae71-4954-adea-4222fda34e58" version="0.0.2" allowed-operations="evf" category-name="com.infoblox.ipam.util">
+  <description><![CDATA[Gets list of default extensible attributes for creating records in IPAM.]]></description>
+  <param n="connection" t="InfobloxIPAM:IpamConnection"><![CDATA[Connection to the IPAM server.]]></param>
+  <script encoded="false"><![CDATA[var eas = [];
+if (connection.apiType == IpamApiType.CLOUD_API) {
+	System.log("Cloud API Type. Setting default cloud attributes.");
+	eas.push(
+	    new IpamExtensibleAttribute("Cloud API Owned", IpamExtensibleAttributeType.STRING, "True"),
+	    new IpamExtensibleAttribute("CMP Type", IpamExtensibleAttributeType.STRING, "VMWare")
+	);
+} else if (connection.apiType == IpamApiType.WAPI) {
+	System.log("WAPI API Type. Setting empty default attributes.");
+} else {
+	System.log("Unknown API Type. Setting empty default attributes.");
+}
+return eas;]]></script>
+</dunes-script-module>

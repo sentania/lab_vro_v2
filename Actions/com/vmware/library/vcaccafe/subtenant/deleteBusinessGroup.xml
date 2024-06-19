@@ -1,0 +1,11 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dunes-script-module name="deleteBusinessGroup" result-type="void" api-version="6.0.0" id="3153d673-7b5e-47b9-8062-59bdc59f647b" version="1.0.0" allowed-operations="vf" category-name="com.vmware.library.vcaccafe.subtenant">
+  <description><![CDATA[Deletes a business group]]></description>
+  <param n="businessGroup" t="vCACCAFE:Subtenant"><![CDATA[Business group]]></param>
+  <script encoded="false"><![CDATA[System.getModule("com.vmware.library.vcaccafe.util").validateObject(businessGroup, "Business group");
+System.log("Deleting business group '" + businessGroup.getName() + "'...");
+var host = vCACCAFEEntitiesFinder.getHostForEntity(businessGroup);
+var service = host.createAuthenticationClient().getAuthenticationSubtenantService();
+service.deleteSubtenant(host.tenant , businessGroup.getId());
+System.log("Business group deleted: " + businessGroup.getId().toString());]]></script>
+</dunes-script-module>

@@ -1,0 +1,714 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<workflow xmlns="http://vmware.com/vco/workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://vmware.com/vco/workflow http://vmware.com/vco/workflow/Workflow-v4.xsd" root-name="item1" object-name="workflow:name=generic" id="55342404-a0ec-48f5-8733-2ae19645c148" version="0.0.2" api-version="6.0.0" allowed-operations="evf" restartMode="1" resumeFromFailedMode="0">
+  <display-name><![CDATA[Copy of Create New Business Group]]></display-name>
+  <position y="45.40909090909091" x="165.0"/>
+  <input>
+    <param name="name" type="string">
+      <description><![CDATA[Business Group Name]]></description>
+    </param>
+    <param name="description" type="string">
+      <description><![CDATA[Description of Business Group]]></description>
+    </param>
+    <param name="administratorEmail" type="string">
+      <description><![CDATA[Administrator email]]></description>
+    </param>
+    <param name="users" type="Array/string">
+      <description><![CDATA[User Active Directory Group]]></description>
+    </param>
+    <param name="cidr" type="string">
+      <description><![CDATA[CIDR of Network]]></description>
+    </param>
+    <param name="allocatedStoragePathLabel" type="string">
+      <description><![CDATA[Storage Path to allocate]]></description>
+    </param>
+    <param name="computeResourceName" type="string">
+      <description><![CDATA[Compute resource to allocate in reservation]]></description>
+    </param>
+    <param name="reservationPolicyName" type="string">
+      <description><![CDATA[Reservation Policy Name]]></description>
+    </param>
+    <param name="memorySize" type="string">
+      <description><![CDATA[Size of Memory to allocate in reservation (MB)]]></description>
+    </param>
+    <param name="storageSize" type="string">
+      <description><![CDATA[Size of Storage to allocate in reservation (GB)]]></description>
+    </param>
+  </input>
+  <output>
+    <param name="actionResult" type="vCACCAFE:Subtenant"/>
+  </output>
+  <attrib name="host" type="vCACCAFE:VCACHost" read-only="false">
+    <value encoded="n"><![CDATA[dunes://service.dunes.ch/CustomSDKObject?id='bd23869b-b58a-43ca-b0b2-b08857c76199'&dunesName='vCACCAFE:VCACHost']]></value>
+    <description><![CDATA[vRA host]]></description>
+  </attrib>
+  <attrib name="defaultMachinePrefix" type="vCACCAFE:MachinePrefix" read-only="false">
+    <value encoded="n"><![CDATA[dunes://service.dunes.ch/CustomSDKObject?id='bd23869b-b58a-43ca-b0b2-b08857c76199/b4c8aca7-d93f-44e2-a9b0-90b5db4feb2c'&dunesName='vCACCAFE:MachinePrefix']]></value>
+    <description><![CDATA[Default machine prefix]]></description>
+  </attrib>
+  <attrib name="support" type="Array/string" read-only="false">
+    <value encoded="n"><![CDATA[#{#string#aa-sddc-admin@nm.nmfco.com#;#string#WG-WST-ADMIN-PROD@nm.nmfco.com#}#]]></value>
+    <description><![CDATA[Support role]]></description>
+  </attrib>
+  <attrib name="isActive" type="boolean" read-only="false">
+    <value encoded="n"><![CDATA[true]]></value>
+    <description><![CDATA[Activate the entitlement]]></description>
+  </attrib>
+  <attrib name="services" type="Array/vCACCAFE:Service" read-only="false">
+    <value encoded="n"><![CDATA[#{#vCACCAFE:Service#dunes://service.dunes.ch/CustomSDKObject?id='bd23869b-b58a-43ca-b0b2-b08857c76199/322c3bc3-b8a8-421b-8e97-a8244a471aad'&dunesName='vCACCAFE:Service'#;#vCACCAFE:Service#dunes://service.dunes.ch/CustomSDKObject?id='bd23869b-b58a-43ca-b0b2-b08857c76199/f1c8fec5-c1ef-40af-a6bd-276a367ba7ab'&dunesName='vCACCAFE:Service'#}#]]></value>
+    <description><![CDATA[Services to assign to the entitlement]]></description>
+  </attrib>
+  <attrib name="clientBg" type="vCACCAFE:Subtenant" read-only="false">
+    <value encoded="n"><![CDATA[__NULL__]]></value>
+    <description><![CDATA[Business Group that gets created]]></description>
+  </attrib>
+  <attrib name="clientEntitlement" type="vCACCAFE:Entitlement" read-only="false">
+    <value encoded="n"><![CDATA[__NULL__]]></value>
+    <description><![CDATA[Entitlement that gets created]]></description>
+  </attrib>
+  <attrib name="isEncrypted" type="boolean" read-only="false">
+    <value encoded="n"><![CDATA[false]]></value>
+    <description><![CDATA[Encrypted]]></description>
+  </attrib>
+  <attrib name="isRuntime" type="boolean" read-only="false">
+    <value encoded="n"><![CDATA[false]]></value>
+    <description><![CDATA[Runtime]]></description>
+  </attrib>
+  <attrib name="bgCustPropNetworkValue" type="string" read-only="false">
+    <value encoded="n"><![CDATA[]]></value>
+    <description><![CDATA[Business Group Custom Property Value - Identify Network]]></description>
+  </attrib>
+  <attrib name="bgCustPropNetworkName" type="string" read-only="false">
+    <value encoded="n"><![CDATA[nm.ucp.BusinessGroupName]]></value>
+    <description><![CDATA[Business Group Custom Property Name - Identify Network]]></description>
+  </attrib>
+  <attrib name="entitlementActions" type="Array/vCACCAFE:CatalogResourceAction" read-only="false">
+    <value encoded="n"><![CDATA[#{#vCACCAFE:CatalogResourceAction#dunes://service.dunes.ch/CustomSDKObject?id='bd23869b-b58a-43ca-b0b2-b08857c76199/a03032ab-76d8-4463-96ad-f8ac84bd8540'&dunesName='vCACCAFE:CatalogResourceAction'#;#vCACCAFE:CatalogResourceAction#dunes://service.dunes.ch/CustomSDKObject?id='bd23869b-b58a-43ca-b0b2-b08857c76199/204bbabe-c438-4e95-bcb3-1578756b2922'&dunesName='vCACCAFE:CatalogResourceAction'#;#vCACCAFE:CatalogResourceAction#dunes://service.dunes.ch/CustomSDKObject?id='bd23869b-b58a-43ca-b0b2-b08857c76199/c7665a60-eef0-45df-b1ad-9b16cb3dab01'&dunesName='vCACCAFE:CatalogResourceAction'#;#vCACCAFE:CatalogResourceAction#dunes://service.dunes.ch/CustomSDKObject?id='bd23869b-b58a-43ca-b0b2-b08857c76199/19ef97ac-a3c5-4014-a102-83471f30bf5f'&dunesName='vCACCAFE:CatalogResourceAction'#;#vCACCAFE:CatalogResourceAction#dunes://service.dunes.ch/CustomSDKObject?id='bd23869b-b58a-43ca-b0b2-b08857c76199/8d2c460e-9618-43d8-995c-220540ce2c6e'&dunesName='vCACCAFE:CatalogResourceAction'#;#vCACCAFE:CatalogResourceAction#dunes://service.dunes.ch/CustomSDKObject?id='bd23869b-b58a-43ca-b0b2-b08857c76199/2d027fbe-3ec9-4b73-a878-a57c4b100526'&dunesName='vCACCAFE:CatalogResourceAction'#;#vCACCAFE:CatalogResourceAction#dunes://service.dunes.ch/CustomSDKObject?id='bd23869b-b58a-43ca-b0b2-b08857c76199/f02e5c1a-1391-411a-886d-84fa743485b9'&dunesName='vCACCAFE:CatalogResourceAction'#;#vCACCAFE:CatalogResourceAction#dunes://service.dunes.ch/CustomSDKObject?id='bd23869b-b58a-43ca-b0b2-b08857c76199/018d1115-f883-4d96-8f9b-2bd8d26bed2f'&dunesName='vCACCAFE:CatalogResourceAction'#;#vCACCAFE:CatalogResourceAction#dunes://service.dunes.ch/CustomSDKObject?id='bd23869b-b58a-43ca-b0b2-b08857c76199/629b968b-76ee-476f-b7d1-48c1dd401b60'&dunesName='vCACCAFE:CatalogResourceAction'#;#vCACCAFE:CatalogResourceAction#dunes://service.dunes.ch/CustomSDKObject?id='bd23869b-b58a-43ca-b0b2-b08857c76199/0a8d8b1c-d32a-41c7-b6b7-f122559f7b7b'&dunesName='vCACCAFE:CatalogResourceAction'#;#vCACCAFE:CatalogResourceAction#dunes://service.dunes.ch/CustomSDKObject?id='bd23869b-b58a-43ca-b0b2-b08857c76199/ad2c98b5-bc31-47f5-bf69-1d1a7f521e4d'&dunesName='vCACCAFE:CatalogResourceAction'#;#vCACCAFE:CatalogResourceAction#dunes://service.dunes.ch/CustomSDKObject?id='bd23869b-b58a-43ca-b0b2-b08857c76199/eb0bbee6-e2e0-4615-9d2f-1c3f330aff86'&dunesName='vCACCAFE:CatalogResourceAction'#;#vCACCAFE:CatalogResourceAction#dunes://service.dunes.ch/CustomSDKObject?id='bd23869b-b58a-43ca-b0b2-b08857c76199/d671fca3-f4bf-4b13-8907-14e3d6d3e06a'&dunesName='vCACCAFE:CatalogResourceAction'#;#vCACCAFE:CatalogResourceAction#dunes://service.dunes.ch/CustomSDKObject?id='bd23869b-b58a-43ca-b0b2-b08857c76199/635f6659-9321-4cfb-b721-954af1131577'&dunesName='vCACCAFE:CatalogResourceAction'#;#vCACCAFE:CatalogResourceAction#dunes://service.dunes.ch/CustomSDKObject?id='bd23869b-b58a-43ca-b0b2-b08857c76199/77876668-a301-4c15-b4e9-b1bc66e4652c'&dunesName='vCACCAFE:CatalogResourceAction'#;#vCACCAFE:CatalogResourceAction#dunes://service.dunes.ch/CustomSDKObject?id='bd23869b-b58a-43ca-b0b2-b08857c76199/c54667e7-030d-4074-bddd-e7a00288e751'&dunesName='vCACCAFE:CatalogResourceAction'#;#vCACCAFE:CatalogResourceAction#dunes://service.dunes.ch/CustomSDKObject?id='bd23869b-b58a-43ca-b0b2-b08857c76199/be121bce-8610-4daf-97b3-0924f811cd2c'&dunesName='vCACCAFE:CatalogResourceAction'#;#vCACCAFE:CatalogResourceAction#dunes://service.dunes.ch/CustomSDKObject?id='bd23869b-b58a-43ca-b0b2-b08857c76199/635f6659-9321-4cfb-b721-954af1131577'&dunesName='vCACCAFE:CatalogResourceAction'#;#vCACCAFE:CatalogResourceAction#dunes://service.dunes.ch/CustomSDKObject?id='bd23869b-b58a-43ca-b0b2-b08857c76199/be121bce-8610-4daf-97b3-0924f811cd2c'&dunesName='vCACCAFE:CatalogResourceAction'#;#vCACCAFE:CatalogResourceAction#dunes://service.dunes.ch/CustomSDKObject?id='bd23869b-b58a-43ca-b0b2-b08857c76199/f9c058ac-f566-4878-a261-b3c0e104a3c3'&dunesName='vCACCAFE:CatalogResourceAction'#;#vCACCAFE:CatalogResourceAction#dunes://service.dunes.ch/CustomSDKObject?id='bd23869b-b58a-43ca-b0b2-b08857c76199/8ed9251c-eb82-4770-87f5-f9e1cfb28470'&dunesName='vCACCAFE:CatalogResourceAction'#;#vCACCAFE:CatalogResourceAction#dunes://service.dunes.ch/CustomSDKObject?id='bd23869b-b58a-43ca-b0b2-b08857c76199/325b0513-9f06-40ec-8876-b299d01d56b7'&dunesName='vCACCAFE:CatalogResourceAction'#;#vCACCAFE:CatalogResourceAction#dunes://service.dunes.ch/CustomSDKObject?id='bd23869b-b58a-43ca-b0b2-b08857c76199/77876668-a301-4c15-b4e9-b1bc66e4652c'&dunesName='vCACCAFE:CatalogResourceAction'#;#vCACCAFE:CatalogResourceAction#dunes://service.dunes.ch/CustomSDKObject?id='bd23869b-b58a-43ca-b0b2-b08857c76199/4501c9a2-cd40-462e-a624-284f80b209e4'&dunesName='vCACCAFE:CatalogResourceAction'#;#vCACCAFE:CatalogResourceAction#dunes://service.dunes.ch/CustomSDKObject?id='bd23869b-b58a-43ca-b0b2-b08857c76199/c43fa776-0711-4619-a39c-689e6506cb50'&dunesName='vCACCAFE:CatalogResourceAction'#}#]]></value>
+    <description><![CDATA[Actions to assign to the entitlement]]></description>
+  </attrib>
+  <attrib name="mkeLocation" type="string" read-only="false">
+    <value encoded="n"><![CDATA[mke]]></value>
+    <description><![CDATA[Datacenter location for Network Creation - MKE]]></description>
+  </attrib>
+  <attrib name="nonprodEnvironment" type="string" read-only="false">
+    <value encoded="n"><![CDATA[Non-Prod]]></value>
+    <description><![CDATA[Envrionment for Network Creation - Non-Prod]]></description>
+  </attrib>
+  <attrib name="frkLocation" type="string" read-only="false">
+    <value encoded="n"><![CDATA[frk]]></value>
+    <description><![CDATA[Datacenter location for Network Creation - FRK]]></description>
+  </attrib>
+  <attrib name="prodEnvironment" type="string" read-only="false">
+    <value encoded="n"><![CDATA[Prod]]></value>
+    <description><![CDATA[Envrionment for Network Creation - Prod]]></description>
+  </attrib>
+  <attrib name="iaasHost" type="vCAC:VCACHost" read-only="false">
+    <value encoded="n"><![CDATA[dunes://service.dunes.ch/CustomSDKObject?id='b9c69cb3-e162-4919-be78-4fe8347bc925'&dunesName='vCAC:VCACHost']]></value>
+    <description><![CDATA[IaaS host to force a data-collection on]]></description>
+  </attrib>
+  <attrib name="fullNetworkMke" type="string" read-only="false">
+    <value encoded="n"><![CDATA[]]></value>
+    <description><![CDATA[Full network created with CIDR for MKE]]></description>
+  </attrib>
+  <attrib name="virtualWireMke" type="string" read-only="false">
+    <value encoded="n"><![CDATA[]]></value>
+    <description><![CDATA[Virtual Wire Name created for MKE]]></description>
+  </attrib>
+  <attrib name="fullNetworkFrk" type="string" read-only="false">
+    <value encoded="n"><![CDATA[]]></value>
+    <description><![CDATA[Full network created with CIDR for FRK]]></description>
+  </attrib>
+  <attrib name="virtualWireFrk" type="string" read-only="false">
+    <value encoded="n"><![CDATA[]]></value>
+    <description><![CDATA[Virtual Wire Name created for FRK]]></description>
+  </attrib>
+  <attrib name="MkeVwFull" type="string" read-only="false">
+    <value encoded="n"><![CDATA[]]></value>
+    <description><![CDATA[Full Virtual Wire Name created in MKE]]></description>
+  </attrib>
+  <attrib name="FrkVwFull" type="string" read-only="false">
+    <value encoded="n"><![CDATA[]]></value>
+    <description><![CDATA[Full Virtual Wire Name created in FRK]]></description>
+  </attrib>
+  <attrib name="cluster" type="VC:ClusterComputeResource" read-only="false">
+    <value encoded="n"><![CDATA[dunes://service.dunes.ch/CustomSDKObject?id='vcvrapf01.nm.nmfco.com%2Cid:domain-c254'&dunesName='VC:ClusterComputeResource']]></value>
+    <description><![CDATA[Cluster Name to search for all Networks]]></description>
+  </attrib>
+  <attrib name="reservationName" type="string" read-only="false">
+    <value encoded="n"><![CDATA[]]></value>
+    <description><![CDATA[Business Group Reservation Name]]></description>
+  </attrib>
+  <attrib name="networkProfileFRK" type="string" read-only="false">
+    <value encoded="n"><![CDATA[]]></value>
+    <description><![CDATA[Network Profile Created in FRK]]></description>
+  </attrib>
+  <attrib name="networkProfileMKE" type="string" read-only="false">
+    <value encoded="n"><![CDATA[]]></value>
+  </attrib>
+  <attrib name="dataCollectionSelection" type="Array/string" read-only="false">
+    <value encoded="n"><![CDATA[#{#string#inventory#}#]]></value>
+    <description><![CDATA[Selection of data collection sets to update. Will update all if null or empty.]]></description>
+  </attrib>
+  <attrib name="clustersToUpdate" type="Array/vCAC:HostMachine" read-only="false">
+    <value encoded="n"><![CDATA[#{#vCAC:HostMachine#dunes://service.dunes.ch/CustomSDKObject?id='b9c69cb3-e162-4919-be78-4fe8347bc925/9804d824-f3e7-48a7-b533-4cf11a3b2bf2'&dunesName='vCAC:HostMachine'#;#vCAC:HostMachine#dunes://service.dunes.ch/CustomSDKObject?id='b9c69cb3-e162-4919-be78-4fe8347bc925/46ef4193-a9ba-40e4-8a2c-8ba399210ff3'&dunesName='vCAC:HostMachine'#;#vCAC:HostMachine#dunes://service.dunes.ch/CustomSDKObject?id='b9c69cb3-e162-4919-be78-4fe8347bc925/5db89e0d-8a3e-464e-b72a-d812cae7a6c9'&dunesName='vCAC:HostMachine'#;#vCAC:HostMachine#dunes://service.dunes.ch/CustomSDKObject?id='b9c69cb3-e162-4919-be78-4fe8347bc925/27b2af63-434f-4c11-8d72-69d60221c49f'&dunesName='vCAC:HostMachine'#;#vCAC:HostMachine#dunes://service.dunes.ch/CustomSDKObject?id='b9c69cb3-e162-4919-be78-4fe8347bc925/b3e75d56-36c0-4826-89f0-1765770d3a4a'&dunesName='vCAC:HostMachine'#}#]]></value>
+    <description><![CDATA[Selection of clusters / hosts to update. Will update all if null or empty.]]></description>
+  </attrib>
+  <attrib name="failOnError" type="boolean" read-only="false">
+    <value encoded="n"><![CDATA[false]]></value>
+    <description><![CDATA[Should the WF fail if a data collection fails?]]></description>
+  </attrib>
+  <workflow-note x="260.0" y="36.36363636363636" w="400.0" h="54.54545454545454">
+    <description><![CDATA[Create Business Group]]></description>
+  </workflow-note>
+  <workflow-note x="680.0" y="36.36363636363636" w="600.0" h="54.54545454545454" color="bfffdfff">
+    <description><![CDATA[Create and Configure Entitlments]]></description>
+  </workflow-note>
+  <workflow-note x="720.0" y="118.18181818181816" w="280.0" h="49.0" color="d7a1a1ff">
+    <description><![CDATA[Create Network and Profile for FRK]]></description>
+  </workflow-note>
+  <workflow-note x="1020.0" y="117.4090909090909" w="260.0" h="47.0" color="d7a1a1ff">
+    <description><![CDATA[Create Network and Profile for MKE]]></description>
+  </workflow-note>
+  <workflow-item name="item0" type="end" end-mode="0">
+    <position y="118.13636363636363" x="64.5"/>
+  </workflow-item>
+  <workflow-item name="item1" out-name="item5" type="task" script-module="com.vmware.library.vcaccafe.subtenant/createBusinessGroup">
+    <display-name><![CDATA[Create Business Group]]></display-name>
+    <script encoded="false"><![CDATA[//Auto generated script, cannot be modified !
+actionResult = System.getModule("com.vmware.library.vcaccafe.subtenant").createBusinessGroup(host,name,description,defaultMachinePrefix,activeDirectoryContainer,administratorEmail,administrators,support,users) ;]]></script>
+    <in-binding>
+      <bind name="host" type="vCACCAFE:VCACHost" export-name="host">
+        <description><![CDATA[vRA host]]></description>
+      </bind>
+      <bind name="name" type="string" export-name="name">
+        <description><![CDATA[Name]]></description>
+      </bind>
+      <bind name="description" type="string" export-name="description">
+        <description><![CDATA[Description]]></description>
+      </bind>
+      <bind name="defaultMachinePrefix" type="vCACCAFE:MachinePrefix" export-name="defaultMachinePrefix">
+        <description><![CDATA[Default machine prefix]]></description>
+      </bind>
+      <bind name="activeDirectoryContainer" type="string" explicitly-not-bound="true">
+        <description><![CDATA[Active directory container]]></description>
+      </bind>
+      <bind name="administratorEmail" type="string" export-name="administratorEmail">
+        <description><![CDATA[Administrator email]]></description>
+      </bind>
+      <bind name="administrators" type="Array/string" explicitly-not-bound="true">
+        <description><![CDATA[Group manager role]]></description>
+      </bind>
+      <bind name="support" type="Array/string" export-name="support">
+        <description><![CDATA[Support role]]></description>
+      </bind>
+      <bind name="users" type="Array/string" export-name="users">
+        <description><![CDATA[User role]]></description>
+      </bind>
+    </in-binding>
+    <out-binding>
+      <bind name="actionResult" type="vCACCAFE:Subtenant" export-name="clientBg"/>
+    </out-binding>
+    <description><![CDATA[Creates a business group.]]></description>
+    <position y="55.40909090909091" x="264.5"/>
+  </workflow-item>
+  <workflow-item name="item2" out-name="item4" type="task" script-module="com.vmware.library.vcaccafe.catalog.entitlement/createEntitlementForSubtenant">
+    <display-name><![CDATA[Create Entitlement]]></display-name>
+    <script encoded="false"><![CDATA[//Auto generated script, cannot be modified !
+actionResult = System.getModule("com.vmware.library.vcaccafe.catalog.entitlement").createEntitlementForSubtenant(host,name,description,subtenant,expirationDate,isActive) ;]]></script>
+    <in-binding>
+      <bind name="host" type="vCACCAFE:VCACHost" export-name="host">
+        <description><![CDATA[vRA CAFE host]]></description>
+      </bind>
+      <bind name="name" type="string" export-name="name">
+        <description><![CDATA[Name]]></description>
+      </bind>
+      <bind name="description" type="string" export-name="description">
+        <description><![CDATA[Description]]></description>
+      </bind>
+      <bind name="subtenant" type="vCACCAFE:Subtenant" export-name="clientBg">
+        <description><![CDATA[Business group]]></description>
+      </bind>
+      <bind name="expirationDate" type="Date" explicitly-not-bound="true">
+        <description><![CDATA[Expiration date]]></description>
+      </bind>
+      <bind name="isActive" type="boolean" export-name="isActive">
+        <description><![CDATA[Activate the entitlement]]></description>
+      </bind>
+    </in-binding>
+    <out-binding>
+      <bind name="actionResult" type="vCACCAFE:Entitlement" export-name="clientEntitlement"/>
+    </out-binding>
+    <description><![CDATA[Creates an entitlement.]]></description>
+    <position y="55.40909090909091" x="684.5"/>
+  </workflow-item>
+  <workflow-item name="item5" out-name="item6" type="task">
+    <display-name><![CDATA[Set Variables]]></display-name>
+    <script encoded="false"><![CDATA[//Setting Variables
+var bgCustPropNetworkValue = name;
+var reservationName = name;
+var networkProfileFRK = name + " "+frkLocation;
+var networkProfileMKE = name + " "+mkeLocation;]]></script>
+    <in-binding>
+      <bind name="name" type="string" export-name="name">
+        <description><![CDATA[Business Group Name]]></description>
+      </bind>
+      <bind name="mkeLocation" type="string" export-name="mkeLocation"/>
+      <bind name="frkLocation" type="string" export-name="frkLocation"/>
+    </in-binding>
+    <out-binding>
+      <bind name="bgCustPropNetworkValue" type="string" export-name="bgCustPropNetworkValue"/>
+      <bind name="reservationName" type="string" export-name="reservationName"/>
+      <bind name="networkProfileFRK" type="string" export-name="networkProfileFRK"/>
+      <bind name="networkProfileMKE" type="string" export-name="networkProfileMKE"/>
+    </out-binding>
+    <position y="55.40909090909091" x="404.5"/>
+  </workflow-item>
+  <workflow-item name="item6" out-name="item2" type="task" script-module="com.vmware.library.vcaccafe.subtenant/addCustomProperty">
+    <display-name><![CDATA[Add Custom Property to BG]]></display-name>
+    <script encoded="false"><![CDATA[//Auto generated script, cannot be modified !
+actionResult = System.getModule("com.vmware.library.vcaccafe.subtenant").addCustomProperty(group,name,value,isEncrypted,isRuntime) ;]]></script>
+    <in-binding>
+      <bind name="group" type="vCACCAFE:Subtenant" export-name="clientBg">
+        <description><![CDATA[Business group]]></description>
+      </bind>
+      <bind name="name" type="string" export-name="bgCustPropNetworkName">
+        <description><![CDATA[Name]]></description>
+      </bind>
+      <bind name="value" type="string" export-name="bgCustPropNetworkValue">
+        <description><![CDATA[Value]]></description>
+      </bind>
+      <bind name="isEncrypted" type="boolean" export-name="isEncrypted">
+        <description><![CDATA[Encrypted]]></description>
+      </bind>
+      <bind name="isRuntime" type="boolean" export-name="isRuntime">
+        <description><![CDATA[Runtime]]></description>
+      </bind>
+    </in-binding>
+    <out-binding>
+      <bind name="actionResult" type="vCACCAFE:Subtenant" export-name="actionResult"/>
+    </out-binding>
+    <description><![CDATA[Adds a custom property to a business group.]]></description>
+    <position y="55.40909090909091" x="544.5"/>
+  </workflow-item>
+  <workflow-item name="item4" out-name="item3" type="task" script-module="com.nm.ucp/ucpAssignUsersAndGroupsToEntitlement">
+    <display-name><![CDATA[Assign Group to Entitlement]]></display-name>
+    <script encoded="false"><![CDATA[//Auto generated script, cannot be modified !
+System.getModule("com.nm.ucp").ucpAssignUsersAndGroupsToEntitlement(entitlement,users,groups) ;]]></script>
+    <in-binding>
+      <bind name="entitlement" type="vCACCAFE:Entitlement" export-name="clientEntitlement">
+        <description><![CDATA[Entitlement that the users and groups will be assigned to]]></description>
+      </bind>
+      <bind name="users" type="Array/string" explicitly-not-bound="true">
+        <description><![CDATA[Users to be assigned to the entitlement]]></description>
+      </bind>
+      <bind name="groups" type="Array/string" export-name="users">
+        <description><![CDATA[Groups to be assigned to the entitlement]]></description>
+      </bind>
+    </in-binding>
+    <out-binding/>
+    <description><![CDATA[Assigns users and groupt to an entitlement.]]></description>
+    <position y="55.40909090909091" x="824.5"/>
+  </workflow-item>
+  <workflow-item name="item3" out-name="item9" type="task" script-module="com.nm.ucp/ucpAssignServicesToEntitlement">
+    <display-name><![CDATA[Assign Services to Entitlment]]></display-name>
+    <script encoded="false"><![CDATA[//Auto generated script, cannot be modified !
+System.getModule("com.nm.ucp").ucpAssignServicesToEntitlement(entitlement,services,approvalPolicy) ;]]></script>
+    <in-binding>
+      <bind name="entitlement" type="vCACCAFE:Entitlement" export-name="clientEntitlement">
+        <description><![CDATA[Entitlement to assign services to]]></description>
+      </bind>
+      <bind name="services" type="Array/vCACCAFE:Service" export-name="services">
+        <description><![CDATA[Services to assign to the entitlement]]></description>
+      </bind>
+      <bind name="approvalPolicy" type="vCACCAFE:ApprovalPolicy" explicitly-not-bound="true">
+        <description><![CDATA[Approval policy to apply to the services]]></description>
+      </bind>
+    </in-binding>
+    <out-binding/>
+    <description><![CDATA[Assigns services to an entitlement. You can also apply an approval policy to the services.]]></description>
+    <position y="55.40909090909091" x="985.0"/>
+  </workflow-item>
+  <workflow-item name="item7" out-name="item0" type="task" script-module="com.nm.ucp/ucpAssignResourceActionsToEntitlement">
+    <display-name><![CDATA[Assign Resource Action to Entitlement]]></display-name>
+    <script encoded="false"><![CDATA[//Auto generated script, cannot be modified !
+System.getModule("com.nm.ucp").ucpAssignResourceActionsToEntitlement(entitlement,actions,approvalPolicy) ;]]></script>
+    <in-binding>
+      <bind name="entitlement" type="vCACCAFE:Entitlement" export-name="clientEntitlement">
+        <description><![CDATA[Entitlement to assign resource actions to]]></description>
+      </bind>
+      <bind name="actions" type="Array/vCACCAFE:CatalogResourceAction" export-name="entitlementActions">
+        <description><![CDATA[Actions to assign to the entitlement]]></description>
+      </bind>
+      <bind name="approvalPolicy" type="vCACCAFE:ApprovalPolicy" explicitly-not-bound="true">
+        <description><![CDATA[Approval policy to apply to the resource actions]]></description>
+      </bind>
+    </in-binding>
+    <out-binding/>
+    <description><![CDATA[Assigns resource actions to an entitlement. You can also apply an approval policy to the resource actions.]]></description>
+    <position y="128.13636363636363" x="164.5"/>
+  </workflow-item>
+  <workflow-item name="item9" out-name="item11" type="link" linked-workflow-id="170fc7c5-2d83-4561-b9fc-b756fd9b1a5c">
+    <display-name><![CDATA[Create Network in MKE]]></display-name>
+    <in-binding>
+      <bind name="location" type="string" export-name="mkeLocation">
+        <description><![CDATA[Datacenter location]]></description>
+      </bind>
+      <bind name="cidr" type="string" export-name="cidr">
+        <description><![CDATA[CIDR of network.]]></description>
+      </bind>
+      <bind name="bg" type="string" export-name="name">
+        <description><![CDATA[Business Group Shortname]]></description>
+      </bind>
+      <bind name="environment" type="string" export-name="nonprodEnvironment">
+        <description><![CDATA[Envrionment]]></description>
+      </bind>
+    </in-binding>
+    <out-binding>
+      <bind name="networkStatusCode" type="Number" explicitly-not-bound="true">
+        <description><![CDATA[Response status code]]></description>
+      </bind>
+      <bind name="networkContentLength" type="Number" explicitly-not-bound="true">
+        <description><![CDATA[Response content length]]></description>
+      </bind>
+      <bind name="networkHeaders" type="Properties" explicitly-not-bound="true">
+        <description><![CDATA[Response headers]]></description>
+      </bind>
+      <bind name="getIpStatusCode" type="Number" explicitly-not-bound="true">
+        <description><![CDATA[Response status code]]></description>
+      </bind>
+      <bind name="getIpContentLength" type="Number" explicitly-not-bound="true">
+        <description><![CDATA[Response content length]]></description>
+      </bind>
+      <bind name="getIpHeaders" type="Properties" explicitly-not-bound="true">
+        <description><![CDATA[Response headers]]></description>
+      </bind>
+      <bind name="hostStatusCode" type="Number" explicitly-not-bound="true">
+        <description><![CDATA[Response status code]]></description>
+      </bind>
+      <bind name="hostContentLength" type="Number" explicitly-not-bound="true">
+        <description><![CDATA[Response content length]]></description>
+      </bind>
+      <bind name="hostHeaders" type="Properties" explicitly-not-bound="true">
+        <description><![CDATA[Response headers]]></description>
+      </bind>
+      <bind name="hostContentAsString" type="String" explicitly-not-bound="true">
+        <description><![CDATA[Response content as string]]></description>
+      </bind>
+      <bind name="switchStatusCode" type="Number" explicitly-not-bound="true">
+        <description><![CDATA[Response status code]]></description>
+      </bind>
+      <bind name="switchContentLength" type="Number" explicitly-not-bound="true">
+        <description><![CDATA[Response content length]]></description>
+      </bind>
+      <bind name="switchHeaders" type="Properties" explicitly-not-bound="true">
+        <description><![CDATA[Response headers]]></description>
+      </bind>
+      <bind name="intStatusCode" type="Number" explicitly-not-bound="true">
+        <description><![CDATA[Response status code]]></description>
+      </bind>
+      <bind name="intContentLength" type="Number" explicitly-not-bound="true">
+        <description><![CDATA[Response content length]]></description>
+      </bind>
+      <bind name="intHeaders" type="Properties" explicitly-not-bound="true">
+        <description><![CDATA[Response headers]]></description>
+      </bind>
+      <bind name="intContentAsString" type="String" explicitly-not-bound="true">
+        <description><![CDATA[Response content as string]]></description>
+      </bind>
+      <bind name="fullNetwork" type="string" export-name="fullNetworkMke"/>
+      <bind name="virtualWire" type="string" export-name="virtualWireMke"/>
+    </out-binding>
+    <position y="128.13636363636363" x="1145.0"/>
+  </workflow-item>
+  <workflow-item name="item10" out-name="item12" type="link" linked-workflow-id="170fc7c5-2d83-4561-b9fc-b756fd9b1a5c">
+    <display-name><![CDATA[Create Network in FRK]]></display-name>
+    <in-binding>
+      <bind name="location" type="string" export-name="frkLocation">
+        <description><![CDATA[Datacenter location]]></description>
+      </bind>
+      <bind name="cidr" type="string" export-name="cidr">
+        <description><![CDATA[CIDR of network.]]></description>
+      </bind>
+      <bind name="bg" type="string" export-name="name">
+        <description><![CDATA[Business Group Shortname]]></description>
+      </bind>
+      <bind name="environment" type="string" export-name="prodEnvironment">
+        <description><![CDATA[Envrionment]]></description>
+      </bind>
+    </in-binding>
+    <out-binding>
+      <bind name="networkStatusCode" type="Number" explicitly-not-bound="true">
+        <description><![CDATA[Response status code]]></description>
+      </bind>
+      <bind name="networkContentLength" type="Number" explicitly-not-bound="true">
+        <description><![CDATA[Response content length]]></description>
+      </bind>
+      <bind name="networkHeaders" type="Properties" explicitly-not-bound="true">
+        <description><![CDATA[Response headers]]></description>
+      </bind>
+      <bind name="getIpStatusCode" type="Number" explicitly-not-bound="true">
+        <description><![CDATA[Response status code]]></description>
+      </bind>
+      <bind name="getIpContentLength" type="Number" explicitly-not-bound="true">
+        <description><![CDATA[Response content length]]></description>
+      </bind>
+      <bind name="getIpHeaders" type="Properties" explicitly-not-bound="true">
+        <description><![CDATA[Response headers]]></description>
+      </bind>
+      <bind name="hostStatusCode" type="Number" explicitly-not-bound="true">
+        <description><![CDATA[Response status code]]></description>
+      </bind>
+      <bind name="hostContentLength" type="Number" explicitly-not-bound="true">
+        <description><![CDATA[Response content length]]></description>
+      </bind>
+      <bind name="hostHeaders" type="Properties" explicitly-not-bound="true">
+        <description><![CDATA[Response headers]]></description>
+      </bind>
+      <bind name="hostContentAsString" type="String" explicitly-not-bound="true">
+        <description><![CDATA[Response content as string]]></description>
+      </bind>
+      <bind name="switchStatusCode" type="Number" explicitly-not-bound="true">
+        <description><![CDATA[Response status code]]></description>
+      </bind>
+      <bind name="switchContentLength" type="Number" explicitly-not-bound="true">
+        <description><![CDATA[Response content length]]></description>
+      </bind>
+      <bind name="switchHeaders" type="Properties" explicitly-not-bound="true">
+        <description><![CDATA[Response headers]]></description>
+      </bind>
+      <bind name="intStatusCode" type="Number" explicitly-not-bound="true">
+        <description><![CDATA[Response status code]]></description>
+      </bind>
+      <bind name="intContentLength" type="Number" explicitly-not-bound="true">
+        <description><![CDATA[Response content length]]></description>
+      </bind>
+      <bind name="intHeaders" type="Properties" explicitly-not-bound="true">
+        <description><![CDATA[Response headers]]></description>
+      </bind>
+      <bind name="intContentAsString" type="String" explicitly-not-bound="true">
+        <description><![CDATA[Response content as string]]></description>
+      </bind>
+      <bind name="fullNetwork" type="string" export-name="fullNetworkFrk"/>
+      <bind name="virtualWire" type="string" export-name="virtualWireFrk"/>
+    </out-binding>
+    <position y="128.13636363636363" x="885.0"/>
+  </workflow-item>
+  <workflow-item name="item11" out-name="item10" type="link" linked-workflow-id="ed09b0cc-aa59-4eab-983f-2ecd37bfd293">
+    <display-name><![CDATA[Create MKE Network Profile]]></display-name>
+    <in-binding>
+      <bind name="bgname" type="string" export-name="name"/>
+      <bind name="network" type="string" export-name="fullNetworkMke"/>
+      <bind name="location" type="string" export-name="mkeLocation"/>
+    </in-binding>
+    <out-binding>
+      <bind name="statusCode1" type="Number" explicitly-not-bound="true">
+        <description><![CDATA[Response status code]]></description>
+      </bind>
+      <bind name="contentLength1" type="Number" explicitly-not-bound="true">
+        <description><![CDATA[Response content length]]></description>
+      </bind>
+      <bind name="headers1" type="Properties" explicitly-not-bound="true">
+        <description><![CDATA[Response headers]]></description>
+      </bind>
+      <bind name="statusCode2" type="Number" explicitly-not-bound="true">
+        <description><![CDATA[Response status code]]></description>
+      </bind>
+      <bind name="contentLength2" type="Number" explicitly-not-bound="true">
+        <description><![CDATA[Response content length]]></description>
+      </bind>
+      <bind name="headers2" type="Properties" explicitly-not-bound="true">
+        <description><![CDATA[Response headers]]></description>
+      </bind>
+    </out-binding>
+    <position y="128.13636363636363" x="1024.5"/>
+  </workflow-item>
+  <workflow-item name="item12" out-name="item8" type="link" linked-workflow-id="ed09b0cc-aa59-4eab-983f-2ecd37bfd293">
+    <display-name><![CDATA[Create FRK Network Profile]]></display-name>
+    <in-binding>
+      <bind name="bgname" type="string" export-name="name"/>
+      <bind name="network" type="string" export-name="fullNetworkFrk"/>
+      <bind name="location" type="string" export-name="frkLocation"/>
+    </in-binding>
+    <out-binding>
+      <bind name="statusCode1" type="Number" explicitly-not-bound="true">
+        <description><![CDATA[Response status code]]></description>
+      </bind>
+      <bind name="contentLength1" type="Number" explicitly-not-bound="true">
+        <description><![CDATA[Response content length]]></description>
+      </bind>
+      <bind name="headers1" type="Properties" explicitly-not-bound="true">
+        <description><![CDATA[Response headers]]></description>
+      </bind>
+      <bind name="statusCode2" type="Number" explicitly-not-bound="true">
+        <description><![CDATA[Response status code]]></description>
+      </bind>
+      <bind name="contentLength2" type="Number" explicitly-not-bound="true">
+        <description><![CDATA[Response content length]]></description>
+      </bind>
+      <bind name="headers2" type="Properties" explicitly-not-bound="true">
+        <description><![CDATA[Response headers]]></description>
+      </bind>
+    </out-binding>
+    <position y="128.13636363636363" x="744.5"/>
+  </workflow-item>
+  <workflow-item name="item13" out-name="item14" type="task">
+    <display-name><![CDATA[Get Full Virtual Wire Names]]></display-name>
+    <script encoded="false"><![CDATA[var networks = [];
+var MkeVwFull;
+var FrkVwFull;
+allNetworks = cluster.network;
+
+for(n in allNetworks) {
+	netName = allNetworks[n].name;
+	// Rips vDSwitch tag off of name.
+	parLoc = netName.indexOf("(");
+	name = netName.slice(0,parLoc-1);
+	// Pushes just name of network to array
+	//System.log(name);
+	networks.push(name);
+}
+
+System.log("Found " +networks.length + " networks in the " + cluster.name + " cluster.");
+//var vw = virtualWireMke;
+
+//Find the network that has the virtualwire name in it for MKE.
+System.log("Looking for a network with the string: "+virtualWireMke);
+
+for(n in networks) {
+	if(networks[n].search(virtualWireMke) > -1) {
+		System.log("Found: "+networks[n]);
+		MkeVwFull = networks[n];
+		break;
+	}
+}
+
+//Find the network that has the virtualwire name in it for FRK.
+System.log("Looking for a network with the string: "+virtualWireFrk);
+
+for(n in networks) {
+	if(networks[n].search(virtualWireFrk) > -1) {
+		System.log("Found: "+networks[n]);
+		FrkVwFull = networks[n];
+		break;
+	}
+}]]></script>
+    <in-binding>
+      <bind name="cluster" type="VC:ClusterComputeResource" export-name="cluster"/>
+      <bind name="virtualWireMke" type="string" export-name="virtualWireMke"/>
+      <bind name="virtualWireFrk" type="string" export-name="virtualWireFrk"/>
+    </in-binding>
+    <out-binding>
+      <bind name="MkeVwFull" type="string" export-name="MkeVwFull"/>
+      <bind name="FrkVwFull" type="string" export-name="FrkVwFull"/>
+    </out-binding>
+    <position y="128.13636363636363" x="444.5"/>
+  </workflow-item>
+  <workflow-item name="item14" out-name="item7" type="task" script-module="com.nm.ucp/ucpCreateReservation">
+    <display-name><![CDATA[Create Reservation]]></display-name>
+    <script encoded="false"><![CDATA[//Auto generated script, cannot be modified !
+System.getModule("com.nm.ucp").ucpCreateReservation(businessGroupName,iaasHost,reservationName,memorySize,storageSize,reservationPolicyName,allocatedStoragePathLabel,computeResourceName,networkNameFRK,networkProfileFRK,cafeHost,networkNameMKE,networkProfileMKE) ;]]></script>
+    <in-binding>
+      <bind name="businessGroupName" type="string" export-name="name"/>
+      <bind name="iaasHost" type="vCAC:VCACHost" export-name="iaasHost"/>
+      <bind name="reservationName" type="string" export-name="reservationName"/>
+      <bind name="memorySize" type="string" export-name="memorySize"/>
+      <bind name="storageSize" type="string" export-name="storageSize"/>
+      <bind name="reservationPolicyName" type="string" export-name="reservationPolicyName"/>
+      <bind name="allocatedStoragePathLabel" type="string" export-name="allocatedStoragePathLabel"/>
+      <bind name="computeResourceName" type="string" export-name="computeResourceName"/>
+      <bind name="networkNameFRK" type="string" export-name="FrkVwFull"/>
+      <bind name="networkProfileFRK" type="string" export-name="networkProfileFRK"/>
+      <bind name="cafeHost" type="vCACCAFE:VCACHost" export-name="host"/>
+      <bind name="networkNameMKE" type="string" explicitly-not-bound="true"/>
+      <bind name="networkProfileMKE" type="string" explicitly-not-bound="true"/>
+    </in-binding>
+    <out-binding/>
+    <position y="128.13636363636363" x="304.5"/>
+  </workflow-item>
+  <workflow-item name="item8" out-name="item13" type="link" linked-workflow-id="b2aa65bf-dd04-4991-b822-44412053ef7a">
+    <display-name><![CDATA[Advanced force data collection]]></display-name>
+    <in-binding>
+      <bind name="host" type="vCAC:VCACHost" export-name="iaasHost">
+        <description><![CDATA[IaaS host to force a data-collection on]]></description>
+      </bind>
+      <bind name="dataCollectionSelection" type="Array/string" export-name="dataCollectionSelection">
+        <description><![CDATA[Selection of data collection sets to update. Will update all if null or empty.]]></description>
+      </bind>
+      <bind name="clustersToUpdate" type="Array/vCAC:HostMachine" export-name="clustersToUpdate">
+        <description><![CDATA[Selection of clusters / hosts to update. Will update all if null or empty.]]></description>
+      </bind>
+      <bind name="failOnError" type="boolean" export-name="failOnError">
+        <description><![CDATA[Should the WF fail if a data collection fails?]]></description>
+      </bind>
+    </in-binding>
+    <out-binding/>
+    <description><![CDATA[Advanced version of the "force data collection" workflow. Will start data collection and 
+wait till the data collection finished. If selected, will also check the update status and fail
+if the data collection fails.
+
+
+Copyright (C) 2015  Robert Szymczak	(robert.szymczak@outlook.com)
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU Lesser General Public License as published
+by the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+See the GNU Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.]]></description>
+    <position y="128.63636363636363" x="585.0"/>
+  </workflow-item>
+  <presentation>
+    <p-param name="name">
+      <desc><![CDATA[Business Group Name]]></desc>
+      <p-qual kind="static" name="mandatory" type="boolean"><![CDATA[true]]></p-qual>
+    </p-param>
+    <p-param name="description">
+      <desc><![CDATA[Description of Business Group]]></desc>
+      <p-qual kind="static" name="mandatory" type="boolean"><![CDATA[true]]></p-qual>
+    </p-param>
+    <p-param name="administratorEmail">
+      <desc><![CDATA[Administrator email address]]></desc>
+      <p-qual kind="static" name="mandatory" type="boolean"><![CDATA[true]]></p-qual>
+      <p-qual kind="static" name="regexp" type="Regexp"><![CDATA[[\w-]+@northwesternmutual.com]]></p-qual>
+    </p-param>
+    <p-param name="users">
+      <desc><![CDATA[AD Group for Access to Business Group (FQDN)]]></desc>
+      <p-qual kind="static" name="mandatory" type="boolean"><![CDATA[true]]></p-qual>
+    </p-param>
+    <p-param name="cidr">
+      <desc><![CDATA[Size of Network (CIDR)]]></desc>
+      <p-qual kind="static" name="genericEnumeration" type="Array/string"><![CDATA[#{#string#24#;#string#25#;#string#26#;#string#27#;#string#28#}#]]></p-qual>
+      <p-qual kind="static" name="defaultValue" type="string"><![CDATA[27]]></p-qual>
+      <p-qual kind="static" name="mandatory" type="boolean"><![CDATA[true]]></p-qual>
+    </p-param>
+    <p-param name="memorySize">
+      <desc><![CDATA[Size of Memory to allocate in reservation (MB)]]></desc>
+      <p-qual kind="static" name="mandatory" type="boolean"><![CDATA[true]]></p-qual>
+    </p-param>
+    <p-param name="storageSize">
+      <desc><![CDATA[Size of Storage to allocate in reservation (GB)]]></desc>
+      <p-qual kind="static" name="mandatory" type="boolean"><![CDATA[true]]></p-qual>
+    </p-param>
+    <p-param name="allocatedStoragePathLabel">
+      <desc><![CDATA[Storage Path to allocate]]></desc>
+      <p-qual kind="static" name="mandatory" type="boolean"><![CDATA[true]]></p-qual>
+      <p-qual kind="static" name="genericEnumeration" type="Array/string"><![CDATA[#{#string#vracompstr01-metro-frk#;#string#vracompstr01-metro-mke#}#]]></p-qual>
+    </p-param>
+    <p-param name="computeResourceName">
+      <desc><![CDATA[Compute Resource name to allocate in reservation]]></desc>
+      <p-qual kind="static" name="mandatory" type="boolean"><![CDATA[true]]></p-qual>
+      <p-qual kind="static" name="genericEnumeration" type="Array/string"><![CDATA[#{#string#vracompstr01#}#]]></p-qual>
+      <p-qual kind="static" name="defaultValue" type="string"><![CDATA[vracompstr01]]></p-qual>
+    </p-param>
+    <p-param name="reservationPolicyName">
+      <desc><![CDATA[Reservation Policy Name]]></desc>
+      <p-qual kind="static" name="mandatory" type="boolean"><![CDATA[true]]></p-qual>
+      <p-qual kind="static" name="genericEnumeration" type="Array/string"><![CDATA[#{#string#General Purpose Franklin#;#string#General Purpose Metro#;#string#General Purpose Milwaukee#;#string#Non Production Franklin#;#string#Non Production Milwaukee#;#string#Production Franklin#;#string#Production Milwaukee#}#]]></p-qual>
+    </p-param>
+  </presentation>
+</workflow>

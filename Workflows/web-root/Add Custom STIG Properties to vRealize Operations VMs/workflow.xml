@@ -1,0 +1,162 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<workflow xmlns="http://vmware.com/vco/workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://vmware.com/vco/workflow http://vmware.com/vco/workflow/Workflow-v4.xsd" root-name="item6" object-name="workflow:name=generic" id="9161b864-acdf-40e5-a853-ce4ee800a5d9" version="2.0.0" api-version="6.0.0" allowed-operations="vfe" editor-version="2.0" restartMode="1" resumeFromFailedMode="0">
+  <display-name><![CDATA[Add Custom STIG Properties to vRealize Operations VMs]]></display-name>
+  <description><![CDATA[Adds additional properties to vRealize Operations VMs via REST API based on values queried from the vCenter VM.]]></description>
+  <position y="95.0" x="100.0"/>
+  <input>
+    <param name="restAuthPassword" type="SecureString"/>
+    <param name="restAuthUsername" type="string"/>
+    <param name="restAuthDataSource" type="string"/>
+  </input>
+  <attrib name="jsonResponse" type="string" read-only="false">
+    <value encoded="n"><![CDATA[]]></value>
+  </attrib>
+  <attrib name="VMs" type="Array/Properties" read-only="false">
+    <value encoded="n"><![CDATA[#{##}#]]></value>
+  </attrib>
+  <attrib name="restHost" type="REST:RESTHost" read-only="false">
+    <value encoded="n"><![CDATA[dunes://service.dunes.ch/CustomSDKObject?id='a6896178-f846-4451-90da-e85988256d3c'&dunesName='REST:RESTHost']]></value>
+  </attrib>
+  <attrib name="restAuthData" type="Properties" read-only="false">
+    <value encoded="n"><![CDATA[#[##]#]]></value>
+  </attrib>
+  <attrib name="resourceKind" type="string" read-only="false">
+    <value encoded="n"><![CDATA[VirtualMachine]]></value>
+  </attrib>
+  <attrib name="pageSize" type="number" read-only="false">
+    <value encoded="n"><![CDATA[1000.0]]></value>
+  </attrib>
+  <workflow-item name="item3" out-name="item8" business-status="Finding Matching vCenter VMs for vRealize Ops VMs" type="task">
+    <display-name><![CDATA[Get vCenter VMs and Send Properties to vROPs]]></display-name>
+    <script encoded="false"><![CDATA[var vropsResources = jsonResponse.resourceList;
+var currentEpochTime = Date.now();
+var updateCount = 0;
+
+//For each vROPs VirtualMachine, find the matching vCenter VM
+for each(resource in vropsResources) {
+    try{
+        var resourceIdentifiers = resource.resourceKey.resourceIdentifiers;
+        var VMEntityInstanceUUID = null;
+        var VMEntityVCID = null;
+        var vm = null;
+
+        //Get the VMEntityInstanceUUID for the vRealize Ops VirtualMachine object
+        for each(resourceIdentifier in resourceIdentifiers) {
+            if(resourceIdentifier.identifierType.name== "VMEntityInstanceUUID") {
+                VMEntityInstanceUUID = resourceIdentifier.value;
+            }
+            if(resourceIdentifier.identifierType.name== "VMEntityVCID") {
+                VMEntityVCID = resourceIdentifier.value;
+            }
+        }
+        //Find the vCenter VM object by using the VMEntityInstanceUUID and VMEntityVCID returned by vROPs
+        var sdkConnection = VcPlugin.findSdkConnectionForUUID(VMEntityVCID);
+        if (!sdkConnection) {
+            throw "No vCenter found with UUID " + VMEntityVCID;
+        }
+        try {
+            vm = sdkConnection.searchIndex.findByUuid(null, VMEntityInstanceUUID, true, true);
+        }
+        catch(e) {
+            System.log("Unabled to find VM with instance UUID " + VMEntityInstanceUUID);
+        }
+        //Found matching VM
+        if(vm != null && VMEntityVCID != null && VMEntityInstanceUUID != null) {
+            //Variable to hold the JSON Update Body
+            var jsonBody = new Object();
+            var jsonProperties = new Array();
+            
+            try {
+                if(vm.config.guestAutoLockEnabled != null)
+                    jsonProperties.push(generateProp("config|security|guestAutoLockEnabled",currentEpochTime,vm.config.guestAutoLockEnabled));
+            } catch(e) {}
+
+            try {
+                if(vm.config.migrateEncryption != null)
+                    jsonProperties.push(generateProp("config|security|migrateEncryption",currentEpochTime,vm.config.migrateEncryption));
+            } catch(e) {}
+
+            //Send properties to vRealize Ops
+            var responseCode = System.getModule("com.stevenbright.vrops.resources").addProperties(restHost, restAuthData.get("authToken"), resource.identifier, jsonProperties);
+            System.log("Submitted request to add " + jsonProperties.length + " properties to VM '" + vm.name + "'. Received the following HTTP response code: " +responseCode);
+            updateCount = updateCount + 1;
+        }
+        else {
+            System.log("vROPs VM " + resource.name + " not found matched with vCenter VM.");
+        }
+    }
+    catch(e) {}
+}
+System.log("Updated " + updateCount + " VMs with new properties.");
+
+function generateProp(statKey, timestamps, values) {
+    if(statKey!=null && timestamps!=null && values!=null) {
+        var newProp = new Properties;
+        newProp.put("statKey", statKey);
+        newProp.put("timestamps", timestamps);
+        newProp.put("values", values);
+        return newProp;
+    } else {
+        return null;
+    }
+}]]></script>
+    <in-binding>
+      <bind name="jsonResponse" type="string" export-name="jsonResponse"/>
+      <bind name="restHost" type="REST:RESTHost" export-name="restHost"/>
+      <bind name="restAuthData" type="Properties" export-name="restAuthData"/>
+    </in-binding>
+    <out-binding>
+      <bind name="VMs" type="Array/Properties" export-name="VMs"/>
+    </out-binding>
+    <description><![CDATA[Simple task with custom script capability.]]></description>
+    <position y="105.0" x="410.0"/>
+  </workflow-item>
+  <workflow-item name="item6" out-name="item7" business-status="Authenticating with vRealize Operations" type="task" script-module="com.stevenbright.vrops.auth/acquireToken">
+    <display-name><![CDATA[acquireToken]]></display-name>
+    <script encoded="false"><![CDATA[//Auto generated script, cannot be modified !
+actionResult = System.getModule("com.stevenbright.vrops.auth").acquireToken(restAuthPassword, restAuthUsername, restHost, restAuthDataSource);
+]]></script>
+    <in-binding>
+      <bind name="restAuthPassword" type="SecureString" export-name="restAuthPassword"/>
+      <bind name="restAuthUsername" type="string" export-name="restAuthUsername"/>
+      <bind name="restHost" type="REST:RESTHost" export-name="restHost"/>
+      <bind name="restAuthDataSource" type="string" export-name="restAuthDataSource"/>
+    </in-binding>
+    <out-binding>
+      <bind name="actionResult" type="Properties" export-name="restAuthData"/>
+    </out-binding>
+    <description><![CDATA[Use this element to include an action in the workflow.]]></description>
+    <position y="106.01301574707031" x="176.0034637451172"/>
+  </workflow-item>
+  <workflow-item name="item7" out-name="item3" business-status="Getting Virtual Machines from vRealize Operations" type="task" script-module="com.stevenbright.vrops.resources/getResourcesByResourceKind">
+    <display-name><![CDATA[getResourcesByResourceKind]]></display-name>
+    <script encoded="false"><![CDATA[//Auto generated script, cannot be modified !
+actionResult = System.getModule("com.stevenbright.vrops.resources").getResourcesByResourceKind(resourceKind, restAuthData, restHost, pageSize);
+]]></script>
+    <in-binding>
+      <bind name="resourceKind" type="string" export-name="resourceKind"/>
+      <bind name="restAuthData" type="Properties" export-name="restAuthData"/>
+      <bind name="restHost" type="REST:RESTHost" export-name="restHost"/>
+      <bind name="pageSize" type="number" export-name="pageSize"/>
+    </in-binding>
+    <out-binding>
+      <bind name="actionResult" type="string" export-name="jsonResponse"/>
+    </out-binding>
+    <description><![CDATA[Use this element to include an action in the workflow.]]></description>
+    <position y="105.90885162353516" x="290.0034637451172"/>
+  </workflow-item>
+  <workflow-item name="item8" type="end" end-mode="0">
+    <position y="95.0" x="570.0"/>
+  </workflow-item>
+  <presentation>
+    <p-param name="restAuthPassword">
+      <desc><![CDATA[restAuthPassword]]></desc>
+    </p-param>
+    <p-param name="restAuthUsername">
+      <desc><![CDATA[restAuthUsername]]></desc>
+    </p-param>
+    <p-param name="restAuthDataSource">
+      <desc><![CDATA[restAuthDataSource]]></desc>
+    </p-param>
+  </presentation>
+</workflow>

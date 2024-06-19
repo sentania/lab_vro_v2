@@ -1,0 +1,108 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<workflow xmlns="http://vmware.com/vco/workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://vmware.com/vco/workflow http://vmware.com/vco/workflow/Workflow-v4.xsd" root-name="item1" object-name="workflow:name=generic" id="9849a362-d61e-4396-8a7d-7653797f2ba3" version="0.0.0" api-version="6.0.0" allowed-operations="vfe" restartMode="1" resumeFromFailedMode="0">
+  <display-name><![CDATA[Adjust Virtual Server Resources]]></display-name>
+  <position y="50.0" x="100.0"/>
+  <input>
+    <param name="vm" type="VC:VirtualMachine"/>
+    <param name="vcpu" type="number">
+      <description><![CDATA[New vCPU number]]></description>
+    </param>
+    <param name="memory" type="number">
+      <description><![CDATA[New memory value]]></description>
+    </param>
+  </input>
+  <output>
+    <param name="actionResult" type="VC:Task"/>
+    <param name="actionResult1" type="VC:Task"/>
+    <param name="actionResult2" type="VC:Task"/>
+  </output>
+  <attrib name="timeout" type="number" read-only="false">
+    <value encoded="n"><![CDATA[5.0]]></value>
+    <description><![CDATA[Timeout in minutes [min]]]></description>
+  </attrib>
+  <workflow-item name="item0" type="end" end-mode="0">
+    <position y="45.40909090909091" x="804.5"/>
+  </workflow-item>
+  <workflow-item name="item1" out-name="item2" type="task" script-module="com.vmware.library.vc.vm.power/shutdownVM" interaction="l">
+    <display-name><![CDATA[shutdownVM]]></display-name>
+    <script encoded="false"><![CDATA[//Auto generated script, cannot be modified !
+System.getModule("com.vmware.library.vc.vm.power").shutdownVM(vm,timeout,polling) ;]]></script>
+    <in-binding>
+      <bind name="vm" type="VC:VirtualMachine" export-name="vm"/>
+      <bind name="timeout" type="number" export-name="timeout">
+        <description><![CDATA[Timeout in minutes [min]]]></description>
+      </bind>
+      <bind name="polling" type="number" explicitly-not-bound="true">
+        <description><![CDATA[Polling rate in seconds [s]]]></description>
+      </bind>
+    </in-binding>
+    <out-binding/>
+    <description><![CDATA[Shuts down the virtual machine's guest OS and waits for a specified period of time before throwing an error if the virtual machine is still not powered off. If the timeout is set to 0, the action does not wait.]]></description>
+    <position y="55.40909090909091" x="204.5"/>
+  </workflow-item>
+  <workflow-item name="item2" out-name="item3" type="task" script-module="com.vmware.library.vc.vm/changeVMvCPU" interaction="l">
+    <display-name><![CDATA[changeVMvCPU]]></display-name>
+    <script encoded="false"><![CDATA[//Auto generated script, cannot be modified !
+actionResult = System.getModule("com.vmware.library.vc.vm").changeVMvCPU(vm,vcpu) ;]]></script>
+    <in-binding>
+      <bind name="vm" type="VC:VirtualMachine" export-name="vm">
+        <description><![CDATA[The VM to change]]></description>
+      </bind>
+      <bind name="vcpu" type="number" export-name="vcpu">
+        <description><![CDATA[New vCPU number]]></description>
+      </bind>
+    </in-binding>
+    <out-binding>
+      <bind name="actionResult" type="VC:Task" export-name="actionResult"/>
+    </out-binding>
+    <description><![CDATA[Change the number of vCPUs in the VM.]]></description>
+    <position y="55.40909090909091" x="344.5"/>
+  </workflow-item>
+  <workflow-item name="item3" out-name="item4" type="task" script-module="com.vmware.library.vc.vm/changeVMRAM" interaction="l">
+    <display-name><![CDATA[changeVMRAM]]></display-name>
+    <script encoded="false"><![CDATA[//Auto generated script, cannot be modified !
+actionResult = System.getModule("com.vmware.library.vc.vm").changeVMRAM(vm,memory) ;]]></script>
+    <in-binding>
+      <bind name="vm" type="VC:VirtualMachine" export-name="vm">
+        <description><![CDATA[The VM to change]]></description>
+      </bind>
+      <bind name="memory" type="number" export-name="memory">
+        <description><![CDATA[New memory value]]></description>
+      </bind>
+    </in-binding>
+    <out-binding>
+      <bind name="actionResult" type="VC:Task" export-name="actionResult1"/>
+    </out-binding>
+    <description><![CDATA[Change the VM memory size.]]></description>
+    <position y="55.40909090909091" x="484.5"/>
+  </workflow-item>
+  <workflow-item name="item4" out-name="item0" type="task" script-module="com.vmware.library.vc.vm.power/startVM" interaction="l">
+    <display-name><![CDATA[startVM]]></display-name>
+    <script encoded="false"><![CDATA[//Auto generated script, cannot be modified !
+actionResult = System.getModule("com.vmware.library.vc.vm.power").startVM(vm,host) ;]]></script>
+    <in-binding>
+      <bind name="vm" type="VC:VirtualMachine" export-name="vm">
+        <description><![CDATA[VM to start or resume]]></description>
+      </bind>
+      <bind name="host" type="VC:HostSystem" explicitly-not-bound="true">
+        <description><![CDATA[[Optional] The host where the virtual machine is to be powered on. If no host is specified, the current associated host is used. This field must specify a host that is part of the same compute resource that the virtual machine is currently associated with. If this host is not compatible, the current host association is used. ]]></description>
+      </bind>
+    </in-binding>
+    <out-binding>
+      <bind name="actionResult" type="VC:Task" export-name="actionResult2"/>
+    </out-binding>
+    <description><![CDATA[Start / Resume a VM. Return the start task]]></description>
+    <position y="55.40909090909091" x="624.5"/>
+  </workflow-item>
+  <presentation>
+    <p-param name="vm">
+      <desc><![CDATA[vm]]></desc>
+    </p-param>
+    <p-param name="vcpu">
+      <desc><![CDATA[New vCPU number]]></desc>
+    </p-param>
+    <p-param name="memory">
+      <desc><![CDATA[New memory value]]></desc>
+    </p-param>
+  </presentation>
+</workflow>

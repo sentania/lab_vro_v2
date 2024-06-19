@@ -1,0 +1,12 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<config-element id="a83c945b-6d8c-4e56-8469-36b4d908dcd8" version="0.0.0">
+  <display-name><![CDATA[guestScriptManagerConfig]]></display-name>
+  <atts>
+    <att name="resourceElementCategoryPathtPath" type="string" read-only="false">
+      <value encoded="n"><![CDATA[COE/Guest script configurations]]></value>
+    </att>
+    <att name="additionalResourceElementCategoryPath" type="string" read-only="false">
+      <value encoded="n"><![CDATA[COE/Guest resources]]></value>
+    </att>
+  </atts>
+</config-element>

@@ -1,0 +1,18 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dunes-script-module name="createResourcePool" result-type="VC:ResourcePool" api-version="6.0.0" id="5f845996-a62c-4086-b492-2bb1880f207c" version="0.2.0" allowed-operations="vfp" category-name="com.vmware.library.vc.resourcePool">
+  <description><![CDATA[Create a new Rescource Pool with default CPU and momory allocation (disabled). Returns the new ResourcePool, null if any error.]]></description>
+  <param n="resourcePool" t="VC:ResourcePool"><![CDATA[The parent of the new Resource Pool]]></param>
+  <param n="name" t="string"><![CDATA[Name of the new Resource Pool]]></param>
+  <script encoded="false"><![CDATA[// Action 'getSharesInfo' takes a VC:SharesLevel (Finder enum) parameter so we
+//  can't use VcSharesInfo.normal as parameter
+var finderEnum = Server.findForType("VC:SharesLevel", "normal");
+var shares = System.getModule("com.vmware.library.vc.spec").getSharesInfo(finderEnum, 0);
+var allocation = System.getModule("com.vmware.library.vc.spec").getResourceAllocationInfo(true, -1, 0, shares);
+
+var resourceConfigSpec = new VcResourceConfigSpec();
+resourceConfigSpec.cpuAllocation = allocation;
+resourceConfigSpec.memoryAllocation = allocation;
+
+return resourcePool.createResourcePool(name, resourceConfigSpec);
+]]></script>
+</dunes-script-module>

@@ -1,0 +1,47 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dunes-script-module name="acquireToken" result-type="Properties" api-version="6.0.0" id="526335ad-cb59-41e7-be62-50d43f3f7054" version="3.0.0" allowed-operations="vfe" category-name="com.stevenbright.vrops.auth">
+  <description><![CDATA[Get a vRealize Operations REST API authentication token and validity date.
+
+Returns back a set of properties containing: authToken and authTokenValidity]]></description>
+  <param n="restAuthPassword" t="SecureString"><![CDATA[]]></param>
+  <param n="restAuthUsername" t="string"><![CDATA[]]></param>
+  <param n="restHost" t="REST:RESTHost"><![CDATA[]]></param>
+  <param n="restAuthDataSource" t="string"><![CDATA[]]></param>
+  <script encoded="false"><![CDATA[//Define the JSON request body
+var jsonBody = {
+    "username": "",
+    "authSource": "",
+    "password": "",
+    "others": [],
+    "otherAttributes": {}
+};
+//Fill in the values into the jsonBody
+jsonBody.username = restAuthUsername;
+jsonBody.password = restAuthPassword;
+jsonBody.authSource = restAuthDataSource;
+jsonRequestBody = JSON.stringify(jsonBody);
+//Create a new HTTP REST Request object for the REST host that was provided
+var request = restHost.createRequest("POST", "/suite-api/api/auth/token/acquire", jsonRequestBody);
+request.contentType = "application/json";
+request.setHeader("accept", "application/json");
+
+//Attempt to execute the REST request
+try {
+    response = request.execute();
+    jsonObject = JSON.parse(response.contentAsString);
+    var authData = new Properties();
+    //Return back the authentication token and validity period using a property set
+    if (jsonObject.token != "" && jsonObject.validity != "") {
+        authData.put("authToken", jsonObject.token);
+        authData.put("authTokenValidity", jsonObject.validity);
+        return authData;
+    }
+    else {
+        throw "There was an errror executing the REST call.";
+    }
+}
+catch (e) {
+    throw "There was an error executing the REST call:" + e;
+}
+]]></script>
+</dunes-script-module>

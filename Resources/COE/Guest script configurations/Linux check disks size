@@ -1,0 +1,11 @@
+{13:12:scriptContent=string#df -H
+13:10:scriptTimeOut=number#5.0
+22:7:scriptWorkingDirectory=string#
+17:10:scriptRefreshTime=number#1.0
+22:12:deleteResourceAfterRun=boolean#true
+10:11:scriptType=string#bash
+21:13:resourceSearchReplace=boolean#false
+24:13:scriptInteractiveSession=boolean#false
+14:16:resourceToCopy=Any#Any#__NULL__
+12:13:copyResource=boolean#false
+}

@@ -1,0 +1,1410 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<workflow xmlns="http://vmware.com/vco/workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://vmware.com/vco/workflow http://vmware.com/vco/workflow/Workflow-v4.xsd" root-name="item1" object-name="workflow:name=generic" id="a45414f7-ff43-4c6f-ab23-ae27d4e49b6f" version="0.1.0" api-version="6.0.0" allowed-operations="vfe" editor-version="2.0" restartMode="1" resumeFromFailedMode="0">
+  <display-name><![CDATA[Windows SetStaticMac (Pre-poweron)]]></display-name>
+  <description><![CDATA[Assigns a static MAC Address and a customization spec.]]></description>
+  <position y="50.0" x="100.0"/>
+  <input>
+    <param name="inputProperties" type="Properties"/>
+  </input>
+  <attrib name="actionResult" type="string" read-only="false">
+    <value encoded="n"><![CDATA[]]></value>
+  </attrib>
+  <attrib name="macAddress" type="string" read-only="false">
+    <value encoded="n"><![CDATA[]]></value>
+  </attrib>
+  <attrib name="vmName" type="string" read-only="false">
+    <value encoded="n"><![CDATA[]]></value>
+  </attrib>
+  <attrib name="vmUUID" type="string" read-only="false">
+    <value encoded="n"><![CDATA[]]></value>
+  </attrib>
+  <attrib name="vmIPAddress" type="string" read-only="false">
+    <value encoded="n"><![CDATA[]]></value>
+  </attrib>
+  <attrib name="outVm" type="VC:VirtualMachine" read-only="false">
+    <value encoded="n"><![CDATA[]]></value>
+  </attrib>
+  <attrib name="task" type="VC:Task" read-only="false">
+    <value encoded="n"><![CDATA[]]></value>
+  </attrib>
+  <attrib name="progress" type="boolean" read-only="false">
+    <value encoded="n"><![CDATA[false]]></value>
+  </attrib>
+  <attrib name="pollRate" type="number" read-only="false">
+    <value encoded="n"><![CDATA[]]></value>
+  </attrib>
+  <workflow-item name="item0" type="end" end-mode="0">
+    <in-binding/>
+    <position y="130.0" x="80.0"/>
+  </workflow-item>
+  <workflow-item name="item1" out-name="item2" type="task" script-module="net.sentania.Actions/logInputProperties">
+    <display-name><![CDATA[logInputProperties]]></display-name>
+    <script encoded="false"><![CDATA[//Auto generated script, cannot be modified !
+actionResult = System.getModule("net.sentania.Actions").logInputProperties(inputProperties);
+]]></script>
+    <in-binding>
+      <bind name="inputProperties" type="Properties" export-name="inputProperties"/>
+    </in-binding>
+    <out-binding>
+      <bind name="actionResult" type="string" export-name="actionResult"/>
+    </out-binding>
+    <description><![CDATA[Add a note to the workflow schema.]]></description>
+    <position y="60.0" x="280.0"/>
+  </workflow-item>
+  <workflow-item name="item2" out-name="item3" type="task">
+    <display-name><![CDATA[Get VM Name]]></display-name>
+    <script encoded="false"><![CDATA[//This will have problems if there are multiple machines!!!!!!!!
+
+var customProperties = inputProperties.customProperties || new Properties();
+
+
+vmIPAddress = inputProperties.get("addresses");
+var macAddressArray = new Array();
+macAddressArray = inputProperties.get("macAddresses");
+macAddress = macAddressArray[0][0];
+vmUUID = customProperties.instanceUUID;
+var vmNameArray = new Array();
+
+vmNameArray = inputProperties.get("resourceNames");
+
+vmName = vmNameArray[0]
+
+System.log("Debugging Mac Address:" + macAddress)
+
+
+
+]]></script>
+    <in-binding>
+      <bind name="inputProperties" type="Properties" export-name="inputProperties"/>
+    </in-binding>
+    <out-binding>
+      <bind name="macAddress" type="string" export-name="macAddress"/>
+      <bind name="vmName" type="string" export-name="vmName"/>
+      <bind name="vmUUID" type="string" export-name="vmUUID"/>
+      <bind name="vmIPAddress" type="string" export-name="vmIPAddress"/>
+    </out-binding>
+    <description><![CDATA[Simple task with custom script capability.]]></description>
+    <position y="60.0" x="420.0"/>
+  </workflow-item>
+  <workflow-item name="item3" out-name="item4" type="link" linked-workflow-id="4d154442-1118-4111-934b-8e314315344a">
+    <display-name><![CDATA[Get VM by Name and Uuid]]></display-name>
+    <in-binding>
+      <bind name="name" type="string" export-name="vmName">
+        <description><![CDATA[A name of virtual machine]]></description>
+      </bind>
+      <bind name="uuid" type="string" export-name="vmUUID">
+        <description><![CDATA[A universally unique identifier (UUID) of virtual machine]]></description>
+      </bind>
+    </in-binding>
+    <out-binding>
+      <bind name="outVm" type="VC:VirtualMachine" export-name="outVm">
+        <description><![CDATA[A virtual machine that matches the name and uuid given as input]]></description>
+      </bind>
+    </out-binding>
+    <description><![CDATA[ ]]></description>
+    <position y="60.0" x="560.0"/>
+  </workflow-item>
+  <workflow-item name="item4" out-name="item5" type="task">
+    <display-name><![CDATA[Set Static Mac Address]]></display-name>
+    <script encoded="false"><![CDATA[managedObject = outVm;var spec = new VcVirtualMachineConfigSpec();
+spec.cpuAllocation = new VcResourceAllocationInfo();
+spec.cpuAllocation.shares = new VcSharesInfo();
+spec.cpuAllocation.shares.shares = 2000;
+spec.cpuAllocation.shares.level = VcSharesLevel.normal;
+var deviceChange = new Array();
+deviceChange[0] = new VcVirtualDeviceConfigSpec();
+deviceChange[0].device = new VcVirtualVmxnet3();
+deviceChange[0].device.macAddress = '00:50:56:12:34:56';
+deviceChange[0].device.addressType = 'manual';
+deviceChange[0].device.controllerKey = 100;
+deviceChange[0].device.key = 4000;
+deviceChange[0].operation = VcVirtualDeviceConfigSpecOperation.edit;
+spec.deviceChange = deviceChange;
+
+task = managedObject.reconfigVM_Task(spec); ]]></script>
+    <in-binding>
+      <bind name="outVm" type="VC:VirtualMachine" export-name="outVm"/>
+    </in-binding>
+    <out-binding>
+      <bind name="task" type="VC:Task" export-name="task"/>
+    </out-binding>
+    <description><![CDATA[Simple task with custom script capability.]]></description>
+    <position y="140.0" x="560.0"/>
+  </workflow-item>
+  <workflow-item name="item5" out-name="item6" type="task" script-module="com.vmware.library.vc.basic/vim3WaitTaskEnd">
+    <display-name><![CDATA[vim3WaitTaskEnd]]></display-name>
+    <script encoded="false"><![CDATA[//Auto generated script, cannot be modified !
+actionResult = System.getModule("com.vmware.library.vc.basic").vim3WaitTaskEnd(task,progress,pollRate);
+]]></script>
+    <in-binding>
+      <bind name="task" type="VC:Task" export-name="task">
+        <description><![CDATA[Task to Wait for]]></description>
+      </bind>
+      <bind name="progress" type="boolean" export-name="progress">
+        <description><![CDATA[Log progess while waiting for the task]]></description>
+      </bind>
+      <bind name="pollRate" type="number" export-name="pollRate">
+        <description><![CDATA[Polling rate for the task state [seconds]]]></description>
+      </bind>
+    </in-binding>
+    <out-binding>
+      <bind name="actionResult" type="string" export-name="actionResult"/>
+    </out-binding>
+    <description><![CDATA[Add a note to the workflow schema.]]></description>
+    <position y="140.0" x="440.0"/>
+  </workflow-item>
+  <workflow-item name="item6" out-name="item7" type="task">
+    <display-name><![CDATA[Add Customization Spec]]></display-name>
+    <script encoded="false"><![CDATA[managedObject = outVm;
+// ----------customizeVM_Task----------
+var spec = new VcCustomizationSpec();
+var nicSettingMap = new Array();
+nicSettingMap[0] = new VcCustomizationAdapterMapping();
+nicSettingMap[0].adapter = new VcCustomizationIPSettings();
+var dnsServerList = new Array();
+dnsServerList[0] = '10.100.0.142';
+dnsServerList[1] = '10.100.0.5';
+nicSettingMap[0].adapter.dnsServerList = dnsServerList;
+nicSettingMap[0].adapter.primaryWINS = '';
+nicSettingMap[0].adapter.secondaryWINS = '';
+nicSettingMap[0].adapter.ip = new VcCustomizationFixedIp();
+nicSettingMap[0].adapter.ip.ipAddress = '192.168.1.2';
+nicSettingMap[0].adapter.subnetMask = '255.255.255.0';
+var gateway = new Array();
+gateway[0] = '192.168.1.1';
+nicSettingMap[0].adapter.gateway = gateway;
+spec.nicSettingMap = nicSettingMap;
+spec.identity = new VcCustomizationSysprep();
+spec.identity.identification = new VcCustomizationIdentification();
+spec.identity.identification.joinWorkgroup = 'WORKGROUP';
+spec.identity.userData = new VcCustomizationUserData();
+spec.identity.userData.orgName = 'sentania.net';
+spec.identity.userData.productId = 'WMDGN-G9PQG-XVVXX-R3X43-63DFG';
+spec.identity.userData.computerName = new VcCustomizationVirtualMachineName();
+spec.identity.userData.fullName = 'Scott Bowe';
+spec.identity.guiUnattended = new VcCustomizationGuiUnattended();
+spec.identity.guiUnattended.password = new VcCustomizationPassword();
+spec.identity.guiUnattended.password.plainText = true;
+spec.identity.guiUnattended.password.value = 'VMware1!';
+spec.identity.guiUnattended.autoLogon = false;
+spec.identity.guiUnattended.autoLogonCount = 1;
+spec.identity.guiUnattended.timeZone = 20;
+spec.options = new VcCustomizationWinOptions();
+spec.options.changeSID = true;
+spec.options.deleteAccounts = false;
+var encryptionKey = new Array();
+encryptionKey[0] = 48;
+encryptionKey[1] = -126;
+encryptionKey[2] = 4;
+encryptionKey[3] = -111;
+encryptionKey[4] = 48;
+encryptionKey[5] = -126;
+encryptionKey[6] = 3;
+encryptionKey[7] = 121;
+encryptionKey[8] = -96;
+encryptionKey[9] = 3;
+encryptionKey[10] = 2;
+encryptionKey[11] = 1;
+encryptionKey[12] = 2;
+encryptionKey[13] = 2;
+encryptionKey[14] = 9;
+encryptionKey[15] = 0;
+encryptionKey[16] = -20;
+encryptionKey[17] = 41;
+encryptionKey[18] = 101;
+encryptionKey[19] = 120;
+encryptionKey[20] = 112;
+encryptionKey[21] = -5;
+encryptionKey[22] = -11;
+encryptionKey[23] = 59;
+encryptionKey[24] = 48;
+encryptionKey[25] = 13;
+encryptionKey[26] = 6;
+encryptionKey[27] = 9;
+encryptionKey[28] = 42;
+encryptionKey[29] = -122;
+encryptionKey[30] = 72;
+encryptionKey[31] = -122;
+encryptionKey[32] = -9;
+encryptionKey[33] = 13;
+encryptionKey[34] = 1;
+encryptionKey[35] = 1;
+encryptionKey[36] = 11;
+encryptionKey[37] = 5;
+encryptionKey[38] = 0;
+encryptionKey[39] = 48;
+encryptionKey[40] = -127;
+encryptionKey[41] = -86;
+encryptionKey[42] = 49;
+encryptionKey[43] = 11;
+encryptionKey[44] = 48;
+encryptionKey[45] = 9;
+encryptionKey[46] = 6;
+encryptionKey[47] = 3;
+encryptionKey[48] = 85;
+encryptionKey[49] = 4;
+encryptionKey[50] = 3;
+encryptionKey[51] = 12;
+encryptionKey[52] = 2;
+encryptionKey[53] = 67;
+encryptionKey[54] = 65;
+encryptionKey[55] = 49;
+encryptionKey[56] = 23;
+encryptionKey[57] = 48;
+encryptionKey[58] = 21;
+encryptionKey[59] = 6;
+encryptionKey[60] = 10;
+encryptionKey[61] = 9;
+encryptionKey[62] = -110;
+encryptionKey[63] = 38;
+encryptionKey[64] = -119;
+encryptionKey[65] = -109;
+encryptionKey[66] = -14;
+encryptionKey[67] = 44;
+encryptionKey[68] = 100;
+encryptionKey[69] = 1;
+encryptionKey[70] = 25;
+encryptionKey[71] = 22;
+encryptionKey[72] = 7;
+encryptionKey[73] = 118;
+encryptionKey[74] = 115;
+encryptionKey[75] = 112;
+encryptionKey[76] = 104;
+encryptionKey[77] = 101;
+encryptionKey[78] = 114;
+encryptionKey[79] = 101;
+encryptionKey[80] = 49;
+encryptionKey[81] = 21;
+encryptionKey[82] = 48;
+encryptionKey[83] = 19;
+encryptionKey[84] = 6;
+encryptionKey[85] = 10;
+encryptionKey[86] = 9;
+encryptionKey[87] = -110;
+encryptionKey[88] = 38;
+encryptionKey[89] = -119;
+encryptionKey[90] = -109;
+encryptionKey[91] = -14;
+encryptionKey[92] = 44;
+encryptionKey[93] = 100;
+encryptionKey[94] = 1;
+encryptionKey[95] = 25;
+encryptionKey[96] = 22;
+encryptionKey[97] = 5;
+encryptionKey[98] = 108;
+encryptionKey[99] = 111;
+encryptionKey[100] = 99;
+encryptionKey[101] = 97;
+encryptionKey[102] = 108;
+encryptionKey[103] = 49;
+encryptionKey[104] = 11;
+encryptionKey[105] = 48;
+encryptionKey[106] = 9;
+encryptionKey[107] = 6;
+encryptionKey[108] = 3;
+encryptionKey[109] = 85;
+encryptionKey[110] = 4;
+encryptionKey[111] = 6;
+encryptionKey[112] = 19;
+encryptionKey[113] = 2;
+encryptionKey[114] = 85;
+encryptionKey[115] = 83;
+encryptionKey[116] = 49;
+encryptionKey[117] = 19;
+encryptionKey[118] = 48;
+encryptionKey[119] = 17;
+encryptionKey[120] = 6;
+encryptionKey[121] = 3;
+encryptionKey[122] = 85;
+encryptionKey[123] = 4;
+encryptionKey[124] = 8;
+encryptionKey[125] = 12;
+encryptionKey[126] = 10;
+encryptionKey[127] = 67;
+encryptionKey[128] = 97;
+encryptionKey[129] = 108;
+encryptionKey[130] = 105;
+encryptionKey[131] = 102;
+encryptionKey[132] = 111;
+encryptionKey[133] = 114;
+encryptionKey[134] = 110;
+encryptionKey[135] = 105;
+encryptionKey[136] = 97;
+encryptionKey[137] = 49;
+encryptionKey[138] = 44;
+encryptionKey[139] = 48;
+encryptionKey[140] = 42;
+encryptionKey[141] = 6;
+encryptionKey[142] = 3;
+encryptionKey[143] = 85;
+encryptionKey[144] = 4;
+encryptionKey[145] = 10;
+encryptionKey[146] = 12;
+encryptionKey[147] = 35;
+encryptionKey[148] = 108;
+encryptionKey[149] = 97;
+encryptionKey[150] = 98;
+encryptionKey[151] = 45;
+encryptionKey[152] = 99;
+encryptionKey[153] = 111;
+encryptionKey[154] = 109;
+encryptionKey[155] = 112;
+encryptionKey[156] = 48;
+encryptionKey[157] = 49;
+encryptionKey[158] = 45;
+encryptionKey[159] = 118;
+encryptionKey[160] = 99;
+encryptionKey[161] = 101;
+encryptionKey[162] = 110;
+encryptionKey[163] = 116;
+encryptionKey[164] = 101;
+encryptionKey[165] = 114;
+encryptionKey[166] = 46;
+encryptionKey[167] = 105;
+encryptionKey[168] = 110;
+encryptionKey[169] = 116;
+encryptionKey[170] = 46;
+encryptionKey[171] = 115;
+encryptionKey[172] = 101;
+encryptionKey[173] = 110;
+encryptionKey[174] = 116;
+encryptionKey[175] = 97;
+encryptionKey[176] = 110;
+encryptionKey[177] = 105;
+encryptionKey[178] = 97;
+encryptionKey[179] = 46;
+encryptionKey[180] = 110;
+encryptionKey[181] = 101;
+encryptionKey[182] = 116;
+encryptionKey[183] = 49;
+encryptionKey[184] = 27;
+encryptionKey[185] = 48;
+encryptionKey[186] = 25;
+encryptionKey[187] = 6;
+encryptionKey[188] = 3;
+encryptionKey[189] = 85;
+encryptionKey[190] = 4;
+encryptionKey[191] = 11;
+encryptionKey[192] = 12;
+encryptionKey[193] = 18;
+encryptionKey[194] = 86;
+encryptionKey[195] = 77;
+encryptionKey[196] = 119;
+encryptionKey[197] = 97;
+encryptionKey[198] = 114;
+encryptionKey[199] = 101;
+encryptionKey[200] = 32;
+encryptionKey[201] = 69;
+encryptionKey[202] = 110;
+encryptionKey[203] = 103;
+encryptionKey[204] = 105;
+encryptionKey[205] = 110;
+encryptionKey[206] = 101;
+encryptionKey[207] = 101;
+encryptionKey[208] = 114;
+encryptionKey[209] = 105;
+encryptionKey[210] = 110;
+encryptionKey[211] = 103;
+encryptionKey[212] = 48;
+encryptionKey[213] = 30;
+encryptionKey[214] = 23;
+encryptionKey[215] = 13;
+encryptionKey[216] = 50;
+encryptionKey[217] = 49;
+encryptionKey[218] = 48;
+encryptionKey[219] = 49;
+encryptionKey[220] = 51;
+encryptionKey[221] = 49;
+encryptionKey[222] = 48;
+encryptionKey[223] = 50;
+encryptionKey[224] = 52;
+encryptionKey[225] = 51;
+encryptionKey[226] = 48;
+encryptionKey[227] = 50;
+encryptionKey[228] = 90;
+encryptionKey[229] = 23;
+encryptionKey[230] = 13;
+encryptionKey[231] = 51;
+encryptionKey[232] = 49;
+encryptionKey[233] = 48;
+encryptionKey[234] = 49;
+encryptionKey[235] = 50;
+encryptionKey[236] = 54;
+encryptionKey[237] = 48;
+encryptionKey[238] = 50;
+encryptionKey[239] = 52;
+encryptionKey[240] = 55;
+encryptionKey[241] = 48;
+encryptionKey[242] = 55;
+encryptionKey[243] = 90;
+encryptionKey[244] = 48;
+encryptionKey[245] = -127;
+encryptionKey[246] = -116;
+encryptionKey[247] = 49;
+encryptionKey[248] = 26;
+encryptionKey[249] = 48;
+encryptionKey[250] = 24;
+encryptionKey[251] = 6;
+encryptionKey[252] = 3;
+encryptionKey[253] = 85;
+encryptionKey[254] = 4;
+encryptionKey[255] = 3;
+encryptionKey[256] = 12;
+encryptionKey[257] = 17;
+encryptionKey[258] = 100;
+encryptionKey[259] = 97;
+encryptionKey[260] = 116;
+encryptionKey[261] = 97;
+encryptionKey[262] = 45;
+encryptionKey[263] = 101;
+encryptionKey[264] = 110;
+encryptionKey[265] = 99;
+encryptionKey[266] = 105;
+encryptionKey[267] = 112;
+encryptionKey[268] = 104;
+encryptionKey[269] = 101;
+encryptionKey[270] = 114;
+encryptionKey[271] = 109;
+encryptionKey[272] = 101;
+encryptionKey[273] = 110;
+encryptionKey[274] = 116;
+encryptionKey[275] = 49;
+encryptionKey[276] = 23;
+encryptionKey[277] = 48;
+encryptionKey[278] = 21;
+encryptionKey[279] = 6;
+encryptionKey[280] = 10;
+encryptionKey[281] = 9;
+encryptionKey[282] = -110;
+encryptionKey[283] = 38;
+encryptionKey[284] = -119;
+encryptionKey[285] = -109;
+encryptionKey[286] = -14;
+encryptionKey[287] = 44;
+encryptionKey[288] = 100;
+encryptionKey[289] = 1;
+encryptionKey[290] = 25;
+encryptionKey[291] = 22;
+encryptionKey[292] = 7;
+encryptionKey[293] = 118;
+encryptionKey[294] = 115;
+encryptionKey[295] = 112;
+encryptionKey[296] = 104;
+encryptionKey[297] = 101;
+encryptionKey[298] = 114;
+encryptionKey[299] = 101;
+encryptionKey[300] = 49;
+encryptionKey[301] = 21;
+encryptionKey[302] = 48;
+encryptionKey[303] = 19;
+encryptionKey[304] = 6;
+encryptionKey[305] = 10;
+encryptionKey[306] = 9;
+encryptionKey[307] = -110;
+encryptionKey[308] = 38;
+encryptionKey[309] = -119;
+encryptionKey[310] = -109;
+encryptionKey[311] = -14;
+encryptionKey[312] = 44;
+encryptionKey[313] = 100;
+encryptionKey[314] = 1;
+encryptionKey[315] = 25;
+encryptionKey[316] = 22;
+encryptionKey[317] = 5;
+encryptionKey[318] = 108;
+encryptionKey[319] = 111;
+encryptionKey[320] = 99;
+encryptionKey[321] = 97;
+encryptionKey[322] = 108;
+encryptionKey[323] = 49;
+encryptionKey[324] = 11;
+encryptionKey[325] = 48;
+encryptionKey[326] = 9;
+encryptionKey[327] = 6;
+encryptionKey[328] = 3;
+encryptionKey[329] = 85;
+encryptionKey[330] = 4;
+encryptionKey[331] = 6;
+encryptionKey[332] = 19;
+encryptionKey[333] = 2;
+encryptionKey[334] = 85;
+encryptionKey[335] = 83;
+encryptionKey[336] = 49;
+encryptionKey[337] = 49;
+encryptionKey[338] = 48;
+encryptionKey[339] = 47;
+encryptionKey[340] = 6;
+encryptionKey[341] = 3;
+encryptionKey[342] = 85;
+encryptionKey[343] = 4;
+encryptionKey[344] = 11;
+encryptionKey[345] = 12;
+encryptionKey[346] = 40;
+encryptionKey[347] = 109;
+encryptionKey[348] = 73;
+encryptionKey[349] = 68;
+encryptionKey[350] = 45;
+encryptionKey[351] = 99;
+encryptionKey[352] = 50;
+encryptionKey[353] = 54;
+encryptionKey[354] = 53;
+encryptionKey[355] = 48;
+encryptionKey[356] = 97;
+encryptionKey[357] = 100;
+encryptionKey[358] = 99;
+encryptionKey[359] = 45;
+encryptionKey[360] = 57;
+encryptionKey[361] = 51;
+encryptionKey[362] = 99;
+encryptionKey[363] = 52;
+encryptionKey[364] = 45;
+encryptionKey[365] = 52;
+encryptionKey[366] = 49;
+encryptionKey[367] = 48;
+encryptionKey[368] = 102;
+encryptionKey[369] = 45;
+encryptionKey[370] = 98;
+encryptionKey[371] = 101;
+encryptionKey[372] = 48;
+encryptionKey[373] = 57;
+encryptionKey[374] = 45;
+encryptionKey[375] = 55;
+encryptionKey[376] = 97;
+encryptionKey[377] = 54;
+encryptionKey[378] = 101;
+encryptionKey[379] = 98;
+encryptionKey[380] = 98;
+encryptionKey[381] = 101;
+encryptionKey[382] = 54;
+encryptionKey[383] = 48;
+encryptionKey[384] = 49;
+encryptionKey[385] = 99;
+encryptionKey[386] = 52;
+encryptionKey[387] = 48;
+encryptionKey[388] = -126;
+encryptionKey[389] = 1;
+encryptionKey[390] = 34;
+encryptionKey[391] = 48;
+encryptionKey[392] = 13;
+encryptionKey[393] = 6;
+encryptionKey[394] = 9;
+encryptionKey[395] = 42;
+encryptionKey[396] = -122;
+encryptionKey[397] = 72;
+encryptionKey[398] = -122;
+encryptionKey[399] = -9;
+encryptionKey[400] = 13;
+encryptionKey[401] = 1;
+encryptionKey[402] = 1;
+encryptionKey[403] = 1;
+encryptionKey[404] = 5;
+encryptionKey[405] = 0;
+encryptionKey[406] = 3;
+encryptionKey[407] = -126;
+encryptionKey[408] = 1;
+encryptionKey[409] = 15;
+encryptionKey[410] = 0;
+encryptionKey[411] = 48;
+encryptionKey[412] = -126;
+encryptionKey[413] = 1;
+encryptionKey[414] = 10;
+encryptionKey[415] = 2;
+encryptionKey[416] = -126;
+encryptionKey[417] = 1;
+encryptionKey[418] = 1;
+encryptionKey[419] = 0;
+encryptionKey[420] = -68;
+encryptionKey[421] = -44;
+encryptionKey[422] = 79;
+encryptionKey[423] = 29;
+encryptionKey[424] = -16;
+encryptionKey[425] = -120;
+encryptionKey[426] = 79;
+encryptionKey[427] = -26;
+encryptionKey[428] = -71;
+encryptionKey[429] = -55;
+encryptionKey[430] = -128;
+encryptionKey[431] = -89;
+encryptionKey[432] = -94;
+encryptionKey[433] = 115;
+encryptionKey[434] = 23;
+encryptionKey[435] = 94;
+encryptionKey[436] = -108;
+encryptionKey[437] = -128;
+encryptionKey[438] = 35;
+encryptionKey[439] = -108;
+encryptionKey[440] = 48;
+encryptionKey[441] = -70;
+encryptionKey[442] = 88;
+encryptionKey[443] = -101;
+encryptionKey[444] = 121;
+encryptionKey[445] = -94;
+encryptionKey[446] = 37;
+encryptionKey[447] = -55;
+encryptionKey[448] = -100;
+encryptionKey[449] = 107;
+encryptionKey[450] = 123;
+encryptionKey[451] = 33;
+encryptionKey[452] = -71;
+encryptionKey[453] = -48;
+encryptionKey[454] = 67;
+encryptionKey[455] = 121;
+encryptionKey[456] = 36;
+encryptionKey[457] = 68;
+encryptionKey[458] = -93;
+encryptionKey[459] = -27;
+encryptionKey[460] = 90;
+encryptionKey[461] = -73;
+encryptionKey[462] = 81;
+encryptionKey[463] = 96;
+encryptionKey[464] = -99;
+encryptionKey[465] = 102;
+encryptionKey[466] = 113;
+encryptionKey[467] = 115;
+encryptionKey[468] = -96;
+encryptionKey[469] = -101;
+encryptionKey[470] = -107;
+encryptionKey[471] = -47;
+encryptionKey[472] = -116;
+encryptionKey[473] = 40;
+encryptionKey[474] = -8;
+encryptionKey[475] = -35;
+encryptionKey[476] = 87;
+encryptionKey[477] = -108;
+encryptionKey[478] = -85;
+encryptionKey[479] = 50;
+encryptionKey[480] = -93;
+encryptionKey[481] = 19;
+encryptionKey[482] = 57;
+encryptionKey[483] = -70;
+encryptionKey[484] = -19;
+encryptionKey[485] = -28;
+encryptionKey[486] = 39;
+encryptionKey[487] = 121;
+encryptionKey[488] = 35;
+encryptionKey[489] = 82;
+encryptionKey[490] = -122;
+encryptionKey[491] = 104;
+encryptionKey[492] = 44;
+encryptionKey[493] = 50;
+encryptionKey[494] = -40;
+encryptionKey[495] = 37;
+encryptionKey[496] = 2;
+encryptionKey[497] = -63;
+encryptionKey[498] = 40;
+encryptionKey[499] = -36;
+encryptionKey[500] = -43;
+encryptionKey[501] = 53;
+encryptionKey[502] = -54;
+encryptionKey[503] = -79;
+encryptionKey[504] = -82;
+encryptionKey[505] = 64;
+encryptionKey[506] = 76;
+encryptionKey[507] = 24;
+encryptionKey[508] = -128;
+encryptionKey[509] = -112;
+encryptionKey[510] = -122;
+encryptionKey[511] = 112;
+encryptionKey[512] = -51;
+encryptionKey[513] = 51;
+encryptionKey[514] = 61;
+encryptionKey[515] = -27;
+encryptionKey[516] = -87;
+encryptionKey[517] = -128;
+encryptionKey[518] = 15;
+encryptionKey[519] = 68;
+encryptionKey[520] = 94;
+encryptionKey[521] = -42;
+encryptionKey[522] = 20;
+encryptionKey[523] = 22;
+encryptionKey[524] = 122;
+encryptionKey[525] = 21;
+encryptionKey[526] = -46;
+encryptionKey[527] = 24;
+encryptionKey[528] = -32;
+encryptionKey[529] = 67;
+encryptionKey[530] = 12;
+encryptionKey[531] = 62;
+encryptionKey[532] = 41;
+encryptionKey[533] = -3;
+encryptionKey[534] = -12;
+encryptionKey[535] = -69;
+encryptionKey[536] = -92;
+encryptionKey[537] = 21;
+encryptionKey[538] = -111;
+encryptionKey[539] = 77;
+encryptionKey[540] = 85;
+encryptionKey[541] = 1;
+encryptionKey[542] = 7;
+encryptionKey[543] = -84;
+encryptionKey[544] = 3;
+encryptionKey[545] = -63;
+encryptionKey[546] = -8;
+encryptionKey[547] = 85;
+encryptionKey[548] = 112;
+encryptionKey[549] = -34;
+encryptionKey[550] = -118;
+encryptionKey[551] = -118;
+encryptionKey[552] = 41;
+encryptionKey[553] = 114;
+encryptionKey[554] = -32;
+encryptionKey[555] = -58;
+encryptionKey[556] = -108;
+encryptionKey[557] = -58;
+encryptionKey[558] = 82;
+encryptionKey[559] = -42;
+encryptionKey[560] = 35;
+encryptionKey[561] = 99;
+encryptionKey[562] = 127;
+encryptionKey[563] = -86;
+encryptionKey[564] = 125;
+encryptionKey[565] = -95;
+encryptionKey[566] = -7;
+encryptionKey[567] = 112;
+encryptionKey[568] = -61;
+encryptionKey[569] = 122;
+encryptionKey[570] = 70;
+encryptionKey[571] = 76;
+encryptionKey[572] = -118;
+encryptionKey[573] = 15;
+encryptionKey[574] = 15;
+encryptionKey[575] = 33;
+encryptionKey[576] = -64;
+encryptionKey[577] = -120;
+encryptionKey[578] = -70;
+encryptionKey[579] = 68;
+encryptionKey[580] = -123;
+encryptionKey[581] = 22;
+encryptionKey[582] = -33;
+encryptionKey[583] = -83;
+encryptionKey[584] = 44;
+encryptionKey[585] = 88;
+encryptionKey[586] = -20;
+encryptionKey[587] = -86;
+encryptionKey[588] = -121;
+encryptionKey[589] = 34;
+encryptionKey[590] = 94;
+encryptionKey[591] = 126;
+encryptionKey[592] = 85;
+encryptionKey[593] = -71;
+encryptionKey[594] = 114;
+encryptionKey[595] = 94;
+encryptionKey[596] = 16;
+encryptionKey[597] = -127;
+encryptionKey[598] = 75;
+encryptionKey[599] = 36;
+encryptionKey[600] = -113;
+encryptionKey[601] = -116;
+encryptionKey[602] = 16;
+encryptionKey[603] = 80;
+encryptionKey[604] = -101;
+encryptionKey[605] = 50;
+encryptionKey[606] = -1;
+encryptionKey[607] = 65;
+encryptionKey[608] = 69;
+encryptionKey[609] = -100;
+encryptionKey[610] = 68;
+encryptionKey[611] = 62;
+encryptionKey[612] = 59;
+encryptionKey[613] = 54;
+encryptionKey[614] = 127;
+encryptionKey[615] = 57;
+encryptionKey[616] = 39;
+encryptionKey[617] = -32;
+encryptionKey[618] = 46;
+encryptionKey[619] = -109;
+encryptionKey[620] = -68;
+encryptionKey[621] = 97;
+encryptionKey[622] = -47;
+encryptionKey[623] = 71;
+encryptionKey[624] = 61;
+encryptionKey[625] = 74;
+encryptionKey[626] = -3;
+encryptionKey[627] = -113;
+encryptionKey[628] = -128;
+encryptionKey[629] = 39;
+encryptionKey[630] = -62;
+encryptionKey[631] = -61;
+encryptionKey[632] = -26;
+encryptionKey[633] = -43;
+encryptionKey[634] = -70;
+encryptionKey[635] = 79;
+encryptionKey[636] = -64;
+encryptionKey[637] = 28;
+encryptionKey[638] = 110;
+encryptionKey[639] = 67;
+encryptionKey[640] = 126;
+encryptionKey[641] = 31;
+encryptionKey[642] = 126;
+encryptionKey[643] = 125;
+encryptionKey[644] = 65;
+encryptionKey[645] = 34;
+encryptionKey[646] = 127;
+encryptionKey[647] = 39;
+encryptionKey[648] = -38;
+encryptionKey[649] = 57;
+encryptionKey[650] = 73;
+encryptionKey[651] = 93;
+encryptionKey[652] = 66;
+encryptionKey[653] = -67;
+encryptionKey[654] = 34;
+encryptionKey[655] = 91;
+encryptionKey[656] = -27;
+encryptionKey[657] = -10;
+encryptionKey[658] = 52;
+encryptionKey[659] = 84;
+encryptionKey[660] = -78;
+encryptionKey[661] = 59;
+encryptionKey[662] = 11;
+encryptionKey[663] = 115;
+encryptionKey[664] = -123;
+encryptionKey[665] = -9;
+encryptionKey[666] = -17;
+encryptionKey[667] = -112;
+encryptionKey[668] = -70;
+encryptionKey[669] = -108;
+encryptionKey[670] = -81;
+encryptionKey[671] = 105;
+encryptionKey[672] = 13;
+encryptionKey[673] = -62;
+encryptionKey[674] = -70;
+encryptionKey[675] = 19;
+encryptionKey[676] = 2;
+encryptionKey[677] = 3;
+encryptionKey[678] = 1;
+encryptionKey[679] = 0;
+encryptionKey[680] = 1;
+encryptionKey[681] = -93;
+encryptionKey[682] = -127;
+encryptionKey[683] = -43;
+encryptionKey[684] = 48;
+encryptionKey[685] = -127;
+encryptionKey[686] = -46;
+encryptionKey[687] = 48;
+encryptionKey[688] = 11;
+encryptionKey[689] = 6;
+encryptionKey[690] = 3;
+encryptionKey[691] = 85;
+encryptionKey[692] = 29;
+encryptionKey[693] = 15;
+encryptionKey[694] = 4;
+encryptionKey[695] = 4;
+encryptionKey[696] = 3;
+encryptionKey[697] = 2;
+encryptionKey[698] = 4;
+encryptionKey[699] = -16;
+encryptionKey[700] = 48;
+encryptionKey[701] = 46;
+encryptionKey[702] = 6;
+encryptionKey[703] = 3;
+encryptionKey[704] = 85;
+encryptionKey[705] = 29;
+encryptionKey[706] = 17;
+encryptionKey[707] = 4;
+encryptionKey[708] = 39;
+encryptionKey[709] = 48;
+encryptionKey[710] = 37;
+encryptionKey[711] = -126;
+encryptionKey[712] = 35;
+encryptionKey[713] = 108;
+encryptionKey[714] = 97;
+encryptionKey[715] = 98;
+encryptionKey[716] = 45;
+encryptionKey[717] = 99;
+encryptionKey[718] = 111;
+encryptionKey[719] = 109;
+encryptionKey[720] = 112;
+encryptionKey[721] = 48;
+encryptionKey[722] = 49;
+encryptionKey[723] = 45;
+encryptionKey[724] = 118;
+encryptionKey[725] = 99;
+encryptionKey[726] = 101;
+encryptionKey[727] = 110;
+encryptionKey[728] = 116;
+encryptionKey[729] = 101;
+encryptionKey[730] = 114;
+encryptionKey[731] = 46;
+encryptionKey[732] = 105;
+encryptionKey[733] = 110;
+encryptionKey[734] = 116;
+encryptionKey[735] = 46;
+encryptionKey[736] = 115;
+encryptionKey[737] = 101;
+encryptionKey[738] = 110;
+encryptionKey[739] = 116;
+encryptionKey[740] = 97;
+encryptionKey[741] = 110;
+encryptionKey[742] = 105;
+encryptionKey[743] = 97;
+encryptionKey[744] = 46;
+encryptionKey[745] = 110;
+encryptionKey[746] = 101;
+encryptionKey[747] = 116;
+encryptionKey[748] = 48;
+encryptionKey[749] = 29;
+encryptionKey[750] = 6;
+encryptionKey[751] = 3;
+encryptionKey[752] = 85;
+encryptionKey[753] = 29;
+encryptionKey[754] = 14;
+encryptionKey[755] = 4;
+encryptionKey[756] = 22;
+encryptionKey[757] = 4;
+encryptionKey[758] = 20;
+encryptionKey[759] = -92;
+encryptionKey[760] = -100;
+encryptionKey[761] = 44;
+encryptionKey[762] = 0;
+encryptionKey[763] = 92;
+encryptionKey[764] = -68;
+encryptionKey[765] = 42;
+encryptionKey[766] = -91;
+encryptionKey[767] = -5;
+encryptionKey[768] = -41;
+encryptionKey[769] = -15;
+encryptionKey[770] = 120;
+encryptionKey[771] = 114;
+encryptionKey[772] = 87;
+encryptionKey[773] = -94;
+encryptionKey[774] = 5;
+encryptionKey[775] = 95;
+encryptionKey[776] = 54;
+encryptionKey[777] = 113;
+encryptionKey[778] = 125;
+encryptionKey[779] = 48;
+encryptionKey[780] = 31;
+encryptionKey[781] = 6;
+encryptionKey[782] = 3;
+encryptionKey[783] = 85;
+encryptionKey[784] = 29;
+encryptionKey[785] = 35;
+encryptionKey[786] = 4;
+encryptionKey[787] = 24;
+encryptionKey[788] = 48;
+encryptionKey[789] = 22;
+encryptionKey[790] = -128;
+encryptionKey[791] = 20;
+encryptionKey[792] = -102;
+encryptionKey[793] = -123;
+encryptionKey[794] = 9;
+encryptionKey[795] = -76;
+encryptionKey[796] = -87;
+encryptionKey[797] = 126;
+encryptionKey[798] = -46;
+encryptionKey[799] = 29;
+encryptionKey[800] = -15;
+encryptionKey[801] = -103;
+encryptionKey[802] = -91;
+encryptionKey[803] = 68;
+encryptionKey[804] = 3;
+encryptionKey[805] = 25;
+encryptionKey[806] = 95;
+encryptionKey[807] = 47;
+encryptionKey[808] = -17;
+encryptionKey[809] = 54;
+encryptionKey[810] = 98;
+encryptionKey[811] = -27;
+encryptionKey[812] = 48;
+encryptionKey[813] = 83;
+encryptionKey[814] = 6;
+encryptionKey[815] = 8;
+encryptionKey[816] = 43;
+encryptionKey[817] = 6;
+encryptionKey[818] = 1;
+encryptionKey[819] = 5;
+encryptionKey[820] = 5;
+encryptionKey[821] = 7;
+encryptionKey[822] = 1;
+encryptionKey[823] = 1;
+encryptionKey[824] = 4;
+encryptionKey[825] = 71;
+encryptionKey[826] = 48;
+encryptionKey[827] = 69;
+encryptionKey[828] = 48;
+encryptionKey[829] = 67;
+encryptionKey[830] = 6;
+encryptionKey[831] = 8;
+encryptionKey[832] = 43;
+encryptionKey[833] = 6;
+encryptionKey[834] = 1;
+encryptionKey[835] = 5;
+encryptionKey[836] = 5;
+encryptionKey[837] = 7;
+encryptionKey[838] = 48;
+encryptionKey[839] = 2;
+encryptionKey[840] = -122;
+encryptionKey[841] = 55;
+encryptionKey[842] = 104;
+encryptionKey[843] = 116;
+encryptionKey[844] = 116;
+encryptionKey[845] = 112;
+encryptionKey[846] = 115;
+encryptionKey[847] = 58;
+encryptionKey[848] = 47;
+encryptionKey[849] = 47;
+encryptionKey[850] = 108;
+encryptionKey[851] = 97;
+encryptionKey[852] = 98;
+encryptionKey[853] = 45;
+encryptionKey[854] = 99;
+encryptionKey[855] = 111;
+encryptionKey[856] = 109;
+encryptionKey[857] = 112;
+encryptionKey[858] = 48;
+encryptionKey[859] = 49;
+encryptionKey[860] = 45;
+encryptionKey[861] = 118;
+encryptionKey[862] = 99;
+encryptionKey[863] = 101;
+encryptionKey[864] = 110;
+encryptionKey[865] = 116;
+encryptionKey[866] = 101;
+encryptionKey[867] = 114;
+encryptionKey[868] = 46;
+encryptionKey[869] = 105;
+encryptionKey[870] = 110;
+encryptionKey[871] = 116;
+encryptionKey[872] = 46;
+encryptionKey[873] = 115;
+encryptionKey[874] = 101;
+encryptionKey[875] = 110;
+encryptionKey[876] = 116;
+encryptionKey[877] = 97;
+encryptionKey[878] = 110;
+encryptionKey[879] = 105;
+encryptionKey[880] = 97;
+encryptionKey[881] = 46;
+encryptionKey[882] = 110;
+encryptionKey[883] = 101;
+encryptionKey[884] = 116;
+encryptionKey[885] = 47;
+encryptionKey[886] = 97;
+encryptionKey[887] = 102;
+encryptionKey[888] = 100;
+encryptionKey[889] = 47;
+encryptionKey[890] = 118;
+encryptionKey[891] = 101;
+encryptionKey[892] = 99;
+encryptionKey[893] = 115;
+encryptionKey[894] = 47;
+encryptionKey[895] = 99;
+encryptionKey[896] = 97;
+encryptionKey[897] = 48;
+encryptionKey[898] = 13;
+encryptionKey[899] = 6;
+encryptionKey[900] = 9;
+encryptionKey[901] = 42;
+encryptionKey[902] = -122;
+encryptionKey[903] = 72;
+encryptionKey[904] = -122;
+encryptionKey[905] = -9;
+encryptionKey[906] = 13;
+encryptionKey[907] = 1;
+encryptionKey[908] = 1;
+encryptionKey[909] = 11;
+encryptionKey[910] = 5;
+encryptionKey[911] = 0;
+encryptionKey[912] = 3;
+encryptionKey[913] = -126;
+encryptionKey[914] = 1;
+encryptionKey[915] = 1;
+encryptionKey[916] = 0;
+encryptionKey[917] = 65;
+encryptionKey[918] = -71;
+encryptionKey[919] = -102;
+encryptionKey[920] = 110;
+encryptionKey[921] = -3;
+encryptionKey[922] = -49;
+encryptionKey[923] = 115;
+encryptionKey[924] = 53;
+encryptionKey[925] = -29;
+encryptionKey[926] = -16;
+encryptionKey[927] = 27;
+encryptionKey[928] = -81;
+encryptionKey[929] = -97;
+encryptionKey[930] = 44;
+encryptionKey[931] = 58;
+encryptionKey[932] = -25;
+encryptionKey[933] = -9;
+encryptionKey[934] = -124;
+encryptionKey[935] = 74;
+encryptionKey[936] = 43;
+encryptionKey[937] = -127;
+encryptionKey[938] = 102;
+encryptionKey[939] = 105;
+encryptionKey[940] = 114;
+encryptionKey[941] = -124;
+encryptionKey[942] = 127;
+encryptionKey[943] = -26;
+encryptionKey[944] = 88;
+encryptionKey[945] = -38;
+encryptionKey[946] = -1;
+encryptionKey[947] = -126;
+encryptionKey[948] = 62;
+encryptionKey[949] = -84;
+encryptionKey[950] = -108;
+encryptionKey[951] = -101;
+encryptionKey[952] = -116;
+encryptionKey[953] = -123;
+encryptionKey[954] = -112;
+encryptionKey[955] = 70;
+encryptionKey[956] = 3;
+encryptionKey[957] = -121;
+encryptionKey[958] = -21;
+encryptionKey[959] = -10;
+encryptionKey[960] = -101;
+encryptionKey[961] = 19;
+encryptionKey[962] = -93;
+encryptionKey[963] = -64;
+encryptionKey[964] = 112;
+encryptionKey[965] = 9;
+encryptionKey[966] = -11;
+encryptionKey[967] = 3;
+encryptionKey[968] = 55;
+encryptionKey[969] = 62;
+encryptionKey[970] = -55;
+encryptionKey[971] = 89;
+encryptionKey[972] = -122;
+encryptionKey[973] = -69;
+encryptionKey[974] = -111;
+encryptionKey[975] = 118;
+encryptionKey[976] = 12;
+encryptionKey[977] = -110;
+encryptionKey[978] = -62;
+encryptionKey[979] = 80;
+encryptionKey[980] = -97;
+encryptionKey[981] = 68;
+encryptionKey[982] = -83;
+encryptionKey[983] = 55;
+encryptionKey[984] = -43;
+encryptionKey[985] = -2;
+encryptionKey[986] = -119;
+encryptionKey[987] = -28;
+encryptionKey[988] = -17;
+encryptionKey[989] = -37;
+encryptionKey[990] = -113;
+encryptionKey[991] = 62;
+encryptionKey[992] = 79;
+encryptionKey[993] = -99;
+encryptionKey[994] = -39;
+encryptionKey[995] = 84;
+encryptionKey[996] = 36;
+encryptionKey[997] = -28;
+encryptionKey[998] = 110;
+encryptionKey[999] = -71;
+encryptionKey[1000] = 120;
+encryptionKey[1001] = 70;
+encryptionKey[1002] = -109;
+encryptionKey[1003] = 41;
+encryptionKey[1004] = 11;
+encryptionKey[1005] = 6;
+encryptionKey[1006] = -44;
+encryptionKey[1007] = -99;
+encryptionKey[1008] = 9;
+encryptionKey[1009] = 83;
+encryptionKey[1010] = -21;
+encryptionKey[1011] = 12;
+encryptionKey[1012] = 127;
+encryptionKey[1013] = -71;
+encryptionKey[1014] = -93;
+encryptionKey[1015] = -117;
+encryptionKey[1016] = 118;
+encryptionKey[1017] = 51;
+encryptionKey[1018] = 118;
+encryptionKey[1019] = -54;
+encryptionKey[1020] = 43;
+encryptionKey[1021] = 52;
+encryptionKey[1022] = 26;
+encryptionKey[1023] = 91;
+encryptionKey[1024] = 121;
+encryptionKey[1025] = 22;
+encryptionKey[1026] = -40;
+encryptionKey[1027] = -40;
+encryptionKey[1028] = -22;
+encryptionKey[1029] = 4;
+encryptionKey[1030] = 69;
+encryptionKey[1031] = 115;
+encryptionKey[1032] = -52;
+encryptionKey[1033] = 38;
+encryptionKey[1034] = 75;
+encryptionKey[1035] = -76;
+encryptionKey[1036] = -127;
+encryptionKey[1037] = -12;
+encryptionKey[1038] = 90;
+encryptionKey[1039] = -117;
+encryptionKey[1040] = -71;
+encryptionKey[1041] = -90;
+encryptionKey[1042] = -127;
+encryptionKey[1043] = 11;
+encryptionKey[1044] = -73;
+encryptionKey[1045] = -27;
+encryptionKey[1046] = 87;
+encryptionKey[1047] = 97;
+encryptionKey[1048] = -32;
+encryptionKey[1049] = 21;
+encryptionKey[1050] = 23;
+encryptionKey[1051] = 78;
+encryptionKey[1052] = -93;
+encryptionKey[1053] = 87;
+encryptionKey[1054] = -60;
+encryptionKey[1055] = 116;
+encryptionKey[1056] = -15;
+encryptionKey[1057] = 57;
+encryptionKey[1058] = 69;
+encryptionKey[1059] = -124;
+encryptionKey[1060] = -95;
+encryptionKey[1061] = -24;
+encryptionKey[1062] = -110;
+encryptionKey[1063] = 37;
+encryptionKey[1064] = -121;
+encryptionKey[1065] = -72;
+encryptionKey[1066] = -48;
+encryptionKey[1067] = -113;
+encryptionKey[1068] = -106;
+encryptionKey[1069] = -74;
+encryptionKey[1070] = 41;
+encryptionKey[1071] = -118;
+encryptionKey[1072] = -81;
+encryptionKey[1073] = 86;
+encryptionKey[1074] = 87;
+encryptionKey[1075] = 79;
+encryptionKey[1076] = 89;
+encryptionKey[1077] = 105;
+encryptionKey[1078] = -47;
+encryptionKey[1079] = 54;
+encryptionKey[1080] = 68;
+encryptionKey[1081] = 30;
+encryptionKey[1082] = 30;
+encryptionKey[1083] = 118;
+encryptionKey[1084] = 82;
+encryptionKey[1085] = 66;
+encryptionKey[1086] = 88;
+encryptionKey[1087] = -117;
+encryptionKey[1088] = -101;
+encryptionKey[1089] = -35;
+encryptionKey[1090] = -85;
+encryptionKey[1091] = 49;
+encryptionKey[1092] = -34;
+encryptionKey[1093] = 7;
+encryptionKey[1094] = -39;
+encryptionKey[1095] = -27;
+encryptionKey[1096] = -67;
+encryptionKey[1097] = -60;
+encryptionKey[1098] = -110;
+encryptionKey[1099] = -120;
+encryptionKey[1100] = 108;
+encryptionKey[1101] = 59;
+encryptionKey[1102] = -123;
+encryptionKey[1103] = 96;
+encryptionKey[1104] = -109;
+encryptionKey[1105] = -88;
+encryptionKey[1106] = 37;
+encryptionKey[1107] = -122;
+encryptionKey[1108] = -123;
+encryptionKey[1109] = 9;
+encryptionKey[1110] = 20;
+encryptionKey[1111] = -57;
+encryptionKey[1112] = 5;
+encryptionKey[1113] = 44;
+encryptionKey[1114] = -76;
+encryptionKey[1115] = 102;
+encryptionKey[1116] = 106;
+encryptionKey[1117] = -18;
+encryptionKey[1118] = -81;
+encryptionKey[1119] = -51;
+encryptionKey[1120] = -76;
+encryptionKey[1121] = -119;
+encryptionKey[1122] = -64;
+encryptionKey[1123] = 1;
+encryptionKey[1124] = 67;
+encryptionKey[1125] = -59;
+encryptionKey[1126] = -45;
+encryptionKey[1127] = -125;
+encryptionKey[1128] = 94;
+encryptionKey[1129] = -88;
+encryptionKey[1130] = 3;
+encryptionKey[1131] = -97;
+encryptionKey[1132] = -7;
+encryptionKey[1133] = 94;
+encryptionKey[1134] = 117;
+encryptionKey[1135] = 56;
+encryptionKey[1136] = -24;
+encryptionKey[1137] = -46;
+encryptionKey[1138] = 54;
+encryptionKey[1139] = 35;
+encryptionKey[1140] = -71;
+encryptionKey[1141] = -8;
+encryptionKey[1142] = -24;
+encryptionKey[1143] = 40;
+encryptionKey[1144] = 56;
+encryptionKey[1145] = -19;
+encryptionKey[1146] = 27;
+encryptionKey[1147] = -64;
+encryptionKey[1148] = -92;
+encryptionKey[1149] = -23;
+encryptionKey[1150] = 126;
+encryptionKey[1151] = 97;
+encryptionKey[1152] = 2;
+encryptionKey[1153] = -110;
+encryptionKey[1154] = -99;
+encryptionKey[1155] = -82;
+encryptionKey[1156] = -12;
+encryptionKey[1157] = 123;
+encryptionKey[1158] = 91;
+encryptionKey[1159] = -94;
+encryptionKey[1160] = -66;
+encryptionKey[1161] = -59;
+encryptionKey[1162] = -118;
+encryptionKey[1163] = -63;
+encryptionKey[1164] = 95;
+encryptionKey[1165] = -6;
+encryptionKey[1166] = -108;
+encryptionKey[1167] = 87;
+encryptionKey[1168] = 65;
+encryptionKey[1169] = -80;
+encryptionKey[1170] = 125;
+encryptionKey[1171] = -105;
+encryptionKey[1172] = -24;
+spec.encryptionKey = encryptionKey;
+spec.globalIPSettings = new VcCustomizationGlobalIPSettings();
+var dnsSuffixList = new Array();
+dnsSuffixList[0] = 'int.sentania.net';
+dnsSuffixList[1] = 'sentania.net';
+dnsSuffixList[2] = 'lab.sentania.net';
+spec.globalIPSettings.dnsSuffixList = dnsSuffixList;
+task = managedObject.customizeVM_Task(spec); 
+]]></script>
+    <in-binding>
+      <bind name="outVm" type="VC:VirtualMachine" export-name="outVm"/>
+    </in-binding>
+    <out-binding>
+      <bind name="task" type="VC:Task" export-name="task"/>
+    </out-binding>
+    <description><![CDATA[Simple task with custom script capability.]]></description>
+    <position y="140.0" x="300.0"/>
+  </workflow-item>
+  <workflow-item name="item7" out-name="item0" type="task" script-module="com.vmware.library.vc.basic/vim3WaitTaskEnd">
+    <display-name><![CDATA[vim3WaitTaskEnd]]></display-name>
+    <script encoded="false"><![CDATA[//Auto generated script, cannot be modified !
+actionResult = System.getModule("com.vmware.library.vc.basic").vim3WaitTaskEnd(task,progress,pollRate);
+]]></script>
+    <in-binding>
+      <bind name="task" type="VC:Task" export-name="task">
+        <description><![CDATA[Task to Wait for]]></description>
+      </bind>
+      <bind name="progress" type="boolean" export-name="progress">
+        <description><![CDATA[Log progess while waiting for the task]]></description>
+      </bind>
+      <bind name="pollRate" type="number" export-name="pollRate">
+        <description><![CDATA[Polling rate for the task state [seconds]]]></description>
+      </bind>
+    </in-binding>
+    <out-binding>
+      <bind name="actionResult" type="string" export-name="actionResult"/>
+    </out-binding>
+    <description><![CDATA[Add a note to the workflow schema.]]></description>
+    <position y="140.0" x="160.0"/>
+  </workflow-item>
+  <presentation/>
+</workflow>

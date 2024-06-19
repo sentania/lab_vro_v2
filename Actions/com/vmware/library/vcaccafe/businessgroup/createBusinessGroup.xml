@@ -1,0 +1,29 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dunes-script-module name="createBusinessGroup" result-type="vCACCAFE:BusinessGroup" api-version="6.0.0" id="345806ee-e6ca-415e-a3e6-ac439898b469" version="1.0.1" allowed-operations="vf" category-name="com.vmware.library.vcaccafe.businessgroup">
+  <description><![CDATA[Creates a business group.]]></description>
+  <param n="host" t="vCACCAFE:VCACHost"><![CDATA[vRA host]]></param>
+  <param n="name" t="string"><![CDATA[Name]]></param>
+  <param n="description" t="string"><![CDATA[Description]]></param>
+  <param n="defaultMachinePrefix" t="vCACCAFE:MachinePrefix"><![CDATA[Default machine prefix]]></param>
+  <param n="activeDirectoryContainer" t="string"><![CDATA[Active directory container]]></param>
+  <param n="administrators" t="Array/string"><![CDATA[Administrator role]]></param>
+  <param n="administratorEmail" t="string"><![CDATA[Administrator email]]></param>
+  <param n="support" t="Array/string"><![CDATA[Support role]]></param>
+  <param n="users" t="Array/string"><![CDATA[User role]]></param>
+  <script encoded="false"><![CDATA[var group = new vCACCAFEBusinessGroup();
+group.setName(name);
+group.setDescription(description);
+group.setMachinePrefixId(defaultMachinePrefix.getId());
+group.setActiveDirectoryContainer(activeDirectoryContainer);
+group.setAdministrators(administrators);
+group.setAdministratorEmail(administratorEmail);
+group.setSupport(support)
+group.setUsers(users);
+
+System.log("Creating business group '" + name + "'...");
+var service = host.createInfrastructureClient().getInfrastructureBusinessGroupsService();
+var id = service.create(group);
+System.log("Business group created: " + id.toString());
+
+return vCACCAFEEntitiesFinder.getBusinessGroup(host, id.toString());]]></script>
+</dunes-script-module>

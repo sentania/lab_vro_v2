@@ -1,0 +1,60 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<workflow xmlns="http://vmware.com/vco/workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://vmware.com/vco/workflow http://vmware.com/vco/workflow/Workflow-v4.xsd" root-name="item1" object-name="workflow:name=generic" id="08d75a8c-a79e-4dfb-8ff7-5d48ef6d94a9" version="2.1.0" api-version="6.0.0" allowed-operations="vef" editor-version="2.0" restartMode="1" resumeFromFailedMode="0">
+  <display-name><![CDATA[Get VMware Hosts by vCenter]]></display-name>
+  <description><![CDATA[Returns a list of virtual machines from all registered vCenter Server hosts that match the provided expression. The expression is any valid javascript regex.]]></description>
+  <position y="50.0" x="100.0"/>
+  <input>
+    <param name="vc" type="VC:SdkConnection"/>
+  </input>
+  <output>
+    <param name="hosts" type="Array/VC:HostSystem"/>
+  </output>
+  <attrib name="targetTypes" type="Array/string" read-only="false">
+    <value encoded="n"><![CDATA[[17:string#HostSystem]]]></value>
+  </attrib>
+  <attrib name="properties" type="Array/string" read-only="false">
+    <value encoded="n"><![CDATA[[11:string#name]]]></value>
+  </attrib>
+  <attrib name="foundObjects" type="Array/string" read-only="false">
+    <value encoded="n"><![CDATA[]]></value>
+  </attrib>
+  <attrib name="filter" type="string" read-only="false">
+    <value encoded="n"><![CDATA[]]></value>
+  </attrib>
+  <attrib name="rootFolder" type="VC:Folder" read-only="false">
+    <value encoded="n"><![CDATA[]]></value>
+  </attrib>
+  <workflow-item name="item0" type="end" end-mode="0">
+    <in-binding/>
+    <position y="50.0" x="980.0"/>
+  </workflow-item>
+  <workflow-item name="item1" out-name="item2" type="link" linked-workflow-id="6af07a67-22f6-4b5f-8be9-22085510da98">
+    <display-name><![CDATA[Get vCenter entities by properties]]></display-name>
+    <in-binding>
+      <bind name="vc" type="VC:SdkConnection" export-name="vc"/>
+      <bind name="filter" type="string" export-name="filter"/>
+      <bind name="targetTypes" type="Array/string" export-name="targetTypes"/>
+      <bind name="properties" type="Array/string" export-name="properties"/>
+      <bind name="rootObject" type="VC:Folder" export-name="rootFolder"/>
+    </in-binding>
+    <out-binding>
+      <bind name="foundObjects" type="Array/string" export-name="foundObjects"/>
+    </out-binding>
+    <position y="60.0" x="420.0"/>
+  </workflow-item>
+  <workflow-item name="item2" out-name="item0" type="task">
+    <display-name><![CDATA[Convert to objects]]></display-name>
+    <script encoded="false"><![CDATA[hosts = new Array()
+for (var i in foundObjects) {
+    hosts.push(Server.fromUri(foundObjects[i]))
+}]]></script>
+    <in-binding>
+      <bind name="foundObjects" type="Array/string" export-name="foundObjects"/>
+    </in-binding>
+    <out-binding>
+      <bind name="hosts" type="Array/VC:HostSystem" export-name="hosts"/>
+    </out-binding>
+    <position y="60.0" x="680.0"/>
+  </workflow-item>
+  <presentation/>
+</workflow>

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<endpoint nativeId="db911f3e-fc85-46ac-bc83-c5eb9175458d" pluginVersion="2.2.2">
+    <properties>
+        <property type="string" name="schema">&lt;com.vmware.o11n.plugin.rest.schema.SchemaRespository&gt;
+  &lt;sources/&gt;
+&lt;/com.vmware.o11n.plugin.rest.schema.SchemaRespository&gt;</property>
+        <property type="string" name="proxyAuthenticationType">NONE</property>
+        <property type="integer" name="operationTimeout">60</property>
+        <property type="string" name="proxySessionMode">Shared Session</property>
+        <property type="bool" name="useProxy">false</property>
+        <property type="string" name="url">https://wfaprod.nm.nmfco.com/rest/</property>
+        <property type="password" name="password">vcoencrypted:/vJqKHJb6rcAhHFd+tYyJg==</property>
+        <property type="string" name="operations">&lt;list&gt;
+  &lt;com.vmware.o11n.plugin.rest.RESTOperation&gt;
+    &lt;id&gt;d95655f3-2db8-4092-abb6-052a0ad63a26&lt;/id&gt;
+    &lt;name&gt;Update export rule on a filer&lt;/name&gt;
+    &lt;host&gt;
+      &lt;name&gt;WFAProd&lt;/name&gt;
+      &lt;id&gt;30007fa9-2e0a-4cb7-8af6-dd6d4bd49d70&lt;/id&gt;
+      &lt;url&gt;https://wfaprod.nm.nmfco.com/rest/&lt;/url&gt;
+      &lt;operations class="tree-map"&gt;
+        &lt;entry&gt;
+          &lt;string&gt;30007fa9-2e0a-4cb7-8af6-dd6d4bd49d70:d95655f3-2db8-4092-abb6-052a0ad63a26&lt;/string&gt;
+          &lt;com.vmware.o11n.plugin.rest.RESTOperation reference="../../../.."/&gt;
+        &lt;/entry&gt;
+      &lt;/operations&gt;
+      &lt;authentication class="com.vmware.o11n.plugin.rest.HTTPBasicAuthentication"&gt;
+        &lt;type&gt;Basic&lt;/type&gt;
+        &lt;sessionMode&gt;Shared Session&lt;/sessionMode&gt;
+        &lt;isValid&gt;true&lt;/isValid&gt;
+        &lt;validationMessage&gt;&lt;/validationMessage&gt;
+        &lt;username&gt;nm\rup6694&lt;/username&gt;
+        &lt;password&gt;
+          &lt;crypttext&gt;vcoencrypted:/vJqKHJb6rcAhHFd+tYyJg==&lt;/crypttext&gt;
+        &lt;/password&gt;
+      &lt;/authentication&gt;
+      &lt;connectionTimeout&gt;30&lt;/connectionTimeout&gt;
+      &lt;operationTimeout&gt;60&lt;/operationTimeout&gt;
+      &lt;hostVerification&gt;false&lt;/hostVerification&gt;
+      &lt;proxyPort&gt;-1&lt;/proxyPort&gt;
+      &lt;schemaRepo&gt;
+        &lt;sources/&gt;
+      &lt;/schemaRepo&gt;
+      &lt;resourceId&gt;db911f3e-fc85-46ac-bc83-c5eb9175458d&lt;/resourceId&gt;
+      &lt;cleanHttpContextPerRequest&gt;false&lt;/cleanHttpContextPerRequest&gt;
+      &lt;automaticUrlRedirection&gt;false&lt;/automaticUrlRedirection&gt;
+      &lt;proxyAuthentication class="com.vmware.o11n.plugin.rest.NoneAuthentication"&gt;
+        &lt;type&gt;NONE&lt;/type&gt;
+        &lt;sessionMode&gt;Shared Session&lt;/sessionMode&gt;
+        &lt;isValid&gt;true&lt;/isValid&gt;
+        &lt;validationMessage&gt;&lt;/validationMessage&gt;
+      &lt;/proxyAuthentication&gt;
+    &lt;/host&gt;
+    &lt;urlTemplate&gt;workflows/9b059eb0-5f9f-419f-a43a-6abbf0ed376a/jobs&lt;/urlTemplate&gt;
+    &lt;method&gt;POST&lt;/method&gt;
+    &lt;inParameters/&gt;
+    &lt;pathParamsCount&gt;0&lt;/pathParamsCount&gt;
+    &lt;headerParameters/&gt;
+    &lt;defaultContentType&gt;application/xml&lt;/defaultContentType&gt;
+    &lt;commonHeaders/&gt;
+    &lt;supportedAcceptHeaderMediaTypes/&gt;
+    &lt;supportedContentTypes/&gt;
+    &lt;mandatoryPathParamNames/&gt;
+    &lt;mandatoryQueryParamNames/&gt;
+    &lt;mandatoryHeaderParamNames/&gt;
+  &lt;/com.vmware.o11n.plugin.rest.RESTOperation&gt;
+&lt;/list&gt;</property>
+        <property type="bool" name="hostVerification">false</property>
+        <property type="string" name="name">WFAProd</property>
+        <property type="string" name="authenticationType">Basic</property>
+        <property type="string" name="sessionMode">Shared Session</property>
+        <property type="integer" name="connectionTimeout">30</property>
+        <property type="string" name="username">nm\rup6694</property>
+    </properties>
+</endpoint>

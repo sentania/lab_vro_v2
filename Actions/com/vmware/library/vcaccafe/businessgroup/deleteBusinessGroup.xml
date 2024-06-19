@@ -1,0 +1,11 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dunes-script-module name="deleteBusinessGroup" result-type="void" api-version="6.0.0" id="2d45ad65-75a8-49e3-888e-35c46c196931" version="1.0.1" allowed-operations="vf" category-name="com.vmware.library.vcaccafe.businessgroup">
+  <description><![CDATA[Deletes a business group.]]></description>
+  <param n="group" t="vCACCAFE:BusinessGroup"><![CDATA[Business group]]></param>
+  <script encoded="false"><![CDATA[System.getModule("com.vmware.library.vcaccafe.util").validateObject(group, "Business group");
+System.log("Deleting business group '" + group.getName() + "'...");
+var host = vCACCAFEEntitiesFinder.getHostForEntity(group);
+var service = host.createInfrastructureClient().getInfrastructureBusinessGroupsService();
+service.delete(group.getId());
+System.log("Business group deleted: " + group.getId().toString());]]></script>
+</dunes-script-module>

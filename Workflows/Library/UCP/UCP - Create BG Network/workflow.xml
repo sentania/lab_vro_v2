@@ -1,0 +1,123 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<workflow xmlns="http://vmware.com/vco/workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://vmware.com/vco/workflow http://vmware.com/vco/workflow/Workflow-v4.xsd" root-name="item1" object-name="workflow:name=generic" id="efc7b708-8820-447c-a49d-c5a79078d60f" version="0.0.2" api-version="6.0.0" allowed-operations="vfe" restartMode="1" resumeFromFailedMode="0">
+  <display-name><![CDATA[UCP - Create BG Network]]></display-name>
+  <position y="50.0" x="100.0"/>
+  <input>
+    <param name="nsxconnect" type="NSX:Connection">
+      <description><![CDATA[Select the NSX Manager to connect to.]]></description>
+    </param>
+    <param name="transportId" type="string">
+      <description><![CDATA[Enter the ID of the Transport Zone]]></description>
+    </param>
+    <param name="switchName" type="string">
+      <description><![CDATA[Enter the name of the Logical Switch]]></description>
+    </param>
+    <param name="routerId" type="string">
+      <description><![CDATA[Enter the primary campus]]></description>
+    </param>
+    <param name="gatewayIP" type="string">
+      <description><![CDATA[Enter the IP address that will be used as the Gateway IP]]></description>
+    </param>
+    <param name="subnetMask" type="string">
+      <description><![CDATA[Enter the subnet mask (x.x.x.x)]]></description>
+    </param>
+    <param name="interfaceType" type="string">
+      <description><![CDATA[Type of Interface]]></description>
+    </param>
+  </input>
+  <output>
+    <param name="logicalInterface" type="NSX:Nic">
+      <description><![CDATA[vNic connected to the given virtualwire]]></description>
+    </param>
+  </output>
+  <attrib name="logicalSwitchId" type="string" read-only="false">
+    <value encoded="n"><![CDATA[]]></value>
+  </attrib>
+  <workflow-item name="item0" type="end" end-mode="0">
+    <position y="45.40909090909091" x="524.5"/>
+  </workflow-item>
+  <workflow-item name="item1" out-name="item2" type="link" linked-workflow-id="06b03e24-d558-47c5-853d-9ff6b41dcb10">
+    <display-name><![CDATA[UCP - Create logical switch]]></display-name>
+    <in-binding>
+      <bind name="connection" type="NSX:Connection" export-name="nsxconnect">
+        <description><![CDATA[NSX endpoint]]></description>
+      </bind>
+      <bind name="scopeId" type="string" export-name="transportId">
+        <description><![CDATA[Transport zone]]></description>
+      </bind>
+      <bind name="logicalSwitchName" type="string" export-name="switchName">
+        <description><![CDATA[Name of the logical switch]]></description>
+      </bind>
+      <bind name="description" type="string" explicitly-not-bound="true" export-name="NULL">
+        <description><![CDATA[Description]]></description>
+      </bind>
+      <bind name="tenantId" type="string" explicitly-not-bound="true" export-name="NULL">
+        <description><![CDATA[Tenant id]]></description>
+      </bind>
+    </in-binding>
+    <out-binding>
+      <bind name="logicalSwitch" type="NSX:VirtualWire" explicitly-not-bound="true" export-name="NULL">
+        <description><![CDATA[Logicl switch]]></description>
+      </bind>
+      <bind name="logicalSwitchId" type="string" export-name="logicalSwitchId"/>
+    </out-binding>
+    <description><![CDATA[Creates a logical switch]]></description>
+    <position y="55.40909090909091" x="204.5"/>
+  </workflow-item>
+  <workflow-item name="item2" out-name="item0" type="link" linked-workflow-id="256d4028-7964-4ee3-b1ca-f75bd3c657a3">
+    <display-name><![CDATA[UCP - Connect logical switch to router]]></display-name>
+    <in-binding>
+      <bind name="connection" type="NSX:Connection" export-name="nsxconnect">
+        <description><![CDATA[NSX endpoint]]></description>
+      </bind>
+      <bind name="routerId" type="string" export-name="routerId">
+        <description><![CDATA[Id of virtual router]]></description>
+      </bind>
+      <bind name="logicalSwitchId" type="string" export-name="logicalSwitchId">
+        <description><![CDATA[Id of logical switch]]></description>
+      </bind>
+      <bind name="primaryIpAddress" type="string" export-name="gatewayIP">
+        <description><![CDATA[IP address to be assigned to the router interface]]></description>
+      </bind>
+      <bind name="subnetMask" type="string" export-name="subnetMask">
+        <description><![CDATA[Subnet mask]]></description>
+      </bind>
+      <bind name="routerInterfaceIndex" type="string" explicitly-not-bound="true" export-name="NULL">
+        <description><![CDATA[Index of the router interface to connect to]]></description>
+      </bind>
+      <bind name="routerInterfaceType" type="string" export-name="interfaceType">
+        <description><![CDATA[Type of interface]]></description>
+      </bind>
+    </in-binding>
+    <out-binding>
+      <bind name="logicalInterface" type="NSX:Nic" export-name="logicalInterface">
+        <description><![CDATA[vNic connected to the given virtualwire]]></description>
+      </bind>
+    </out-binding>
+    <description><![CDATA[Connects logical switch to router]]></description>
+    <position y="55.90909090909091" x="345.0"/>
+  </workflow-item>
+  <presentation>
+    <p-param name="nsxconnect">
+      <desc><![CDATA[Select the NSX Manager to connect to.]]></desc>
+    </p-param>
+    <p-param name="transportId">
+      <desc><![CDATA[Enter the ID of the Transport Zone]]></desc>
+    </p-param>
+    <p-param name="switchName">
+      <desc><![CDATA[Enter the name of the Logical Switch]]></desc>
+    </p-param>
+    <p-param name="gatewayIP">
+      <desc><![CDATA[Enter the IP address that will be used as the Gateway IP]]></desc>
+    </p-param>
+    <p-param name="subnetMask">
+      <desc><![CDATA[Enter the subnet mask (x.x.x.x)]]></desc>
+    </p-param>
+    <p-param name="routerId">
+      <desc><![CDATA[Enter the primary campus]]></desc>
+    </p-param>
+    <p-param name="interfaceType">
+      <desc><![CDATA[Type of Interface]]></desc>
+    </p-param>
+  </presentation>
+</workflow>

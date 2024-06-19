@@ -1,0 +1,112 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<workflow xmlns="http://vmware.com/vco/workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://vmware.com/vco/workflow http://vmware.com/vco/workflow/Workflow-v4.xsd" root-name="item1" object-name="workflow:name=generic" id="4c851d59-9ffe-4384-94b0-ed9d62c53b16" version="0.0.4" api-version="6.0.0" allowed-operations="vfe" editor-version="2.0" restartMode="1" resumeFromFailedMode="0">
+  <display-name><![CDATA[Edit script configuration 8.x]]></display-name>
+  <position y="50.0" x="100.0"/>
+  <input>
+    <param name="scriptConfigurationName" type="string"/>
+    <param name="scriptType" type="string"/>
+    <param name="scriptContent" type="string">
+      <description><![CDATA[The command or script to start]]></description>
+    </param>
+    <param name="scriptTimeOut" type="number"/>
+    <param name="scriptRefreshTime" type="number"/>
+    <param name="scriptInteractiveSession" type="boolean"/>
+    <param name="scriptWorkingDirectory" type="string"/>
+    <param name="copyResource" type="boolean"/>
+    <param name="resourceToCopy" type="ResourceElement"/>
+    <param name="resourceSearchReplace" type="boolean"/>
+    <param name="deleteResourceAfterRun" type="boolean"/>
+  </input>
+  <attrib name="resourceElementCategory" type="ResourceElementCategory" read-only="false">
+    <value encoded="n"><![CDATA[]]></value>
+  </attrib>
+  <attrib name="scriptConfigurationResourceElement" type="ResourceElement" read-only="false">
+    <value encoded="n"><![CDATA[]]></value>
+  </attrib>
+  <attrib name="scriptConfiguration" type="Properties" read-only="false">
+    <value encoded="n"><![CDATA[]]></value>
+  </attrib>
+  <attrib name="resourceElementCategoryPath" type="string" read-only="false" conf-id="a83c945b-6d8c-4e56-8469-36b4d908dcd8" conf-key="resourceElementCategoryPathtPath">
+    <value encoded="n"><![CDATA[]]></value>
+  </attrib>
+  <attrib name="additionalResourceElementCategoryPath" type="string" read-only="false" conf-id="a83c945b-6d8c-4e56-8469-36b4d908dcd8" conf-key="additionalResourceElementCategoryPath">
+    <value encoded="n"><![CDATA[]]></value>
+  </attrib>
+  <workflow-item name="item0" type="end" end-mode="0">
+    <in-binding/>
+    <position y="50.0" x="960.0"/>
+  </workflow-item>
+  <workflow-item name="item1" out-name="item4" type="task">
+    <display-name><![CDATA[Add new script config]]></display-name>
+    <script encoded="false"><![CDATA[var scriptConfiguration = new Properties();
+scriptConfiguration.put("scriptType", scriptType);
+scriptConfiguration.put("scriptContent", scriptContent);
+scriptConfiguration.put("scriptTimeOut", scriptTimeOut);
+scriptConfiguration.put("scriptRefreshTime", scriptRefreshTime);
+scriptConfiguration.put("scriptInteractiveSession", scriptInteractiveSession);
+scriptConfiguration.put("scriptWorkingDirectory", scriptWorkingDirectory);
+scriptConfiguration.put("copyResource", copyResource);
+scriptConfiguration.put("resourceToCopy", resourceToCopy);
+scriptConfiguration.put("deleteResourceAfterRun", deleteResourceAfterRun);
+scriptConfiguration.put("resourceSearchReplace", resourceSearchReplace);
+]]></script>
+    <in-binding>
+      <bind name="scriptType" type="string" export-name="scriptType"/>
+      <bind name="scriptContent" type="string" export-name="scriptContent"/>
+      <bind name="scriptTimeOut" type="number" export-name="scriptTimeOut"/>
+      <bind name="scriptInteractiveSession" type="boolean" export-name="scriptInteractiveSession"/>
+      <bind name="scriptWorkingDirectory" type="string" export-name="scriptWorkingDirectory"/>
+      <bind name="copyResource" type="boolean" export-name="copyResource"/>
+      <bind name="resourceToCopy" type="ResourceElement" export-name="resourceToCopy"/>
+      <bind name="resourceSearchReplace" type="boolean" export-name="resourceSearchReplace"/>
+      <bind name="deleteResourceAfterRun" type="boolean" export-name="deleteResourceAfterRun"/>
+      <bind name="scriptRefreshTime" type="number" export-name="scriptRefreshTime"/>
+    </in-binding>
+    <out-binding>
+      <bind name="scriptConfiguration" type="Properties" export-name="scriptConfiguration"/>
+    </out-binding>
+    <position y="60.0" x="200.0"/>
+  </workflow-item>
+  <workflow-item name="item2" out-name="item0" type="task" script-module="com.vmware.coe.library.resourceElements/setResourceElementAttributesFromProperties">
+    <display-name><![CDATA[setResourceElementAttributesFromProperties]]></display-name>
+    <script encoded="false"><![CDATA[//Auto generated script, cannot be modified !
+System.getModule("com.vmware.coe.library.resourceElements").setResourceElementAttributesFromProperties(resourceElement,prop) ;]]></script>
+    <in-binding>
+      <bind name="resourceElement" type="ResourceElement" export-name="scriptConfigurationResourceElement"/>
+      <bind name="prop" type="Properties" export-name="scriptConfiguration"/>
+    </in-binding>
+    <out-binding/>
+    <position y="60.0" x="680.0"/>
+  </workflow-item>
+  <workflow-item name="item3" out-name="item2" type="task" script-module="com.vmware.coe.library.resourceElements/getOrCreateResourceElement">
+    <display-name><![CDATA[getOrCreateResourceElement]]></display-name>
+    <script encoded="false"><![CDATA[//Auto generated script, cannot be modified !
+actionResult = System.getModule("com.vmware.coe.library.resourceElements").getOrCreateResourceElement(resourceElementCategory,name) ;]]></script>
+    <in-binding>
+      <bind name="resourceElementCategory" type="ResourceElementCategory" export-name="resourceElementCategory">
+        <description><![CDATA[Where to look for resource elements or create them]]></description>
+      </bind>
+      <bind name="name" type="string" export-name="scriptConfigurationName">
+        <description><![CDATA[The name of the resource element to get or create]]></description>
+      </bind>
+    </in-binding>
+    <out-binding>
+      <bind name="actionResult" type="ResourceElement" export-name="scriptConfigurationResourceElement"/>
+    </out-binding>
+    <description><![CDATA[Get a configuration element by name. If it is not found create an empty resource element]]></description>
+    <position y="60.0" x="480.0"/>
+  </workflow-item>
+  <workflow-item name="item4" out-name="item3" type="task">
+    <display-name><![CDATA[Get resource element category]]></display-name>
+    <script encoded="false"><![CDATA[//resourceElementCategory = scriptConfigurationResourceElement.getResourceElementCategory();
+resourceElementCategory = Server.getResourceElementCategoryWithPath(resourceElementCategoryPath);]]></script>
+    <in-binding>
+      <bind name="resourceElementCategoryPath" type="string" export-name="resourceElementCategoryPath"/>
+    </in-binding>
+    <out-binding>
+      <bind name="resourceElementCategory" type="ResourceElementCategory" export-name="resourceElementCategory"/>
+    </out-binding>
+    <position y="60.0" x="340.0"/>
+  </workflow-item>
+  <presentation/>
+</workflow>

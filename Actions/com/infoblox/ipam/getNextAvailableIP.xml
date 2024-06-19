@@ -1,0 +1,19 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dunes-script-module name="getNextAvailableIP" result-type="string" api-version="6.0.0" id="b3830186-5536-4e5c-989a-679d4269ce15" version="0.0.4" allowed-operations="evf" category-name="com.infoblox.ipam">
+  <description><![CDATA[Finds the next available IP address (IPv4 or IPv6) within the specified network.]]></description>
+  <param n="ipamConnection" t="InfobloxIPAM:IpamConnection"><![CDATA[Connection to IPAM server]]></param>
+  <param n="netaddr" t="string"><![CDATA[IP address of the network]]></param>
+  <param n="cidr" t="number"><![CDATA[The CIDR number of the network]]></param>
+  <param n="networkView" t="string"><![CDATA[Network view, in which the network resides ]]></param>
+  <script encoded="false"><![CDATA[var network = new IpamNetwork(netaddr, cidr);
+network.networkView = networkView;
+
+System.log("The IPAM network: " + network.address + "/"+ network.cidr + ".");
+
+var networkManager = ipamConnection.getNetworkManager();
+var ipAddress = networkManager.getNextAvailableIP(network);
+
+System.log("The next available IP address from network [" + netaddr + "/" + cidr + "]: " + ipAddress + ".");
+
+return ipAddress;]]></script>
+</dunes-script-module>

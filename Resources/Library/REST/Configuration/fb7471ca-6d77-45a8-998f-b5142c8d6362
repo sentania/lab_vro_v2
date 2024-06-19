@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<endpoint nativeId="59dcb144-0afc-4241-9877-fb10ca488c44" pluginVersion="2.2.2">
+    <properties>
+        <property type="string" name="schema">&lt;com.vmware.o11n.plugin.rest.schema.SchemaRespository&gt;
+  &lt;sources/&gt;
+&lt;/com.vmware.o11n.plugin.rest.schema.SchemaRespository&gt;</property>
+        <property type="string" name="proxyAuthenticationType">NONE</property>
+        <property type="integer" name="operationTimeout">420</property>
+        <property type="string" name="proxySessionMode">Shared Session</property>
+        <property type="bool" name="useProxy">false</property>
+        <property type="string" name="url">https://myucp.nm.nmfco.com</property>
+        <property type="password" name="password">vcoencrypted:pMRnE5M0S136eQ4Y14eAvQ==</property>
+        <property type="string" name="operations">&lt;list&gt;
+  &lt;com.vmware.o11n.plugin.rest.RESTOperation&gt;
+    &lt;id&gt;31283e66-3613-436c-8744-d84c5b0ed8ae&lt;/id&gt;
+    &lt;name&gt; Invoke ADDirectory Sync &lt;/name&gt;
+    &lt;host&gt;
+      &lt;name&gt;vRA - myucp&lt;/name&gt;
+      &lt;id&gt;fb7471ca-6d77-45a8-998f-b5142c8d6362&lt;/id&gt;
+      &lt;url&gt;https://myucp.nm.nmfco.com&lt;/url&gt;
+      &lt;operations class="tree-map"&gt;
+        &lt;entry&gt;
+          &lt;string&gt;fb7471ca-6d77-45a8-998f-b5142c8d6362:31283e66-3613-436c-8744-d84c5b0ed8ae&lt;/string&gt;
+          &lt;com.vmware.o11n.plugin.rest.RESTOperation reference="../../../.."/&gt;
+        &lt;/entry&gt;
+        &lt;entry&gt;
+          &lt;string&gt;fb7471ca-6d77-45a8-998f-b5142c8d6362:6798a32e-ffc7-4d5f-be06-27fcf1ef72d8&lt;/string&gt;
+          &lt;com.vmware.o11n.plugin.rest.RESTOperation&gt;
+            &lt;id&gt;6798a32e-ffc7-4d5f-be06-27fcf1ef72d8&lt;/id&gt;
+            &lt;name&gt;vRA-Login&lt;/name&gt;
+            &lt;host reference="../../../.."/&gt;
+            &lt;urlTemplate&gt;/identity/api/tokens&lt;/urlTemplate&gt;
+            &lt;method&gt;POST&lt;/method&gt;
+            &lt;inParameters/&gt;
+            &lt;pathParamsCount&gt;0&lt;/pathParamsCount&gt;
+            &lt;headerParameters/&gt;
+            &lt;defaultContentType&gt;application/json&lt;/defaultContentType&gt;
+            &lt;commonHeaders/&gt;
+            &lt;supportedAcceptHeaderMediaTypes/&gt;
+            &lt;supportedContentTypes/&gt;
+            &lt;mandatoryPathParamNames/&gt;
+            &lt;mandatoryQueryParamNames/&gt;
+            &lt;mandatoryHeaderParamNames/&gt;
+          &lt;/com.vmware.o11n.plugin.rest.RESTOperation&gt;
+        &lt;/entry&gt;
+        &lt;entry&gt;
+          &lt;string&gt;fb7471ca-6d77-45a8-998f-b5142c8d6362:77103f11-dd13-4015-83be-b0a6c9e25290&lt;/string&gt;
+          &lt;com.vmware.o11n.plugin.rest.RESTOperation&gt;
+            &lt;id&gt;77103f11-dd13-4015-83be-b0a6c9e25290&lt;/id&gt;
+            &lt;name&gt;Create External Network Profile&lt;/name&gt;
+            &lt;host reference="../../../.."/&gt;
+            &lt;urlTemplate&gt;/iaas-proxy-provider/api/network/profiles&lt;/urlTemplate&gt;
+            &lt;method&gt;POST&lt;/method&gt;
+            &lt;inParameters/&gt;
+            &lt;pathParamsCount&gt;0&lt;/pathParamsCount&gt;
+            &lt;headerParameters/&gt;
+            &lt;defaultContentType&gt;application/json&lt;/defaultContentType&gt;
+            &lt;commonHeaders/&gt;
+            &lt;supportedAcceptHeaderMediaTypes/&gt;
+            &lt;supportedContentTypes/&gt;
+            &lt;mandatoryPathParamNames/&gt;
+            &lt;mandatoryQueryParamNames/&gt;
+            &lt;mandatoryHeaderParamNames/&gt;
+          &lt;/com.vmware.o11n.plugin.rest.RESTOperation&gt;
+        &lt;/entry&gt;
+        &lt;entry&gt;
+          &lt;string&gt;fb7471ca-6d77-45a8-998f-b5142c8d6362:e5ba2248-112d-4b8e-8e8d-05505503b292&lt;/string&gt;
+          &lt;com.vmware.o11n.plugin.rest.RESTOperation&gt;
+            &lt;id&gt;e5ba2248-112d-4b8e-8e8d-05505503b292&lt;/id&gt;
+            &lt;name&gt;vRO&lt;/name&gt;
+            &lt;host reference="../../../.."/&gt;
+            &lt;urlTemplate&gt;:443/vco/api&lt;/urlTemplate&gt;
+            &lt;method&gt;POST&lt;/method&gt;
+            &lt;inParameters/&gt;
+            &lt;pathParamsCount&gt;0&lt;/pathParamsCount&gt;
+            &lt;headerParameters/&gt;
+            &lt;defaultContentType&gt;application/json&lt;/defaultContentType&gt;
+            &lt;commonHeaders/&gt;
+            &lt;supportedAcceptHeaderMediaTypes/&gt;
+            &lt;supportedContentTypes/&gt;
+            &lt;mandatoryPathParamNames/&gt;
+            &lt;mandatoryQueryParamNames/&gt;
+            &lt;mandatoryHeaderParamNames/&gt;
+          &lt;/com.vmware.o11n.plugin.rest.RESTOperation&gt;
+        &lt;/entry&gt;
+      &lt;/operations&gt;
+      &lt;authentication class="com.vmware.o11n.plugin.rest.HTTPBasicAuthentication"&gt;
+        &lt;type&gt;Basic&lt;/type&gt;
+        &lt;sessionMode&gt;Shared Session&lt;/sessionMode&gt;
+        &lt;isValid&gt;true&lt;/isValid&gt;
+        &lt;validationMessage&gt;&lt;/validationMessage&gt;
+        &lt;username&gt;vraconfig&lt;/username&gt;
+        &lt;password&gt;
+          &lt;crypttext&gt;vcoencrypted:pMRnE5M0S136eQ4Y14eAvQ==&lt;/crypttext&gt;
+        &lt;/password&gt;
+      &lt;/authentication&gt;
+      &lt;connectionTimeout&gt;30&lt;/connectionTimeout&gt;
+      &lt;operationTimeout&gt;420&lt;/operationTimeout&gt;
+      &lt;hostVerification&gt;false&lt;/hostVerification&gt;
+      &lt;proxyPort&gt;-1&lt;/proxyPort&gt;
+      &lt;schemaRepo&gt;
+        &lt;sources/&gt;
+      &lt;/schemaRepo&gt;
+      &lt;cleanHttpContextPerRequest&gt;false&lt;/cleanHttpContextPerRequest&gt;
+      &lt;automaticUrlRedirection&gt;false&lt;/automaticUrlRedirection&gt;
+      &lt;proxyAuthentication class="com.vmware.o11n.plugin.rest.NoneAuthentication"&gt;
+        &lt;type&gt;NONE&lt;/type&gt;
+        &lt;sessionMode&gt;Shared Session&lt;/sessionMode&gt;
+        &lt;isValid&gt;true&lt;/isValid&gt;
+        &lt;validationMessage&gt;&lt;/validationMessage&gt;
+      &lt;/proxyAuthentication&gt;
+    &lt;/host&gt;
+    &lt;urlTemplate&gt;/SAAS/jersey/manager/api/connectormanagement/directoryconfigs/{directoryId}/syncprofile/sync&lt;/urlTemplate&gt;
+    &lt;method&gt;POST&lt;/method&gt;
+    &lt;inParameters&gt;
+      &lt;string&gt;directoryId&lt;/string&gt;
+    &lt;/inParameters&gt;
+    &lt;pathParamsCount&gt;1&lt;/pathParamsCount&gt;
+    &lt;headerParameters/&gt;
+    &lt;defaultContentType&gt;application/json&lt;/defaultContentType&gt;
+    &lt;commonHeaders/&gt;
+    &lt;supportedAcceptHeaderMediaTypes/&gt;
+    &lt;supportedContentTypes/&gt;
+    &lt;mandatoryPathParamNames/&gt;
+    &lt;mandatoryQueryParamNames/&gt;
+    &lt;mandatoryHeaderParamNames/&gt;
+  &lt;/com.vmware.o11n.plugin.rest.RESTOperation&gt;
+  &lt;com.vmware.o11n.plugin.rest.RESTOperation reference="../com.vmware.o11n.plugin.rest.RESTOperation/host/operations/entry[3]/com.vmware.o11n.plugin.rest.RESTOperation"/&gt;
+  &lt;com.vmware.o11n.plugin.rest.RESTOperation reference="../com.vmware.o11n.plugin.rest.RESTOperation/host/operations/entry[2]/com.vmware.o11n.plugin.rest.RESTOperation"/&gt;
+  &lt;com.vmware.o11n.plugin.rest.RESTOperation reference="../com.vmware.o11n.plugin.rest.RESTOperation/host/operations/entry[4]/com.vmware.o11n.plugin.rest.RESTOperation"/&gt;
+&lt;/list&gt;</property>
+        <property type="bool" name="hostVerification">false</property>
+        <property type="string" name="name">vRA - myucp</property>
+        <property type="string" name="authenticationType">Basic</property>
+        <property type="string" name="sessionMode">Shared Session</property>
+        <property type="integer" name="connectionTimeout">30</property>
+        <property type="string" name="username">vraconfig</property>
+    </properties>
+</endpoint>

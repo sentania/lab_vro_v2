@@ -1,0 +1,39 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dunes-script-module name="getvROPSHostName" result-type="string" api-version="6.0.0" id="97a608a4-248a-47a6-b7d6-0d0ea26c32cb" version="1.1.0" category-name="net.sentania.Actions.vROPS.AdvSettings">
+  <script encoded="false"><![CDATA[// Action Inputs: None
+
+// Configuration element details
+var configElementCategoryPath = "vROPS";
+var configElementName = "AdvancedSettingsConfig";
+
+// Function to get the configuration element
+function getConfigElement(categoryPath, name) {
+    var configElementCategory = Server.getConfigurationElementCategoryWithPath(categoryPath);
+    if (!configElementCategory) {
+        throw "Configuration element category " + categoryPath + " does not exist.";
+    }
+
+    var configElements = configElementCategory.configurationElements;
+    for (var i = 0; i < configElements.length; i++) {
+        if (configElements[i].name === name) {
+            return configElements[i];
+        }
+    }
+
+    throw "Configuration element " + name + " does not exist in category " + categoryPath + ".";
+}
+
+// Get the configuration element
+try {
+    var configElement = getConfigElement(configElementCategoryPath, configElementName);
+    var vropsHostname = configElement.getAttributeWithKey("vropsHostname").value;
+    if (!vropsHostname) {
+        vropsHostname = "vrops.domain.local";
+    }
+} catch (e) {
+    var vropsHostname = "vrops.domain.local";
+}
+
+return vropsHostname;
+]]></script>
+</dunes-script-module>

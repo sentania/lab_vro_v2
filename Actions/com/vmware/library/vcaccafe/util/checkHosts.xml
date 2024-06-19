@@ -1,0 +1,25 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dunes-script-module name="checkHosts" result-type="void" api-version="6.0.0" id="eec8a10e-3225-463d-90b9-f1c2de7232ef" version="1.0.0" allowed-operations="vf" category-name="com.vmware.library.vcaccafe.util">
+  <description><![CDATA[Checks if the given elements belong to the same host. If they belong to different hosts an exception will be thrown.]]></description>
+  <param n="vcoObject1" t="Any"><![CDATA[First element]]></param>
+  <param n="vcoObject2" t="Any"><![CDATA[Second element]]></param>
+  <param n="type1" t="string"><![CDATA[Human readable type of the first object]]></param>
+  <param n="type2" t="string"><![CDATA[Human readable type of the second object]]></param>
+  <script encoded="false"><![CDATA[if(vcoObject1.vcoId == "undefined" || vcoObject2.vcoId == "undefined") {
+	throw ("Objects does not contain enough information to check if they belong to the same host. At least one of the objects does not have vcoId.");
+}
+
+var firstHostId = vcoObject1.vcoId.toString().split("/");
+var secondHostId = vcoObject2.vcoId.toString().split("/");
+
+//The first part of the id is always the id of the host
+if(firstHostId[0] == secondHostId[0]) {
+	return;
+} else {
+	if(type1 == "host") {
+		throw "The provided " + type2 + " belongs to a different host.";
+	} else {
+		throw "The provided " + type1 + " and " + type2 + " belong to different hosts.";
+	}
+}]]></script>
+</dunes-script-module>

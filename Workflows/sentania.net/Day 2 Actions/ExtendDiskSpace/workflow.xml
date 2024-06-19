@@ -1,0 +1,75 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<workflow xmlns="http://vmware.com/vco/workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://vmware.com/vco/workflow http://vmware.com/vco/workflow/Workflow-v4.xsd" root-name="item1" object-name="workflow:name=generic" id="a34f89cf-9ff1-4263-95a5-4da59ee0864d" version="0.2.0" api-version="6.0.0" allowed-operations="vfe" editor-version="2.0" restartMode="1" resumeFromFailedMode="0">
+  <display-name><![CDATA[ExtendDiskSpace]]></display-name>
+  <position y="50.0" x="100.0"/>
+  <input>
+    <param name="spaceToAddGB" type="number"/>
+    <param name="diskName" type="string"/>
+    <param name="VM" type="VC:VirtualMachine"/>
+  </input>
+  <attrib name="actionResult" type="Any" read-only="false">
+    <value encoded="n"><![CDATA[]]></value>
+  </attrib>
+  <attrib name="diskString" type="string" read-only="false">
+    <value encoded="n"><![CDATA[]]></value>
+  </attrib>
+  <attrib name="pollRate" type="number" read-only="false">
+    <value encoded="n"><![CDATA[1.0]]></value>
+  </attrib>
+  <attrib name="progress" type="boolean" read-only="false">
+    <value encoded="n"><![CDATA[false]]></value>
+  </attrib>
+  <attrib name="task" type="VC:Task" read-only="false">
+    <value encoded="n"><![CDATA[]]></value>
+  </attrib>
+  <workflow-item name="item0" type="end" end-mode="0">
+    <position y="58.3984375" x="674.0"/>
+  </workflow-item>
+  <workflow-item name="item1" out-name="item2" type="task">
+    <display-name><![CDATA[Parse Workflow Input]]></display-name>
+    <script encoded="false"><![CDATA[var diskSplit = diskName.split(/\s*\-\s*/g);
+var diskString = diskSplit[0]
+System.log("diskString = " + diskString);]]></script>
+    <in-binding>
+      <bind name="diskName" type="string" export-name="diskName"/>
+    </in-binding>
+    <out-binding>
+      <bind name="diskString" type="string" export-name="diskString"/>
+    </out-binding>
+    <description><![CDATA[Simple task with custom script capability.]]></description>
+    <position y="61.3984375" x="162.0"/>
+  </workflow-item>
+  <workflow-item name="item2" out-name="item3" type="task" script-module="com.crateandbarrel.cb.vRACActions/extendVMDisk">
+    <display-name><![CDATA[Extend VMDK]]></display-name>
+    <script encoded="false"><![CDATA[//Auto generated script, cannot be modified !
+actionResult = System.getModule("com.crateandbarrel.cb.vRACActions").extendVMDisk(vm,diskString,increaseSizeGB);
+]]></script>
+    <in-binding>
+      <bind name="vm" type="VC:VirtualMachine" export-name="VM"/>
+      <bind name="diskString" type="string" export-name="diskString"/>
+      <bind name="increaseSizeGB" type="number" export-name="spaceToAddGB"/>
+    </in-binding>
+    <out-binding>
+      <bind name="actionResult" type="VC:Task" export-name="task"/>
+    </out-binding>
+    <description><![CDATA[Use this element to include an action in the workflow.]]></description>
+    <position y="64.3984375" x="345.0"/>
+  </workflow-item>
+  <workflow-item name="item3" out-name="item0" type="task" script-module="com.vmware.library.vc.basic/vim3WaitTaskEnd">
+    <display-name><![CDATA[Wait Result]]></display-name>
+    <script encoded="false"><![CDATA[//Auto generated script, cannot be modified !
+actionResult = System.getModule("com.vmware.library.vc.basic").vim3WaitTaskEnd(task,progress,pollRate);
+]]></script>
+    <in-binding>
+      <bind name="task" type="VC:Task" export-name="task"/>
+      <bind name="progress" type="boolean" export-name="progress"/>
+      <bind name="pollRate" type="number" export-name="pollRate"/>
+    </in-binding>
+    <out-binding>
+      <bind name="actionResult" type="Any" export-name="actionResult"/>
+    </out-binding>
+    <description><![CDATA[Use this element to include an action in the workflow.]]></description>
+    <position y="65.8984375" x="448.0"/>
+  </workflow-item>
+  <presentation/>
+</workflow>

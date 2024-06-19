@@ -1,0 +1,104 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<workflow xmlns="http://vmware.com/vco/workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://vmware.com/vco/workflow http://vmware.com/vco/workflow/Workflow-v4.xsd" root-name="item1" object-name="workflow:name=generic" id="8272243f-236a-460f-85b8-9393b2dd9dee" version="1.1.0" api-version="6.0.0" editor-version="2.0" restartMode="1" resumeFromFailedMode="0">
+  <display-name><![CDATA[Configure vROPS Advanced Host Settings Import]]></display-name>
+  <position y="50.0" x="100.0"/>
+  <input>
+    <param name="username" type="string"/>
+    <param name="authsource" type="string"/>
+    <param name="password" type="SecureString"/>
+    <param name="vropsHostname" type="string"/>
+    <param name="advancedSettings" type="Array/string"/>
+  </input>
+  <workflow-item name="item0" type="end" end-mode="0">
+    <in-binding/>
+    <position y="50.0" x="1000.0"/>
+  </workflow-item>
+  <workflow-item name="item1" out-name="item0" type="task">
+    <display-name><![CDATA[Create or Edit Configuration item]]></display-name>
+    <script encoded="false"><![CDATA[// Inputs
+// vropsHostname: String
+// username: String
+// password: String
+// authsource: String
+// advancedSettings: Array/String - Array of strings, each representing an advanced setting name
+
+// Configuration element details
+var configElementCategoryPath = "vROPS";
+var configElementName = "AdvancedSettingsConfig";
+
+// Function to get or create configuration element
+function getOrCreateConfigElement(categoryPath, name) {
+    var configElementCategory = Server.getConfigurationElementCategoryWithPath(categoryPath);
+    if (configElementCategory) {
+        System.log("Found configuration category '"+configElementCategory.name+"'");
+		
+		//Find Configuration Element
+		var configElements = configElementCategory.configurationElements;
+		for (var i in configElements) {
+			ce = configElements[i];
+			if (ce.name == name) {
+				configElement = ce;
+				return configElement;
+			}
+		}
+	} else {
+        // Create the configuration element if it doesn't exist
+        System.log("Config ELement does not exist");
+        System.log("Creating category: " + configElementCategory);
+        return Server.createConfigurationElement(categoryPath, name, "Configuration for vROPS connection and advanced settings");
+    }
+}
+// Get or create the configuration element
+var configElement = getOrCreateConfigElement(configElementCategoryPath, configElementName);
+
+// Update attributes of the configuration element
+configElement.setAttributeWithKey("vropsHostname", vropsHostname);
+configElement.setAttributeWithKey("username", username);
+configElement.setAttributeWithKey("password", password,"SecureString");
+configElement.setAttributeWithKey("authsource", authsource);
+
+// Get existing advanced settings if they exist
+var existingAdvancedSettingsAttribute = configElement.getAttributeWithKey("advancedSettings");
+var existingAdvancedSettings = new Properties();
+
+if (existingAdvancedSettingsAttribute) {
+    existingAdvancedSettings = existingAdvancedSettingsAttribute.value;
+}
+
+// Update or add advanced settings
+for each (var setting in advancedSettings) {
+    existingAdvancedSettings.put(setting, true);
+}
+
+// Ensure all existing settings not in the input are set to false
+var keys = existingAdvancedSettings.keys;
+for (var i = 0; i < keys.length; i++) {
+    var key = keys[i];
+    if (advancedSettings.indexOf(key) === -1) {
+        existingAdvancedSettings.put(key, false);
+    }
+}
+
+// Set the updated advanced settings
+configElement.setAttributeWithKey("advancedSettings", existingAdvancedSettings);
+
+System.log("Configuration item created/updated successfully with the following details:");
+System.log("vROps Hostname: " + vropsHostname);
+System.log("Username: " + username);
+System.log("Auth Source: " + authsource);
+System.log("Advanced Settings: " + JSON.stringify(existingAdvancedSettings));
+]]></script>
+    <in-binding>
+      <bind name="password" type="SecureString" export-name="password"/>
+      <bind name="username" type="string" export-name="username"/>
+      <bind name="advancedsettings" type="Array/string"/>
+      <bind name="vropsHostname" type="string" export-name="vropsHostname"/>
+      <bind name="authsource" type="string" export-name="authsource"/>
+      <bind name="advancedSettings" type="Array/string" export-name="advancedSettings"/>
+    </in-binding>
+    <out-binding/>
+    <description><![CDATA[Simple task with custom script capability.]]></description>
+    <position y="60.0" x="340.0"/>
+  </workflow-item>
+  <presentation/>
+</workflow>

@@ -1,0 +1,22 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dunes-script-module name="connectionContainsDefinition" result-type="boolean" api-version="6.0.0" id="330ac4d8-1037-4809-ad70-70b9c6fcbca1" version="0.0.1" allowed-operations="evf" category-name="com.infoblox.ipam.util">
+  <description><![CDATA[Checks if the specified IPAM connection contains a definition.]]></description>
+  <param n="ipamConnection" t="InfobloxIPAM:IpamConnection"><![CDATA[Connection to the IPAM server]]></param>
+  <param n="eaDefinition" t="InfobloxIPAM:IpamExtensibleAttributeDefinition"><![CDATA[Definition of the extensible attribute]]></param>
+  <script encoded="false"><![CDATA[var connection = ipamConnection;
+if (!connection) {
+	connection = System.getModule("com.infoblox.ipam").getDefaultIpamConnection();
+}
+
+if (!eaDefinition) {
+	throw "The extensible attribute definition is not specified.";
+}
+
+var connectionOfDefinition = eaDefinition.getConnection();
+
+if (!connectionOfDefinition) {
+	throw "The specified definition is not related to any connection to the IPAM server.";
+}
+
+return connection.id == connectionOfDefinition.id;]]></script>
+</dunes-script-module>

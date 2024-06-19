@@ -1,0 +1,39 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dunes-script-module name="getvROPSuserName" result-type="string" api-version="6.0.0" id="4a1480c4-1fc1-41e2-ab12-22eba13ea5b1" version="1.1.0" category-name="net.sentania.Actions.vROPS.AdvSettings">
+  <script encoded="false"><![CDATA[// Action Inputs: None
+
+// Configuration element details
+var configElementCategoryPath = "vROPS";
+var configElementName = "AdvancedSettingsConfig";
+
+// Function to get the configuration element
+function getConfigElement(categoryPath, name) {
+    var configElementCategory = Server.getConfigurationElementCategoryWithPath(categoryPath);
+    if (!configElementCategory) {
+        throw "Configuration element category " + categoryPath + " does not exist.";
+    }
+
+    var configElements = configElementCategory.configurationElements;
+    for (var i = 0; i < configElements.length; i++) {
+        if (configElements[i].name === name) {
+            return configElements[i];
+        }
+    }
+
+    throw "Configuration element " + name + " does not exist in category " + categoryPath + ".";
+}
+
+// Get the configuration element
+try {
+    var configElement = getConfigElement(configElementCategoryPath, configElementName);
+    var username = configElement.getAttributeWithKey("username").value;
+    if (!username) {
+        username = "admin";
+    }
+} catch (e) {
+    var username = "admin";
+}
+
+return username;
+]]></script>
+</dunes-script-module>

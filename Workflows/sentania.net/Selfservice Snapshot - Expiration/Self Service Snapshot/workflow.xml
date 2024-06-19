@@ -1,0 +1,111 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<workflow xmlns="http://vmware.com/vco/workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://vmware.com/vco/workflow http://vmware.com/vco/workflow/Workflow-v4.xsd" root-name="item4" object-name="workflow:name=generic" id="1bf89e9d-a5b9-4752-ac64-af757fdc45b5" version="0.2.0" api-version="6.0.0" allowed-operations="vfe" editor-version="2.0" restartMode="1" resumeFromFailedMode="0">
+  <display-name><![CDATA[Self Service Snapshot]]></display-name>
+  <position y="50.0" x="100.0"/>
+  <input>
+    <param name="vm" type="VC:VirtualMachine"/>
+    <param name="name" type="string"/>
+    <param name="description" type="string"/>
+    <param name="expirationDate" type="Date"/>
+  </input>
+  <attrib name="memory" type="boolean" read-only="false">
+    <value encoded="n"><![CDATA[true]]></value>
+  </attrib>
+  <attrib name="quiesce" type="boolean" read-only="false">
+    <value encoded="n"><![CDATA[false]]></value>
+  </attrib>
+  <attrib name="snapshot" type="VC:VirtualMachineSnapshot" read-only="false">
+    <value encoded="n"><![CDATA[]]></value>
+  </attrib>
+  <attrib name="scheduledTask" type="Task" read-only="false">
+    <value encoded="n"><![CDATA[]]></value>
+  </attrib>
+  <attrib name="smtpHost" type="string" read-only="false">
+    <value encoded="n"><![CDATA[mail16a.int.sentania.net]]></value>
+  </attrib>
+  <attrib name="smtpPort" type="number" read-only="false">
+    <value encoded="n"><![CDATA[25.0]]></value>
+  </attrib>
+  <attrib name="fromName" type="string" read-only="false">
+    <value encoded="n"><![CDATA[vRealize Automation]]></value>
+  </attrib>
+  <attrib name="fromAddress" type="string" read-only="false">
+    <value encoded="n"><![CDATA[vra@sentania.net]]></value>
+  </attrib>
+  <attrib name="toAddress" type="string" read-only="false">
+    <value encoded="n"><![CDATA[scott@sentania.net]]></value>
+  </attrib>
+  <attrib name="subject" type="string" read-only="false">
+    <value encoded="n"><![CDATA[New Self Service Snapshot]]></value>
+  </attrib>
+  <attrib name="useSsl" type="boolean" read-only="false">
+    <value encoded="n"><![CDATA[false]]></value>
+  </attrib>
+  <attrib name="useStartTls" type="boolean" read-only="false">
+    <value encoded="n"><![CDATA[false]]></value>
+  </attrib>
+  <attrib name="content" type="string" read-only="false">
+    <value encoded="n"><![CDATA[A new snapshot was taken]]></value>
+  </attrib>
+  <workflow-item name="item0" type="end" end-mode="0">
+    <in-binding/>
+    <position y="50.51177010245664" x="964.9369001555482"/>
+  </workflow-item>
+  <workflow-item name="item1" out-name="item2" type="link" linked-workflow-id="BD80808080808080808080808080808053C180800122528313869552e41805bb1">
+    <display-name><![CDATA[Create Snapshot]]></display-name>
+    <in-binding>
+      <bind name="vm" type="VC:VirtualMachine" export-name="vm"/>
+      <bind name="name" type="string" export-name="name"/>
+      <bind name="description" type="string" export-name="description"/>
+      <bind name="memory" type="boolean" export-name="memory"/>
+      <bind name="quiesce" type="boolean" export-name="quiesce"/>
+    </in-binding>
+    <out-binding>
+      <bind name="snapshot" type="VC:VirtualMachineSnapshot" export-name="snapshot"/>
+    </out-binding>
+    <description><![CDATA[ ]]></description>
+    <position y="64.8984375" x="517.0"/>
+  </workflow-item>
+  <workflow-item name="item2" out-name="item0" type="task" launched-workflow-id="4d360484-b28c-457e-a2af-013796224213">
+    <display-name><![CDATA[Schedule workflow]]></display-name>
+    <script encoded="false"><![CDATA[//Auto generated script, cannot be modified !
+var workflowToLaunch = Server.getWorkflowWithId("4d360484-b28c-457e-a2af-013796224213");
+if (workflowToLaunch == null) {
+	throw "Workflow not found";
+}
+
+var workflowParameters = new Properties();
+workflowParameters.put("snapshot",snapshot);
+workflowParameters.put("vm",vm);
+workflowParameters.put("description",description);
+scheduledTask = workflowToLaunch.schedule(workflowParameters, workflowScheduleDate);
+]]></script>
+    <in-binding>
+      <bind name="workflowScheduleDate" type="Date" export-name="expirationDate"/>
+      <bind name="snapshot" type="VC:VirtualMachineSnapshot" export-name="snapshot"/>
+      <bind name="vm" type="VC:VirtualMachine" export-name="vm"/>
+      <bind name="description" type="string" export-name="description"/>
+    </in-binding>
+    <out-binding>
+      <bind name="scheduledTask" type="Task" export-name="scheduledTask"/>
+    </out-binding>
+    <description><![CDATA[Schedule a workflow and create a task.]]></description>
+    <position y="61.51177010245664" x="697.9369001555482"/>
+  </workflow-item>
+  <workflow-item name="item4" out-name="item1" type="task">
+    <display-name><![CDATA[Generate Email Body]]></display-name>
+    <script encoded="false"><![CDATA[content = "A new snapshot for VM: " + vm.name  + " has been requested with a description of: " + description + ".  It is scheduled to expire at: " + expirationDate]]></script>
+    <in-binding>
+      <bind name="vm" type="VC:VirtualMachine" export-name="vm"/>
+      <bind name="name" type="string" export-name="name"/>
+      <bind name="description" type="string" export-name="description"/>
+      <bind name="expirationDate" type="Date" export-name="expirationDate"/>
+    </in-binding>
+    <out-binding>
+      <bind name="content" type="string" export-name="content"/>
+    </out-binding>
+    <description><![CDATA[Simple task with custom script capability.]]></description>
+    <position y="60.00588505122832" x="160.46845007777407"/>
+  </workflow-item>
+  <presentation/>
+</workflow>

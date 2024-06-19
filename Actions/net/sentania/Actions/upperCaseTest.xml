@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dunes-script-module name="upperCaseTest" result-type="string" api-version="6.0.0" id="9374e571-f27b-4df0-9273-0bd4de2bfc3d" version="0.0.0" category-name="net.sentania.Actions">
+  <param n="input" t="string"/>
+  <param n="targetCase" t="string"/>
+  <script encoded="false"><![CDATA[System.log("Input is: " + input)
+
+if (targetCase == "upper")
+{
+    System.log("Target Case is *upper*");
+    var transformedString = input.toUpperCase();
+}
+else if (targetCase == "lower")
+{
+    System.log("Target Case is *lower*");
+    var transformedString = input.toLowerCase();
+}
+else
+{
+    System.log("We received an unknown target case");
+}
+System.log("Transformed String is: " + transformedString);
+]]></script>
+</dunes-script-module>

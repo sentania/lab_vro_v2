@@ -1,0 +1,6 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dunes-script-module name="getSharedAccessUsers" result-type="Array/string" api-version="6.0.0" id="f40a7b7f-367b-4574-ad04-6f77e6aad836" version="1.0.1" allowed-operations="vf" category-name="com.vmware.library.vcaccafe.subtenant">
+  <description><![CDATA[Gets a list the IDs of the users with shared access role]]></description>
+  <param n="subtenant" t="vCACCAFE:Subtenant"><![CDATA[The business group]]></param>
+  <script encoded="false"><![CDATA[return vCACCAFESubtenantHelper.getSharedAccessUsers(subtenant);]]></script>
+</dunes-script-module>

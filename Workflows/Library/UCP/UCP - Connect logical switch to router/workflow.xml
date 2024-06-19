@@ -1,0 +1,109 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<workflow xmlns="http://vmware.com/vco/workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://vmware.com/vco/workflow http://vmware.com/vco/workflow/Workflow-v4.xsd" root-name="item1" object-name="workflow:name=generic" id="256d4028-7964-4ee3-b1ca-f75bd3c657a3" version="0.0.4" api-version="6.0.0" allowed-operations="evf" restartMode="1" resumeFromFailedMode="0">
+  <display-name><![CDATA[UCP - Connect logical switch to router]]></display-name>
+  <description><![CDATA[Connects logical switch to router]]></description>
+  <position y="50.0" x="100.0"/>
+  <input>
+    <param name="connection" type="NSX:Connection">
+      <description><![CDATA[NSX endpoint]]></description>
+    </param>
+    <param name="routerId" type="string">
+      <description><![CDATA[Id of virtual router]]></description>
+    </param>
+    <param name="logicalSwitchId" type="string">
+      <description><![CDATA[Id of logical switch]]></description>
+    </param>
+    <param name="primaryIpAddress" type="string">
+      <description><![CDATA[IP address to be assigned to the router interface]]></description>
+    </param>
+    <param name="subnetMask" type="string">
+      <description><![CDATA[Subnet mask]]></description>
+    </param>
+    <param name="routerInterfaceIndex" type="string">
+      <description><![CDATA[Index of the router interface to connect to]]></description>
+    </param>
+    <param name="routerInterfaceType" type="string">
+      <description><![CDATA[Type of interface]]></description>
+    </param>
+  </input>
+  <output>
+    <param name="logicalInterface" type="NSX:Nic">
+      <description><![CDATA[vNic connected to the given virtualwire]]></description>
+    </param>
+  </output>
+  <workflow-item name="item0" type="end" end-mode="0">
+    <position y="45.40909090909091" x="384.5"/>
+  </workflow-item>
+  <workflow-item name="item1" out-name="item0" type="task">
+    <display-name><![CDATA[Scriptable task]]></display-name>
+    <script encoded="false"><![CDATA[var vNic = new NSXNic();
+vNic.portgroupId = logicalSwitchId;
+
+if (routerInterfaceIndex != "") {
+    vNic.index = routerInterfaceIndex;
+}
+
+if (routerInterfaceType == "uplink") {
+	vNic.type = "uplink";
+} else if (routerInterfaceType == "internal" || routerInterfaceType == "") {
+	vNic.type = "internal";
+} else {
+	throw new Error("Incorrect vNIC type. \"uplink\" and \"internal\" are the only supported vNIC types.");
+}
+
+var addressGroups = new NSXAddressGroups();
+var addressGroup = new NSXAddressGroup("");
+addressGroup.primaryAddress = primaryIpAddress;
+addressGroup.subnetMask = subnetMask;
+var addressGroupList = new Array();
+addressGroupList.push(addressGroup);
+addressGroups.addressGroups = addressGroupList;
+vNic.addressGroups = addressGroups;
+logicalInterface = NSXEdgeManager.connectEdgeInterface(connection, routerId, vNic);
+]]></script>
+    <in-binding>
+      <bind name="connection" type="NSX:Connection" export-name="connection"/>
+      <bind name="routerId" type="string" export-name="routerId"/>
+      <bind name="primaryIpAddress" type="string" export-name="primaryIpAddress"/>
+      <bind name="subnetMask" type="string" export-name="subnetMask"/>
+      <bind name="routerInterfaceIndex" type="string" export-name="routerInterfaceIndex"/>
+      <bind name="logicalSwitchId" type="string" export-name="logicalSwitchId"/>
+      <bind name="routerInterfaceType" type="string" export-name="routerInterfaceType">
+        <description><![CDATA[Type of interface]]></description>
+      </bind>
+    </in-binding>
+    <out-binding>
+      <bind name="logicalInterface" type="NSX:Nic" export-name="logicalInterface"/>
+    </out-binding>
+    <position y="55.40909090909091" x="204.5"/>
+  </workflow-item>
+  <presentation>
+    <p-param name="connection">
+      <desc><![CDATA[NSX Connection object (Select from the NSX inventory, from the vRO inventory view)]]></desc>
+      <p-qual kind="static" name="mandatory" type="boolean"><![CDATA[true]]></p-qual>
+    </p-param>
+    <p-param name="routerId">
+      <desc><![CDATA[Virtual router id]]></desc>
+      <p-qual kind="static" name="mandatory" type="boolean"><![CDATA[true]]></p-qual>
+    </p-param>
+    <p-param name="logicalSwitchId">
+      <desc><![CDATA[Logical switch id]]></desc>
+      <p-qual kind="static" name="mandatory" type="boolean"><![CDATA[true]]></p-qual>
+    </p-param>
+    <p-param name="primaryIpAddress">
+      <desc><![CDATA[IP address to be assigned to the router interface]]></desc>
+      <p-qual kind="static" name="mandatory" type="boolean"><![CDATA[true]]></p-qual>
+    </p-param>
+    <p-param name="subnetMask">
+      <desc><![CDATA[Subnet mask]]></desc>
+      <p-qual kind="static" name="mandatory" type="boolean"><![CDATA[true]]></p-qual>
+    </p-param>
+    <p-param name="routerInterfaceIndex">
+      <desc><![CDATA[Index of the router interface to connect to]]></desc>
+    </p-param>
+    <p-param name="routerInterfaceType">
+      <desc><![CDATA[Type of interface (supported values: internal, uplink)]]></desc>
+      <p-qual kind="static" name="defaultValue" type="string"><![CDATA[internal]]></p-qual>
+    </p-param>
+  </presentation>
+</workflow>

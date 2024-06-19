@@ -1,0 +1,30 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dunes-script-module name="updateBusinessGroup" result-type="vCACCAFE:BusinessGroup" api-version="6.0.0" id="c8d2501a-c94f-4b32-8b7b-204dc51af2c3" version="1.0.1" allowed-operations="vf" category-name="com.vmware.library.vcaccafe.businessgroup">
+  <description><![CDATA[Updates a business group.]]></description>
+  <param n="group" t="vCACCAFE:BusinessGroup"><![CDATA[Business group]]></param>
+  <param n="name" t="string"><![CDATA[Name]]></param>
+  <param n="description" t="string"><![CDATA[Description]]></param>
+  <param n="defaultMachinePrefix" t="vCACCAFE:MachinePrefix"><![CDATA[Default machine prefix]]></param>
+  <param n="activeDirectoryContainer" t="string"><![CDATA[Active directory container]]></param>
+  <param n="administrators" t="Array/string"><![CDATA[Administrator role]]></param>
+  <param n="administratorEmail" t="string"><![CDATA[Administrator email]]></param>
+  <param n="support" t="Array/string"><![CDATA[Support role]]></param>
+  <param n="users" t="Array/string"><![CDATA[User role]]></param>
+  <script encoded="false"><![CDATA[System.getModule("com.vmware.library.vcaccafe.util").validateObject(group, "Business group");
+group.setName(name);
+group.setDescription(description);
+group.setMachinePrefixId(defaultMachinePrefix.getId());
+group.setActiveDirectoryContainer(activeDirectoryContainer);
+group.setAdministrators(administrators);
+group.setAdministratorEmail(administratorEmail);
+group.setSupport(support)
+group.setUsers(users);
+
+System.log("Updating business group '" + name + "'...");
+var host = vCACCAFEEntitiesFinder.getHostForEntity(group);
+var service = host.createInfrastructureClient().getInfrastructureBusinessGroupsService();
+service.update(group);
+System.log("Business group updated: " + group.getId().toString());
+
+return vCACCAFEEntitiesFinder.getBusinessGroup(host, group.getId().toString());]]></script>
+</dunes-script-module>

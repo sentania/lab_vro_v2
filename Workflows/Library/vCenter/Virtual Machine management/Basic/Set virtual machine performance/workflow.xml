@@ -1,0 +1,297 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<workflow xmlns="http://vmware.com/vco/workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://vmware.com/vco/workflow http://vmware.com/vco/workflow/Workflow-v4.xsd" root-name="item6" object-name="Workflow:name=generic" id="BD808080808080808080808080808080C2C280800122528313869552e41805bb1" version="0.3.0" api-version="6.0.0" allowed-operations="vf" restartMode="1" resumeFromFailedMode="0">
+  <display-name><![CDATA[Set virtual machine performance]]></display-name>
+  <description><![CDATA[Changes performance settings such as shares, minimum and maximum values, shaping for network, and disk access of a virtual machine.]]></description>
+  <ref-types><![CDATA[(VC:VirtualMachine)]]></ref-types>
+  <position y="10.0" x="100.0"/>
+  <input>
+    <param name="vm" type="VC:VirtualMachine">
+      <description><![CDATA[Virtual machine for which to configure performance settings]]></description>
+    </param>
+    <param name="setCPU" type="boolean">
+      <description><![CDATA[Set CPU values]]></description>
+    </param>
+    <param name="setRAM" type="boolean">
+      <description><![CDATA[Set RAM values]]></description>
+    </param>
+    <param name="setDisk" type="boolean">
+      <description><![CDATA[Set disk values]]></description>
+    </param>
+    <param name="cpuSharesLevel" type="VC:SharesLevel">
+      <description><![CDATA[CPU shares level]]></description>
+    </param>
+    <param name="cpuShares" type="number">
+      <description><![CDATA[CPU shares (MHz)]]></description>
+    </param>
+    <param name="cpuReservation" type="number">
+      <description><![CDATA[CPU reservation (MHz)]]></description>
+    </param>
+    <param name="cpuLimit" type="number">
+      <description><![CDATA[CPU limit (MHz)]]></description>
+    </param>
+    <param name="ramSharesLevel" type="VC:SharesLevel">
+      <description><![CDATA[Memory shares level]]></description>
+    </param>
+    <param name="ramShares" type="number">
+      <description><![CDATA[Memory shares (MB)]]></description>
+    </param>
+    <param name="ramReservation" type="number">
+      <description><![CDATA[Memory reservation (MB)]]></description>
+    </param>
+    <param name="ramLimit" type="number">
+      <description><![CDATA[Memory limit (MB)]]></description>
+    </param>
+    <param name="diskSharesLevel" type="VC:SharesLevel">
+      <description><![CDATA[Disk shares level]]></description>
+    </param>
+    <param name="diskShares" type="number">
+      <description><![CDATA[Number of disk shares]]></description>
+    </param>
+  </input>
+  <workflow-item name="item4" out-name="item7" type="task">
+    <display-name><![CDATA[Set CPU]]></display-name>
+    <script encoded="false"><![CDATA[if ( cpuSharesLevel == VcSharesLevel.custom ) {
+	if ( cpuShares == null || cpuReservation == null || cpuLimit == null) {
+		throw ("Error in cpu parameters. At least one parameter was not set");
+	}
+}
+
+
+
+System.log("Set CPU ressources: sharedModel=" + cpuSharesLevel.name + ", share=" + cpuShares + ", reservation=" +  cpuReservation + ", limit=" + cpuLimit);
+Server.log("Set CPU ressources", "sharedModel=" + cpuSharesLevel.name + ", share=" + cpuShares + ", reservation=" +  cpuReservation + ", limit=" + cpuLimit);
+
+var cpuSharesInfo = System.getModule("com.vmware.library.vc.spec").getSharesInfo(cpuSharesLevel, cpuShares);
+var cpuResourceAllocationInfo = System.getModule("com.vmware.library.vc.spec").getResourceAllocationInfo(true, cpuLimit, cpuReservation, cpuSharesInfo);
+	
+
+var virtualMachineConfigSpec = new VcVirtualMachineConfigSpec();
+virtualMachineConfigSpec.cpuAllocation = cpuResourceAllocationInfo;		
+var task = vm.reconfigVM_Task(virtualMachineConfigSpec);	
+System.getModule("com.vmware.library.vc.basic").vim3WaitTaskEnd(task,false,5);]]></script>
+    <in-binding>
+      <bind name="vm" type="VC:VirtualMachine" export-name="vm"/>
+      <bind name="cpuSharesLevel" type="VC:SharesLevel" export-name="cpuSharesLevel"/>
+      <bind name="cpuShares" type="number" export-name="cpuShares"/>
+      <bind name="cpuReservation" type="number" export-name="cpuReservation"/>
+      <bind name="cpuLimit" type="number" export-name="cpuLimit"/>
+    </in-binding>
+    <out-binding/>
+    <position y="80.0" x="220.0"/>
+  </workflow-item>
+  <workflow-item name="item5" out-name="item0" type="task">
+    <display-name><![CDATA[Set RAM]]></display-name>
+    <script encoded="false"><![CDATA[if ( ramSharesLevel == VcSharesLevel.custom ) {
+	if ( ramShares == null || ramReservation == null || ramLimit == null) {
+		throw ("Error in RAM parameters. At least one parameter was not set");
+	}
+}
+
+
+System.log("Set RAM ressources: sharedModel=" + ramSharesLevel.name + ", share=" + ramShares + ", reservation=" +  ramReservation + ", limit=" + ramLimit);
+Server.log("Set RAM ressources", "sharedModel=" + ramSharesLevel.name + ", share=" + ramShares + ", reservation=" +  ramReservation + ", limit=" + ramLimit);
+
+var ramSharesInfo = System.getModule("com.vmware.library.vc.spec").getSharesInfo(ramSharesLevel, ramShares);
+var ramResourceAllocationInfo = System.getModule("com.vmware.library.vc.spec").getResourceAllocationInfo(true, ramLimit, ramReservation, ramSharesInfo);
+
+var virtualMachineConfigSpec = new VcVirtualMachineConfigSpec();
+virtualMachineConfigSpec.memoryAllocation = ramResourceAllocationInfo;		
+var task = vm.reconfigVM_Task(virtualMachineConfigSpec);	
+
+System.getModule("com.vmware.library.vc.basic").vim3WaitTaskEnd(task,false,5);]]></script>
+    <in-binding>
+      <bind name="vm" type="VC:VirtualMachine" export-name="vm"/>
+      <bind name="ramSharesLevel" type="VC:SharesLevel" export-name="ramSharesLevel"/>
+      <bind name="ramShares" type="number" export-name="ramShares"/>
+      <bind name="ramReservation" type="number" export-name="ramReservation"/>
+      <bind name="ramLimit" type="number" export-name="ramLimit"/>
+    </in-binding>
+    <out-binding/>
+    <position y="153.33333333333334" x="225.0"/>
+  </workflow-item>
+  <workflow-item name="item6" out-name="item4" type="condition" alt-out-name="item7" comparator="0">
+    <display-name><![CDATA[CPU?]]></display-name>
+    <script encoded="false"><![CDATA[//Generated by the system, cannot be edited
+return (setCPU == true) ;]]></script>
+    <in-binding>
+      <bind name="setCPU" type="boolean" export-name="setCPU"/>
+    </in-binding>
+    <condition name="setCPU" type="boolean" comparator="0" label="null">false</condition>
+    <position y="70.0" x="60.0"/>
+  </workflow-item>
+  <workflow-item name="item7" out-name="item5" type="condition" alt-out-name="item0" comparator="0">
+    <display-name><![CDATA[RAM?]]></display-name>
+    <script encoded="false"><![CDATA[//Generated by the system, cannot be edited
+return (setRAM == true) ;]]></script>
+    <in-binding>
+      <bind name="setRAM" type="boolean" export-name="setRAM"/>
+    </in-binding>
+    <condition name="setRAM" type="boolean" comparator="0" label="null">false</condition>
+    <position y="143.33333333333334" x="65.0"/>
+  </workflow-item>
+  <workflow-item name="item0" out-name="item1" type="condition" alt-out-name="item13" comparator="0">
+    <display-name><![CDATA[Disk?]]></display-name>
+    <script encoded="false"><![CDATA[//Generated by the system, cannot be edited
+return (setDisk == true) ;]]></script>
+    <in-binding>
+      <bind name="setDisk" type="boolean" export-name="setDisk"/>
+    </in-binding>
+    <condition name="setDisk" type="boolean" comparator="0" label="null">false</condition>
+    <position y="209.5" x="65.0"/>
+  </workflow-item>
+  <workflow-item name="item1" out-name="item13" type="task">
+    <display-name><![CDATA[Set Disk]]></display-name>
+    <script encoded="false"><![CDATA[if ( diskSharesLevel == VcSharesLevel.custom ) {
+	if ( diskShares == null ) {
+		throw ("Error in disk parameters. At least one parameter was not set");
+	}
+}
+
+System.log("Set Disk ressources: sharedModel=" + diskSharesLevel.name + ", share=" + diskShares);
+Server.log("Set Disk ressources", "sharedModel=" + diskSharesLevel.name + ", share=" + diskShares);
+
+var sharesInfo = System.getModule("com.vmware.library.vc.spec").getSharesInfo(diskSharesLevel, diskShares);
+
+var virtualMachineConfigSpec = new VcVirtualMachineConfigSpec();
+var deviceConfigSpecs = new Array();
+
+var devices = vm.config.hardware.device;
+var nbVirtualDisks = 0;
+if ( devices != null )  {
+	for ( var i in devices )  {
+		if (devices[i] instanceof VcVirtualDisk) {
+			System.log("VirtualDisk found (Key: " + devices[i].key + ")" );			
+			var virtualDisk = devices[i]; 
+			
+			virtualDisk.shares = sharesInfo;
+			
+			deviceConfigSpec = new VcVirtualDeviceConfigSpec();
+			deviceConfigSpec.device = virtualDisk;
+			deviceConfigSpec.operation = VcVirtualDeviceConfigSpecOperation.edit;
+			deviceConfigSpecs[nbVirtualDisks++] = deviceConfigSpec;											
+		}
+	}
+}	
+
+var virtualMachineConfigSpec = new VcVirtualMachineConfigSpec();
+System.log(deviceConfigSpecs + ", size=" + deviceConfigSpecs.length);
+virtualMachineConfigSpec.deviceChange = deviceConfigSpecs;		
+var task = vm.reconfigVM_Task(virtualMachineConfigSpec);
+System.getModule("com.vmware.library.vc.basic").vim3WaitTaskEnd(task,false,5);]]></script>
+    <in-binding>
+      <bind name="vm" type="VC:VirtualMachine" export-name="vm"/>
+      <bind name="diskSharesLevel" type="VC:SharesLevel" export-name="diskSharesLevel"/>
+      <bind name="diskShares" type="number" export-name="diskShares"/>
+    </in-binding>
+    <out-binding/>
+    <position y="219.5" x="225.0"/>
+  </workflow-item>
+  <workflow-item name="item13" type="end" end-mode="0">
+    <position y="276.1666666666667" x="105.0"/>
+  </workflow-item>
+  <presentation>
+    <desc><![CDATA[Set VM performance values]]></desc>
+    <p-step>
+      <title><![CDATA[VM]]></title>
+      <p-group>
+        <title><![CDATA[Virtual Machine]]></title>
+        <desc><![CDATA[The VM to change]]></desc>
+        <p-param name="vm">
+          <desc><![CDATA[Virtual machine for which to configure settings]]></desc>
+          <p-qual name="mandatory"><![CDATA[true]]></p-qual>
+          <p-qual name="contextualParameter"><![CDATA[]]></p-qual>
+          <p-qual kind="static" name="show-select-as" type="string"><![CDATA[list]]></p-qual>
+        </p-param>
+      </p-group>
+      <p-group>
+        <title><![CDATA[Controls]]></title>
+        <desc><![CDATA[Select the entries to change]]></desc>
+        <p-param name="setCPU">
+          <desc><![CDATA[Set CPU values]]></desc>
+        </p-param>
+        <p-param name="setRAM">
+          <desc><![CDATA[Set RAM values]]></desc>
+        </p-param>
+        <p-param name="setDisk">
+          <desc><![CDATA[Set disk values]]></desc>
+        </p-param>
+      </p-group>
+    </p-step>
+    <p-step>
+      <title><![CDATA[Ressources]]></title>
+      <p-group>
+        <title><![CDATA[CPU]]></title>
+        <desc><![CDATA[CPU ressources to change
+
+- 'CPU shares' is ignored if 'CPU shares level' is different than 'custom' 
+- if 'CPU limit' equals -1 then CPU is unlimited]]></desc>
+        <p-qual name="visible"><![CDATA[setCPU/setCPU]]></p-qual>
+        <p-param name="cpuSharesLevel">
+          <desc><![CDATA[CPU shares level]]></desc>
+          <p-qual name="defaultValue"><![CDATA[S|VMware3:SharesLevel|dunes://service.dunes.ch/CustomSDKObject?id='2'&dunesName='VMware3:SharesLevel']]></p-qual>
+          <p-qual kind="static" name="mandatory" type="boolean"><![CDATA[true]]></p-qual>
+        </p-param>
+        <p-param name="cpuShares">
+          <desc><![CDATA[CPU shares (MHz)]]></desc>
+          <p-qual name="minNumberValue"><![CDATA[0.0]]></p-qual>
+          <p-qual name="numberFormat"><![CDATA[#]]></p-qual>
+        </p-param>
+        <p-param name="cpuReservation">
+          <desc><![CDATA[CPU reservation (MHz)]]></desc>
+          <p-qual name="minNumberValue"><![CDATA[0.0]]></p-qual>
+          <p-qual name="numberFormat"><![CDATA[#]]></p-qual>
+        </p-param>
+        <p-param name="cpuLimit">
+          <desc><![CDATA[CPU limit (MHz)]]></desc>
+          <p-qual name="numberFormat"><![CDATA[#]]></p-qual>
+          <p-qual name="minNumberValue"><![CDATA[-1.0]]></p-qual>
+          <p-qual name="defaultValue"><![CDATA[S|number|-1.0]]></p-qual>
+        </p-param>
+      </p-group>
+      <p-group>
+        <title><![CDATA[Memory]]></title>
+        <desc><![CDATA[RAM ressources to change
+
+- 'Memory shares' is ignored if 'Memory shares level' is different than 'custom' 
+- if 'Memory limit' equals -1 then Memory is unlimited]]></desc>
+        <p-qual name="visible"><![CDATA[setRAM/setRAM]]></p-qual>
+        <p-param name="ramSharesLevel">
+          <desc><![CDATA[Memory shares level]]></desc>
+          <p-qual name="defaultValue"><![CDATA[S|VMware3:SharesLevel|dunes://service.dunes.ch/CustomSDKObject?id='2'&dunesName='VMware3:SharesLevel']]></p-qual>
+          <p-qual kind="static" name="mandatory" type="boolean"><![CDATA[true]]></p-qual>
+        </p-param>
+        <p-param name="ramShares">
+          <desc><![CDATA[Memory shares (MB)]]></desc>
+          <p-qual name="numberFormat"><![CDATA[#]]></p-qual>
+          <p-qual name="minNumberValue"><![CDATA[0.0]]></p-qual>
+        </p-param>
+        <p-param name="ramReservation">
+          <desc><![CDATA[Memory reservation (MB)]]></desc>
+          <p-qual name="minNumberValue"><![CDATA[0.0]]></p-qual>
+          <p-qual name="numberFormat"><![CDATA[#]]></p-qual>
+        </p-param>
+        <p-param name="ramLimit">
+          <desc><![CDATA[Memory limit (MB)]]></desc>
+          <p-qual kind="static" name="numberFormat" type="String"><![CDATA[#]]></p-qual>
+          <p-qual kind="static" name="minNumberValue" type="Number"><![CDATA[-1.0]]></p-qual>
+          <p-qual kind="static" name="defaultValue" type="number"><![CDATA[-1.0]]></p-qual>
+        </p-param>
+      </p-group>
+      <p-group>
+        <title><![CDATA[Disk]]></title>
+        <desc><![CDATA[This will apply the given shares to ALL the VM disks.]]></desc>
+        <p-qual name="visible"><![CDATA[setDisk/setDisk]]></p-qual>
+        <p-param name="diskSharesLevel">
+          <desc><![CDATA[Disk shares level]]></desc>
+          <p-qual name="defaultValue"><![CDATA[S|VMware3:SharesLevel|dunes://service.dunes.ch/CustomSDKObject?id='2'&dunesName='VMware3:SharesLevel']]></p-qual>
+          <p-qual kind="static" name="mandatory" type="boolean"><![CDATA[true]]></p-qual>
+        </p-param>
+        <p-param name="diskShares">
+          <desc><![CDATA[Number of disk shares]]></desc>
+          <p-qual name="numberFormat"><![CDATA[#]]></p-qual>
+          <p-qual name="minNumberValue"><![CDATA[0.0]]></p-qual>
+        </p-param>
+      </p-group>
+    </p-step>
+  </presentation>
+</workflow>

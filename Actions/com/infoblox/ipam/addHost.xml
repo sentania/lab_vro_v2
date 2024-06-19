@@ -1,0 +1,91 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dunes-script-module name="addHost" result-type="void" api-version="6.0.0" id="2902b9b7-7474-4586-a3fe-fa79ed4a68ff" version="0.0.10" allowed-operations="evf" category-name="com.infoblox.ipam">
+  <description><![CDATA[Adds a host record to IPAM with the specified static IP address.]]></description>
+  <param n="ipamConnection" t="InfobloxIPAM:IpamConnection"><![CDATA[Connection to the IPAM server.]]></param>
+  <param n="hostName" t="string"><![CDATA[Host name (FQDN).]]></param>
+  <param n="dnsView" t="string"><![CDATA[DNS view, in which the host exists/will be created.]]></param>
+  <param n="ipAddress" t="string"><![CDATA[IPv4/IPv6 address assigned to the host.]]></param>
+  <param n="macAddress" t="string"><![CDATA[MAC address or DUID of the host. Required if enableDhcp is true.]]></param>
+  <param n="enableDhcp" t="boolean"><![CDATA[Enable DHCP flag for the created host entry.]]></param>
+  <param n="enableDns" t="boolean"><![CDATA[Enable DNS flag for the created host entry.]]></param>
+  <param n="aliases" t="Array/string"><![CDATA[List of aliases for the host entry in FQDN format.  Used only on creation of the host.]]></param>
+  <param n="comment" t="string"><![CDATA[Comments about the host.  Used only on creation of the host.]]></param>
+  <param n="ea1Definition" t="InfobloxIPAM:IpamExtensibleAttributeDefinition"><![CDATA[Definition of the Extensible Attribute #1. Used only on creation of the host.]]></param>
+  <param n="ea1Value" t="string"><![CDATA[Value of the Extensible Attribute #1. Used only on creation of the host.]]></param>
+  <param n="ea2Definition" t="InfobloxIPAM:IpamExtensibleAttributeDefinition"><![CDATA[Definition of the Extensible Attribute #2. Used only on creation of the host.]]></param>
+  <param n="ea2Value" t="string"><![CDATA[Value of the Extensible Attribute #2. Used only on creation of the host.]]></param>
+  <param n="ea3Definition" t="InfobloxIPAM:IpamExtensibleAttributeDefinition"><![CDATA[Definition of the Extensible Attribute #3. Used only on creation of the host.]]></param>
+  <param n="ea3Value" t="string"><![CDATA[Value of the Extensible Attribute #3. Used only on creation of the host.]]></param>
+  <param n="ea4Definition" t="InfobloxIPAM:IpamExtensibleAttributeDefinition"><![CDATA[Definition of the Extensible Attribute #4. Used only on creation of the host.]]></param>
+  <param n="ea4Value" t="string"><![CDATA[Value of the Extensible Attribute #4. Used only on creation of the host.]]></param>
+  <param n="ea5Definition" t="InfobloxIPAM:IpamExtensibleAttributeDefinition"><![CDATA[Definition of the Extensible Attribute #5. Used only on creation of the host.]]></param>
+  <param n="ea5Value" t="string"><![CDATA[Value of the Extensible Attribute #5. Used only on creation of the host.]]></param>
+  <param n="ea6Definition" t="InfobloxIPAM:IpamExtensibleAttributeDefinition"><![CDATA[Definition of the Extensible Attribute #6. Used only on creation of the host.]]></param>
+  <param n="ea6Value" t="string"><![CDATA[Value of the Extensible Attribute #6. Used only on creation of the host.]]></param>
+  <param n="ea7Definition" t="InfobloxIPAM:IpamExtensibleAttributeDefinition"><![CDATA[Definition of the Extensible Attribute #7. Used only on creation of the host.]]></param>
+  <param n="ea7Value" t="string"><![CDATA[Value of the Extensible Attribute #7. Used only on creation of the host.]]></param>
+  <param n="ea8Definition" t="InfobloxIPAM:IpamExtensibleAttributeDefinition"><![CDATA[Definition of the Extensible Attribute #8. Used only on creation of the host.]]></param>
+  <param n="ea8Value" t="string"><![CDATA[Value of the Extensible Attribute #8. Used only on creation of the host.]]></param>
+  <param n="ea9Definition" t="InfobloxIPAM:IpamExtensibleAttributeDefinition"><![CDATA[Definition of the Extensible Attribute #9. Used only on creation of the host.]]></param>
+  <param n="ea9Value" t="string"><![CDATA[Value of the Extensible Attribute #9. Used only on creation of the host.]]></param>
+  <param n="ea10Definition" t="InfobloxIPAM:IpamExtensibleAttributeDefinition"><![CDATA[Definition of the Extensible Attribute #10. Used only on creation of the host.]]></param>
+  <param n="ea10Value" t="string"><![CDATA[Value of the Extensible Attribute #10. Used only on creation of the host.]]></param>
+  <param n="restartIfNeeded" t="boolean"><![CDATA[Perform restart of DHCP service if needed]]></param>
+  <script encoded="false"><![CDATA[var hostManager = ipamConnection.getHostManager();
+
+hostName = hostName.toLowerCase();
+if (aliases) {
+	for (var i = 0; i < aliases.length; i++) {
+		aliases[i] = aliases[i].toLowerCase();
+	}
+}
+
+var eas = System.getModule("com.infoblox.ipam.util").getDefaultEAs(ipamConnection);
+eas.push(
+    createEa(ea1Definition, ea1Value),
+    createEa(ea2Definition, ea2Value),
+    createEa(ea3Definition, ea3Value),
+    createEa(ea4Definition, ea4Value),
+    createEa(ea5Definition, ea5Value),
+    createEa(ea6Definition, ea6Value),
+    createEa(ea7Definition, ea7Value),
+    createEa(ea8Definition, ea8Value),
+    createEa(ea9Definition, ea9Value),
+    createEa(ea10Definition, ea10Value)
+);
+
+var hostInfo = new IpamHostInfo(hostName);
+hostInfo.dnsView = dnsView;
+hostInfo.aliases = aliases;
+hostInfo.comment = comment;
+hostInfo.enableDns = enableDns;
+hostInfo.restartIfNeeded = restartIfNeeded;
+hostInfo.extensibleAttributes = eas;
+
+var hostAddress = new IpamHostAddress();
+hostAddress.ip = ipAddress;
+hostAddress.mac = macAddress;
+hostAddress.enableDhcp = enableDhcp;
+
+System.log("The host to add: IP address [" + hostAddress.ip + "], host name [" + hostInfo.fqdn + "], MAC address [" + hostAddress.mac
+	+ "], enable DHCP [" + hostAddress.enableDhcp + "], enable DNS [" + hostInfo.enableDns + "], aliases [" + hostInfo.aliases + "].");
+
+hostManager.addHost(hostInfo, hostAddress);
+
+System.log("The host with IP address [" + hostAddress.ip + "], host name [" + hostInfo.fqdn + "], MAC address [" + hostAddress.mac + "], enable DHCP ["
+	+ hostAddress.enableDhcp + "], enable DNS [" + hostInfo.enableDns + "], aliases [" + hostInfo.aliases + "] was added to IPAM.");
+	
+System.log("Automatic DHCP restart: " + hostInfo.restartIfNeeded + ".");
+return;
+
+function createEa(definition, value) {
+	if (definition) {
+		if (!System.getModule("com.infoblox.ipam.util").connectionContainsDefinition(ipamConnection, definition)) {
+			throw "The definition [" + definition.name + "] is not owned by the specified IPAM connection [" + ipamConnection.hostName
+				+ "]. It is owned by the IPAM connection [" + definition.getConnection().hostName + "].";
+		}
+	}
+	return new IpamExtensibleAttribute(definition, value);
+}
+]]></script>
+</dunes-script-module>

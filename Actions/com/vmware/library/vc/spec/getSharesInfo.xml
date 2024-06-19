@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dunes-script-module name="getSharesInfo" result-type="Any" api-version="6.0.0" id="4defae0c-9062-4b50-8c51-820cfcd84c71" version="0.2.0" allowed-operations="vfp" category-name="com.vmware.library.vc.spec">
+  <description><![CDATA[Specification of shares. 
+Shares are used to determine relative allocation between resource consumers. In general, a consumer with more shares gets proportionally more of the resource, subject to certain other constraints. 
+]]></description>
+  <param n="level" t="VC:SharesLevel"><![CDATA[The allocation level. The level is a simplified view of shares. Levels map to a pre-determined set of numeric values for shares. If the shares value does not map to a predefined size, then the level is set as custom. ]]></param>
+  <param n="shares" t="number"><![CDATA[The number of shares allocated. Used to determine resource allocation in case of resource contention. This value is only set if level is set to custom. If level is not set to custom, this value is ignored. Therefore, only shares with custom values can be compared.  There is no unit for this value. It is a relative measure based on the settings for other resource pools.  ]]></param>
+  <script encoded="false"><![CDATA[if (level == null) {
+ 	throw "ReferenceError: level cannot be null";
+}
+var info = new VcSharesInfo();
+info.level = VcSharesLevel.fromString(level.name);
+if (info.level == VcSharesLevel.custom) {
+	if (shares == null) {
+		throw "ReferenceError: shares cannot be null";
+	}
+	info.shares = shares;
+}
+return info;
+]]></script>
+</dunes-script-module>

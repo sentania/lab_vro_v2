@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<package>
+<description><![CDATA[Workflows and actions designed to fetch vSphere host advanced settings, and add them as custome properties in vROPS]]></description>
+<elm src-category='null'><![CDATA[dunes://service.dunes.ch/Workflow?id='08d75a8c-a79e-4dfb-8ff7-5d48ef6d94a9'&dunesName='Workflow']]></elm>
+<elm src-category='null'><![CDATA[dunes://service.dunes.ch/Action?id='4a1480c4-1fc1-41e2-ab12-22eba13ea5b1'&dunesName='Action'&name='getvROPSuserName'&category='net.sentania.Actions.vROPS.AdvSettings']]></elm>
+<elm src-category='null'><![CDATA[dunes://service.dunes.ch/Workflow?id='6af07a67-22f6-4b5f-8be9-22085510da98'&dunesName='Workflow']]></elm>
+<elm src-category='null'><![CDATA[dunes://service.dunes.ch/Action?id='6f7730f4-9172-4185-b396-10d72cf7e19a'&dunesName='Action'&name='getvROPSauthSource'&category='net.sentania.Actions.vROPS.AdvSettings']]></elm>
+<elm src-category='null'><![CDATA[dunes://service.dunes.ch/Workflow?id='7c3a26e3-c66b-48a6-a087-81e994eb079b'&dunesName='Workflow']]></elm>
+<elm src-category='null'><![CDATA[dunes://service.dunes.ch/Workflow?id='8272243f-236a-460f-85b8-9393b2dd9dee'&dunesName='Workflow']]></elm>
+<elm src-category='null'><![CDATA[dunes://service.dunes.ch/Action?id='8feb68d9-e0b1-4fb0-8feb-d4de3ff6568a'&dunesName='Action'&name='getvROPSActiveSettings'&category='net.sentania.Actions.vROPS.AdvSettings']]></elm>
+<elm src-category='null'><![CDATA[dunes://service.dunes.ch/Action?id='97a608a4-248a-47a6-b7d6-0d0ea26c32cb'&dunesName='Action'&name='getvROPSHostName'&category='net.sentania.Actions.vROPS.AdvSettings']]></elm>
+<elm src-category='null'><![CDATA[dunes://service.dunes.ch/Action?id='feea673a-8118-4d20-882b-39d8bab56451'&dunesName='Action'&name='getvROPSHostAdvancedSettings'&category='net.sentania.Actions.vROPS.AdvSettings']]></elm>
+<used-plugin name='VC' version='8.1.0' />
+</package>

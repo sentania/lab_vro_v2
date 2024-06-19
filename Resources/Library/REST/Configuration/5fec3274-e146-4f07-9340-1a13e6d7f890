@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<endpoint nativeId="bfa9ece0-0614-45d4-8f03-afa4709de66e" pluginVersion="2.2.2">
+    <properties>
+        <property type="string" name="schema">&lt;com.vmware.o11n.plugin.rest.schema.SchemaRespository&gt;
+  &lt;sources/&gt;
+&lt;/com.vmware.o11n.plugin.rest.schema.SchemaRespository&gt;</property>
+        <property type="string" name="proxyAuthenticationType">NONE</property>
+        <property type="integer" name="operationTimeout">60</property>
+        <property type="string" name="proxySessionMode">Shared Session</property>
+        <property type="bool" name="useProxy">false</property>
+        <property type="string" name="url">https://github.nml.com</property>
+        <property type="password" name="token">vcoencrypted:7NrzR9ggiSqxPgTGUKq4tC9Kor6h5hiNm+uS3z+X2hzCqR58391bqxTBIepARSyl</property>
+        <property type="string" name="operations">&lt;list&gt;
+  &lt;com.vmware.o11n.plugin.rest.RESTOperation&gt;
+    &lt;id&gt;96ca0446-3d7f-4241-b9d1-aaff6e8d10bb&lt;/id&gt;
+    &lt;name&gt;offerings&lt;/name&gt;
+    &lt;host&gt;
+      &lt;name&gt;DBMS-Github&lt;/name&gt;
+      &lt;id&gt;5fec3274-e146-4f07-9340-1a13e6d7f890&lt;/id&gt;
+      &lt;url&gt;https://github.nml.com&lt;/url&gt;
+      &lt;operations class="tree-map"&gt;
+        &lt;entry&gt;
+          &lt;string&gt;5fec3274-e146-4f07-9340-1a13e6d7f890:96ca0446-3d7f-4241-b9d1-aaff6e8d10bb&lt;/string&gt;
+          &lt;com.vmware.o11n.plugin.rest.RESTOperation reference="../../../.."/&gt;
+        &lt;/entry&gt;
+      &lt;/operations&gt;
+      &lt;authentication class="com.vmware.o11n.plugin.rest.OAuth2"&gt;
+        &lt;type&gt;OAuth 2.0&lt;/type&gt;
+        &lt;sessionMode&gt;Shared Session&lt;/sessionMode&gt;
+        &lt;isValid&gt;true&lt;/isValid&gt;
+        &lt;validationMessage&gt;&lt;/validationMessage&gt;
+        &lt;token&gt;
+          &lt;crypttext&gt;vcoencrypted:7NrzR9ggiSqxPgTGUKq4tC9Kor6h5hiNm+uS3z+X2hzCqR58391bqxTBIepARSyl&lt;/crypttext&gt;
+        &lt;/token&gt;
+      &lt;/authentication&gt;
+      &lt;connectionTimeout&gt;30&lt;/connectionTimeout&gt;
+      &lt;operationTimeout&gt;60&lt;/operationTimeout&gt;
+      &lt;hostVerification&gt;false&lt;/hostVerification&gt;
+      &lt;proxyPort&gt;-1&lt;/proxyPort&gt;
+      &lt;schemaRepo&gt;
+        &lt;sources/&gt;
+      &lt;/schemaRepo&gt;
+      &lt;resourceId&gt;bfa9ece0-0614-45d4-8f03-afa4709de66e&lt;/resourceId&gt;
+      &lt;cleanHttpContextPerRequest&gt;false&lt;/cleanHttpContextPerRequest&gt;
+      &lt;automaticUrlRedirection&gt;false&lt;/automaticUrlRedirection&gt;
+      &lt;proxyAuthentication class="com.vmware.o11n.plugin.rest.NoneAuthentication"&gt;
+        &lt;type&gt;NONE&lt;/type&gt;
+        &lt;sessionMode&gt;Shared Session&lt;/sessionMode&gt;
+        &lt;isValid&gt;true&lt;/isValid&gt;
+        &lt;validationMessage&gt;&lt;/validationMessage&gt;
+      &lt;/proxyAuthentication&gt;
+    &lt;/host&gt;
+    &lt;urlTemplate&gt;/api/v3/repos/nm/ds-general-ansible-ucp-launchpad/contents/files/dbms_ucp_offerings.txt&lt;/urlTemplate&gt;
+    &lt;method&gt;GET&lt;/method&gt;
+    &lt;inParameters/&gt;
+    &lt;pathParamsCount&gt;0&lt;/pathParamsCount&gt;
+    &lt;headerParameters/&gt;
+    &lt;defaultContentType&gt;&lt;/defaultContentType&gt;
+    &lt;commonHeaders/&gt;
+    &lt;supportedAcceptHeaderMediaTypes/&gt;
+    &lt;supportedContentTypes/&gt;
+    &lt;mandatoryPathParamNames/&gt;
+    &lt;mandatoryQueryParamNames/&gt;
+    &lt;mandatoryHeaderParamNames/&gt;
+  &lt;/com.vmware.o11n.plugin.rest.RESTOperation&gt;
+&lt;/list&gt;</property>
+        <property type="bool" name="hostVerification">false</property>
+        <property type="string" name="name">DBMS-Github</property>
+        <property type="string" name="authenticationType">OAuth 2.0</property>
+        <property type="string" name="sessionMode">Shared Session</property>
+        <property type="integer" name="connectionTimeout">30</property>
+    </properties>
+</endpoint>

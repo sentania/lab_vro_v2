@@ -1,0 +1,48 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dunes-script-module name="getConfigurationAttributeValueByPath" result-type="Any" api-version="6.0.0" id="2fdc81df-88ed-49c3-8a04-49856331a73f" version="0.2.0" allowed-operations="evf" category-name="virtualiseme.utilities">
+  <description><![CDATA[configurationElementPath - Configuration Folder Path (e.g., "Computers/SQL/2012")
+configurationElementName - Name of the Configuration element (e.g., "Default_Settings")
+configurationAttributeName - Name of the attribute within the element (e.g., "Port")
+configurationAttributeType - If you want to compare the return type to something specific; for example, if you need an Active Directory OU back, set the input to "AD:OrganizationalUnit".]]></description>
+  <param n="configurationElementPath" t="string"><![CDATA[]]></param>
+  <param n="configurationElementName" t="string"><![CDATA[]]></param>
+  <param n="configurationAttributeName" t="string"><![CDATA[]]></param>
+  <param n="configurationAttributeType" t="string"><![CDATA[]]></param>
+  <script encoded="false"><![CDATA[var configurationAttribute;
+
+var configurationElementCategory = Server.getConfigurationElementCategoryWithPath(configurationElementPath);
+
+if(configurationElementCategory == null) {
+	throw "Cannot find Configuration path '" + configurationElementPath + "'";
+}
+
+var configurationElement = getMatchingConfigurationElement(
+	configurationElementCategory.configurationElements, configurationElementName);
+	
+if(configurationElement == null) {
+	throw "No configuration element found (" + configurationElementPath + "/" + configurationElementName + ")";
+}
+
+
+configurationAttribute = configurationElement.getAttributeWithKey(configurationAttributeName);
+if(configurationAttribute == null) {
+	throw "No configuration attribute named '" + configurationAttributeName + "' found";
+}
+if(configurationAttributeType != null && 
+	configurationAttributeType.length > 0 && 
+	configurationAttributeType != configurationAttribute.type) {
+		throw "Attribute type found ('" + configurationAttribute.type + "') does not match the requested type ('" + configurationAttributeName + "')";
+}
+return configurationAttribute.value;
+
+
+function getMatchingConfigurationElement(configurationElements, configurationElementName) {
+	for each (var configurationElement in configurationElements) {
+		System.debug("Element name: " + configurationElement.name);
+		if(configurationElement.name === configurationElementName) {
+			return configurationElement;
+		}
+	}
+	return null;
+}]]></script>
+</dunes-script-module>

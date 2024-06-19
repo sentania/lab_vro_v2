@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dunes-script-module name="updateNetwork" result-type="void" api-version="6.0.0" id="4899472f-4cbf-42d2-97f2-71ec6f783d51" version="0.0.1" allowed-operations="evf" category-name="com.infoblox.ipam">
+  <description><![CDATA[Updates network in IPAM with given values.]]></description>
+  <param n="ipamConnection" t="InfobloxIPAM:IpamConnection"><![CDATA[Connection to IPAM server]]></param>
+  <param n="networkRef" t="string"><![CDATA[Reference to the network]]></param>
+  <param n="dhcpOptionRouters" t="Array/string"><![CDATA[IP addresses of the routers. Applicable only for IPv4 networks.]]></param>
+  <param n="restartIfNeeded" t="boolean"><![CDATA[Restart the member service if needed]]></param>
+  <script encoded="false"><![CDATA[var updateInfo = new IpamUpdateNetworkInfo();
+
+// Routers
+if (dhcpOptionRouters != null && dhcpOptionRouters != undefined && dhcpOptionRouters.length > 0) {
+	var dhcpOptions = new IpamDhcpOptions();
+	dhcpOptions.routers = dhcpOptionRouters;
+	updateInfo.dhcpOptions = dhcpOptions;
+}
+
+var networkManager = ipamConnection.getNetworkManager();
+networkManager.updateNetwork(networkRef, updateInfo, restartIfNeeded);
+
+var refInfo = ReferenceInfo.parse(networkRef);
+System.log("The network [" + refInfo.description + "] was updated in IPAM.");
+System.log("Automatic DHCP restart: " + restartIfNeeded + ".");]]></script>
+</dunes-script-module>

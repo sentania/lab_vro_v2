@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dunes-script-module name="getMachinePrefix" result-type="vCACCAFE:MachinePrefix" api-version="6.0.0" id="8f21cd5b-5b48-4e2e-9240-ec30002064d5" version="1.0.1" allowed-operations="vf" category-name="com.vmware.library.vcaccafe.businessgroup">
+  <description><![CDATA[Gets available machine prefixes.]]></description>
+  <param n="group" t="vCACCAFE:BusinessGroup"><![CDATA[Business group]]></param>
+  <script encoded="false"><![CDATA[var host = vCACCAFEEntitiesFinder.getHostForEntity(group);
+return vCACCAFEEntitiesFinder.getMachinePrefix(host, group.getMachinePrefixId().toString());]]></script>
+</dunes-script-module>

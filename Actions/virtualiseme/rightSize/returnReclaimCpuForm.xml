@@ -1,0 +1,18 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dunes-script-module name="returnReclaimCpuForm" result-type="number" api-version="6.0.0" id="5ea34135-5f89-4f7d-b6be-8f648bbcb64c" version="0.0.0" allowed-operations="evf" category-name="virtualiseme.rightSize">
+  <param n="businessGroup" t="string"><![CDATA[]]></param>
+  <script encoded="false"><![CDATA[const configurationElementPath = "RightSize";
+const configurationElementName = "elementPath";
+const configurationAttributeName = "businessGroupPath";
+const configurationAttributeType = "string"
+
+var resourceElementPath = System.getModule("virtualiseme.utilities").getConfigurationAttributeValueByPath(configurationElementPath,configurationElementName,configurationAttributeName,configurationAttributeType);
+System.debug(resourceElementPath);
+
+var resourceElement = System.getModule("virtualiseme.vro.resourceElements").getResourceElementByPath_1(resourceElementPath,businessGroup);
+var elementContent = System.getModule("virtualiseme.vro.resourceElements").getResourceElementContentAsString_1(resourceElement);
+
+var payload = JSON.parse(elementContent);
+
+return payload.reclaimCpu;]]></script>
+</dunes-script-module>

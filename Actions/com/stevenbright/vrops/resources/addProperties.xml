@@ -1,0 +1,45 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dunes-script-module name="addProperties" result-type="number" api-version="6.0.0" id="85a57195-86ee-4585-a5e4-f665777f97f3" version="3.0.0" allowed-operations="vfe" category-name="com.stevenbright.vrops.resources">
+  <description><![CDATA[Add properties to a vRealize Operations Resource based on the vRealize Operations Resource ID. Properties are provided as an array of Properties. The properties should include values for "statKey",  "timestamp", and "value".]]></description>
+  <param n="restHost" t="REST:RESTHost"><![CDATA[]]></param>
+  <param n="restAuthToken" t="string"><![CDATA[]]></param>
+  <param n="resourceId" t="string"><![CDATA[]]></param>
+  <param n="newProperties" t="Array/Properties"><![CDATA[]]></param>
+  <script encoded="false"><![CDATA[//Variable to hold the JSON Update Body
+var jsonBody = {
+        "property-content" : [ ]
+        }
+
+//Create and add stat-content entries
+for each(newProperty in newProperties) {
+    var jsonProperty = {
+            "statKey" : "",
+            "timestamps" : [ ],
+            "values" : [ ],
+            "others" : [ ],
+            "otherAttributes" : { }
+        }
+    try{
+        jsonProperty.statKey = newProperty.get("statKey");
+        jsonProperty.timestamps.push(newProperty.get("timestamps"));
+        jsonProperty.values.push(newProperty.get("values"));
+        jsonBody["property-content"].push(jsonProperty);        
+    } catch(e){}
+
+}
+
+//Prepare to execute the REST request
+var request = restHost.createRequest("POST", "/suite-api/api/resources/" + resourceId + "/properties", JSON.stringify(jsonBody));
+request.contentType = "application/json";
+request.setHeader("accept", "application/json");
+request.setHeader("Authorization", "vRealizeOpsToken " + restAuthToken);
+
+//Execute the HTTP REST request
+try {
+    response = request.execute();
+    return response.statusCode;
+}
+catch (e) {
+    System.error("Error executing the REST operation: " + e);
+}]]></script>
+</dunes-script-module>

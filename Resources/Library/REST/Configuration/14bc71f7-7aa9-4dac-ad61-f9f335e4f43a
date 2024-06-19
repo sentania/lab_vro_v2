@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<endpoint nativeId="6dda9a2c-edcb-4d09-b618-d3211b84bab4" pluginVersion="2.2.2">
+    <properties>
+        <property type="string" name="schema">&lt;com.vmware.o11n.plugin.rest.schema.SchemaRespository&gt;
+  &lt;sources/&gt;
+&lt;/com.vmware.o11n.plugin.rest.schema.SchemaRespository&gt;</property>
+        <property type="string" name="proxyAuthenticationType">NONE</property>
+        <property type="integer" name="operationTimeout">60</property>
+        <property type="string" name="proxySessionMode">Shared Session</property>
+        <property type="bool" name="useProxy">true</property>
+        <property type="string" name="proxyHost"></property>
+        <property type="string" name="url">https://frk-vra-mgmt-manager.nm.nmfco.com/api/</property>
+        <property type="integer" name="proxyPort">0</property>
+        <property type="password" name="password">vcoencrypted:Gl52ELk2qd1QmRWs90kidQ==</property>
+        <property type="string" name="operations">&lt;list&gt;
+  &lt;com.vmware.o11n.plugin.rest.RESTOperation&gt;
+    &lt;id&gt;84d86fc6-948a-4cad-910a-2b9e6b608255&lt;/id&gt;
+    &lt;name&gt;Create Edge Interface&lt;/name&gt;
+    &lt;host&gt;
+      &lt;name&gt;NSX Manager&lt;/name&gt;
+      &lt;id&gt;14bc71f7-7aa9-4dac-ad61-f9f335e4f43a&lt;/id&gt;
+      &lt;url&gt;https://frk-vra-mgmt-manager.nm.nmfco.com/api/&lt;/url&gt;
+      &lt;operations class="tree-map"&gt;
+        &lt;entry&gt;
+          &lt;string&gt;14bc71f7-7aa9-4dac-ad61-f9f335e4f43a:7c39fb02-14e5-40ad-83b4-0d57978a92e8&lt;/string&gt;
+          &lt;com.vmware.o11n.plugin.rest.RESTOperation&gt;
+            &lt;id&gt;7c39fb02-14e5-40ad-83b4-0d57978a92e8&lt;/id&gt;
+            &lt;name&gt;Get Logical Router Interface&lt;/name&gt;
+            &lt;host reference="../../../.."/&gt;
+            &lt;urlTemplate&gt;4.0/edges/{edgeId}/interfaces/{index}&lt;/urlTemplate&gt;
+            &lt;method&gt;GET&lt;/method&gt;
+            &lt;inParameters&gt;
+              &lt;string&gt;edgeId&lt;/string&gt;
+              &lt;string&gt;index&lt;/string&gt;
+            &lt;/inParameters&gt;
+            &lt;pathParamsCount&gt;2&lt;/pathParamsCount&gt;
+            &lt;headerParameters/&gt;
+            &lt;defaultContentType&gt;&lt;/defaultContentType&gt;
+            &lt;commonHeaders/&gt;
+            &lt;supportedAcceptHeaderMediaTypes/&gt;
+            &lt;supportedContentTypes/&gt;
+            &lt;mandatoryPathParamNames/&gt;
+            &lt;mandatoryQueryParamNames/&gt;
+            &lt;mandatoryHeaderParamNames/&gt;
+          &lt;/com.vmware.o11n.plugin.rest.RESTOperation&gt;
+        &lt;/entry&gt;
+        &lt;entry&gt;
+          &lt;string&gt;14bc71f7-7aa9-4dac-ad61-f9f335e4f43a:84d86fc6-948a-4cad-910a-2b9e6b608255&lt;/string&gt;
+          &lt;com.vmware.o11n.plugin.rest.RESTOperation reference="../../../.."/&gt;
+        &lt;/entry&gt;
+        &lt;entry&gt;
+          &lt;string&gt;14bc71f7-7aa9-4dac-ad61-f9f335e4f43a:8b858c1a-bd10-49b7-a92c-05ed6b9f4755&lt;/string&gt;
+          &lt;com.vmware.o11n.plugin.rest.RESTOperation&gt;
+            &lt;id&gt;8b858c1a-bd10-49b7-a92c-05ed6b9f4755&lt;/id&gt;
+            &lt;name&gt;Create Logical Switch&lt;/name&gt;
+            &lt;host reference="../../../.."/&gt;
+            &lt;urlTemplate&gt;2.0/vdn/scopes/{scopeId}/virtualwires&lt;/urlTemplate&gt;
+            &lt;method&gt;POST&lt;/method&gt;
+            &lt;inParameters&gt;
+              &lt;string&gt;scopeId&lt;/string&gt;
+            &lt;/inParameters&gt;
+            &lt;pathParamsCount&gt;1&lt;/pathParamsCount&gt;
+            &lt;headerParameters/&gt;
+            &lt;defaultContentType&gt;application/xml&lt;/defaultContentType&gt;
+            &lt;commonHeaders/&gt;
+            &lt;supportedAcceptHeaderMediaTypes/&gt;
+            &lt;supportedContentTypes/&gt;
+            &lt;mandatoryPathParamNames/&gt;
+            &lt;mandatoryQueryParamNames/&gt;
+            &lt;mandatoryHeaderParamNames/&gt;
+          &lt;/com.vmware.o11n.plugin.rest.RESTOperation&gt;
+        &lt;/entry&gt;
+        &lt;entry&gt;
+          &lt;string&gt;14bc71f7-7aa9-4dac-ad61-f9f335e4f43a:9ea5efac-79f5-46e8-90d5-c7d918c5dea2&lt;/string&gt;
+          &lt;com.vmware.o11n.plugin.rest.RESTOperation&gt;
+            &lt;id&gt;9ea5efac-79f5-46e8-90d5-c7d918c5dea2&lt;/id&gt;
+            &lt;name&gt;Delete Logical Router Interface&lt;/name&gt;
+            &lt;host reference="../../../.."/&gt;
+            &lt;urlTemplate&gt;4.0/edges/{edgeId}/interfaces/?index={index}&lt;/urlTemplate&gt;
+            &lt;method&gt;DELETE&lt;/method&gt;
+            &lt;inParameters&gt;
+              &lt;string&gt;edgeId&lt;/string&gt;
+              &lt;string&gt;index&lt;/string&gt;
+            &lt;/inParameters&gt;
+            &lt;pathParamsCount&gt;1&lt;/pathParamsCount&gt;
+            &lt;headerParameters/&gt;
+            &lt;defaultContentType&gt;application/xml&lt;/defaultContentType&gt;
+            &lt;commonHeaders/&gt;
+            &lt;supportedAcceptHeaderMediaTypes/&gt;
+            &lt;supportedContentTypes/&gt;
+            &lt;mandatoryPathParamNames/&gt;
+            &lt;mandatoryQueryParamNames/&gt;
+            &lt;mandatoryHeaderParamNames/&gt;
+          &lt;/com.vmware.o11n.plugin.rest.RESTOperation&gt;
+        &lt;/entry&gt;
+        &lt;entry&gt;
+          &lt;string&gt;14bc71f7-7aa9-4dac-ad61-f9f335e4f43a:cc8adc84-312a-40df-8a85-842013e26074&lt;/string&gt;
+          &lt;com.vmware.o11n.plugin.rest.RESTOperation&gt;
+            &lt;id&gt;cc8adc84-312a-40df-8a85-842013e26074&lt;/id&gt;
+            &lt;name&gt;Get All Edges&lt;/name&gt;
+            &lt;host reference="../../../.."/&gt;
+            &lt;urlTemplate&gt;4.0/edges&lt;/urlTemplate&gt;
+            &lt;method&gt;GET&lt;/method&gt;
+            &lt;inParameters/&gt;
+            &lt;pathParamsCount&gt;0&lt;/pathParamsCount&gt;
+            &lt;headerParameters/&gt;
+            &lt;defaultContentType&gt;&lt;/defaultContentType&gt;
+            &lt;commonHeaders/&gt;
+            &lt;supportedAcceptHeaderMediaTypes/&gt;
+            &lt;supportedContentTypes/&gt;
+            &lt;mandatoryPathParamNames/&gt;
+            &lt;mandatoryQueryParamNames/&gt;
+            &lt;mandatoryHeaderParamNames/&gt;
+          &lt;/com.vmware.o11n.plugin.rest.RESTOperation&gt;
+        &lt;/entry&gt;
+      &lt;/operations&gt;
+      &lt;authentication class="com.vmware.o11n.plugin.rest.HTTPBasicAuthentication"&gt;
+        &lt;type&gt;Basic&lt;/type&gt;
+        &lt;sessionMode&gt;Shared Session&lt;/sessionMode&gt;
+        &lt;username&gt;Admin&lt;/username&gt;
+        &lt;password&gt;
+          &lt;crypttext&gt;vcoencrypted:Gl52ELk2qd1QmRWs90kidQ==&lt;/crypttext&gt;
+        &lt;/password&gt;
+      &lt;/authentication&gt;
+      &lt;connectionTimeout&gt;30&lt;/connectionTimeout&gt;
+      &lt;operationTimeout&gt;60&lt;/operationTimeout&gt;
+      &lt;hostVerification&gt;false&lt;/hostVerification&gt;
+      &lt;proxyHost&gt;&lt;/proxyHost&gt;
+      &lt;proxyPort&gt;0&lt;/proxyPort&gt;
+      &lt;schemaRepo&gt;
+        &lt;sources/&gt;
+      &lt;/schemaRepo&gt;
+      &lt;resourceId&gt;6dda9a2c-edcb-4d09-b618-d3211b84bab4&lt;/resourceId&gt;
+      &lt;automaticUrlRedirection&gt;false&lt;/automaticUrlRedirection&gt;
+      &lt;proxyAuthentication class="com.vmware.o11n.plugin.rest.NoneAuthentication"&gt;
+        &lt;type&gt;NONE&lt;/type&gt;
+        &lt;sessionMode&gt;Shared Session&lt;/sessionMode&gt;
+        &lt;isValid&gt;true&lt;/isValid&gt;
+        &lt;validationMessage&gt;&lt;/validationMessage&gt;
+      &lt;/proxyAuthentication&gt;
+    &lt;/host&gt;
+    &lt;urlTemplate&gt;4.0/edges/{edgeId}/interfaces?action=patch&lt;/urlTemplate&gt;
+    &lt;method&gt;POST&lt;/method&gt;
+    &lt;inParameters&gt;
+      &lt;string&gt;edgeId&lt;/string&gt;
+    &lt;/inParameters&gt;
+    &lt;pathParamsCount&gt;1&lt;/pathParamsCount&gt;
+    &lt;headerParameters/&gt;
+    &lt;defaultContentType&gt;application/xml&lt;/defaultContentType&gt;
+    &lt;commonHeaders/&gt;
+    &lt;supportedAcceptHeaderMediaTypes/&gt;
+    &lt;supportedContentTypes/&gt;
+    &lt;mandatoryPathParamNames/&gt;
+    &lt;mandatoryQueryParamNames/&gt;
+    &lt;mandatoryHeaderParamNames/&gt;
+  &lt;/com.vmware.o11n.plugin.rest.RESTOperation&gt;
+  &lt;com.vmware.o11n.plugin.rest.RESTOperation reference="../com.vmware.o11n.plugin.rest.RESTOperation/host/operations/entry[3]/com.vmware.o11n.plugin.rest.RESTOperation"/&gt;
+  &lt;com.vmware.o11n.plugin.rest.RESTOperation reference="../com.vmware.o11n.plugin.rest.RESTOperation/host/operations/entry[4]/com.vmware.o11n.plugin.rest.RESTOperation"/&gt;
+  &lt;com.vmware.o11n.plugin.rest.RESTOperation reference="../com.vmware.o11n.plugin.rest.RESTOperation/host/operations/entry[5]/com.vmware.o11n.plugin.rest.RESTOperation"/&gt;
+  &lt;com.vmware.o11n.plugin.rest.RESTOperation reference="../com.vmware.o11n.plugin.rest.RESTOperation/host/operations/entry/com.vmware.o11n.plugin.rest.RESTOperation"/&gt;
+&lt;/list&gt;</property>
+        <property type="bool" name="hostVerification">false</property>
+        <property type="string" name="name">NSX Manager</property>
+        <property type="string" name="authenticationType">Basic</property>
+        <property type="string" name="sessionMode">Shared Session</property>
+        <property type="integer" name="connectionTimeout">30</property>
+        <property type="string" name="username">Admin</property>
+    </properties>
+</endpoint>

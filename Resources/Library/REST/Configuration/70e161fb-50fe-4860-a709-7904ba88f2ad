@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<endpoint nativeId="d4bc5bed-e5e0-40e8-8ec3-cd97c660fc69" pluginVersion="2.2.2">
+    <properties>
+        <property type="string" name="schema">&lt;com.vmware.o11n.plugin.rest.schema.SchemaRespository&gt;
+  &lt;sources/&gt;
+&lt;/com.vmware.o11n.plugin.rest.schema.SchemaRespository&gt;</property>
+        <property type="string" name="proxyAuthenticationType">NONE</property>
+        <property type="integer" name="operationTimeout">60</property>
+        <property type="string" name="proxySessionMode">Shared Session</property>
+        <property type="bool" name="useProxy">false</property>
+        <property type="string" name="url">http://ucp-etcd.nml.com:2379/v2/keys</property>
+        <property type="password" name="password">vcoencrypted:na5UJB+9jRfXDIx9TjI1Yl/2lux7mIwBiSgN/B7W3GA=</property>
+        <property type="string" name="operations">&lt;list&gt;
+  &lt;com.vmware.o11n.plugin.rest.RESTOperation&gt;
+    &lt;id&gt;7ed77c9f-e9eb-4866-a8da-c91eb20adc0d&lt;/id&gt;
+    &lt;name&gt;Get All etcd&lt;/name&gt;
+    &lt;host&gt;
+      &lt;name&gt;ucp-etcd&lt;/name&gt;
+      &lt;id&gt;70e161fb-50fe-4860-a709-7904ba88f2ad&lt;/id&gt;
+      &lt;url&gt;http://ucp-etcd.nml.com:2379/v2/keys&lt;/url&gt;
+      &lt;operations class="tree-map"&gt;
+        &lt;entry&gt;
+          &lt;string&gt;70e161fb-50fe-4860-a709-7904ba88f2ad:7ed77c9f-e9eb-4866-a8da-c91eb20adc0d&lt;/string&gt;
+          &lt;com.vmware.o11n.plugin.rest.RESTOperation reference="../../../.."/&gt;
+        &lt;/entry&gt;
+        &lt;entry&gt;
+          &lt;string&gt;70e161fb-50fe-4860-a709-7904ba88f2ad:808bd40a-328f-4956-b827-8e79ca7e695a&lt;/string&gt;
+          &lt;com.vmware.o11n.plugin.rest.RESTOperation&gt;
+            &lt;id&gt;808bd40a-328f-4956-b827-8e79ca7e695a&lt;/id&gt;
+            &lt;name&gt;Unified Compute etcd PUT&lt;/name&gt;
+            &lt;host reference="../../../.."/&gt;
+            &lt;urlTemplate&gt;/{payload}&lt;/urlTemplate&gt;
+            &lt;method&gt;PUT&lt;/method&gt;
+            &lt;inParameters&gt;
+              &lt;string&gt;payload&lt;/string&gt;
+            &lt;/inParameters&gt;
+            &lt;pathParamsCount&gt;1&lt;/pathParamsCount&gt;
+            &lt;headerParameters/&gt;
+            &lt;defaultContentType&gt;&lt;/defaultContentType&gt;
+            &lt;commonHeaders/&gt;
+            &lt;supportedAcceptHeaderMediaTypes/&gt;
+            &lt;supportedContentTypes/&gt;
+            &lt;mandatoryPathParamNames/&gt;
+            &lt;mandatoryQueryParamNames/&gt;
+            &lt;mandatoryHeaderParamNames/&gt;
+          &lt;/com.vmware.o11n.plugin.rest.RESTOperation&gt;
+        &lt;/entry&gt;
+        &lt;entry&gt;
+          &lt;string&gt;70e161fb-50fe-4860-a709-7904ba88f2ad:e2f4404d-1fbc-40ae-97b5-e7db5e3448b2&lt;/string&gt;
+          &lt;com.vmware.o11n.plugin.rest.RESTOperation&gt;
+            &lt;id&gt;e2f4404d-1fbc-40ae-97b5-e7db5e3448b2&lt;/id&gt;
+            &lt;name&gt;Unified Compute etcd DELETE&lt;/name&gt;
+            &lt;host reference="../../../.."/&gt;
+            &lt;urlTemplate&gt;{payload}&lt;/urlTemplate&gt;
+            &lt;method&gt;DELETE&lt;/method&gt;
+            &lt;inParameters&gt;
+              &lt;string&gt;payload&lt;/string&gt;
+            &lt;/inParameters&gt;
+            &lt;pathParamsCount&gt;1&lt;/pathParamsCount&gt;
+            &lt;headerParameters/&gt;
+            &lt;defaultContentType&gt;&lt;/defaultContentType&gt;
+            &lt;commonHeaders/&gt;
+            &lt;supportedAcceptHeaderMediaTypes/&gt;
+            &lt;supportedContentTypes/&gt;
+            &lt;mandatoryPathParamNames/&gt;
+            &lt;mandatoryQueryParamNames/&gt;
+            &lt;mandatoryHeaderParamNames/&gt;
+          &lt;/com.vmware.o11n.plugin.rest.RESTOperation&gt;
+        &lt;/entry&gt;
+        &lt;entry&gt;
+          &lt;string&gt;70e161fb-50fe-4860-a709-7904ba88f2ad:f73443c9-66e2-4517-8df1-b6c172ba1d6e&lt;/string&gt;
+          &lt;com.vmware.o11n.plugin.rest.RESTOperation&gt;
+            &lt;id&gt;f73443c9-66e2-4517-8df1-b6c172ba1d6e&lt;/id&gt;
+            &lt;name&gt;Unified Compute etcd GET&lt;/name&gt;
+            &lt;host reference="../../../.."/&gt;
+            &lt;urlTemplate&gt;{payload}&lt;/urlTemplate&gt;
+            &lt;method&gt;GET&lt;/method&gt;
+            &lt;inParameters&gt;
+              &lt;string&gt;payload&lt;/string&gt;
+            &lt;/inParameters&gt;
+            &lt;pathParamsCount&gt;1&lt;/pathParamsCount&gt;
+            &lt;headerParameters/&gt;
+            &lt;defaultContentType&gt;&lt;/defaultContentType&gt;
+            &lt;commonHeaders/&gt;
+            &lt;supportedAcceptHeaderMediaTypes/&gt;
+            &lt;supportedContentTypes/&gt;
+            &lt;mandatoryPathParamNames/&gt;
+            &lt;mandatoryQueryParamNames/&gt;
+            &lt;mandatoryHeaderParamNames/&gt;
+          &lt;/com.vmware.o11n.plugin.rest.RESTOperation&gt;
+        &lt;/entry&gt;
+      &lt;/operations&gt;
+      &lt;authentication class="com.vmware.o11n.plugin.rest.HTTPBasicAuthentication"&gt;
+        &lt;type&gt;Basic&lt;/type&gt;
+        &lt;sessionMode&gt;Shared Session&lt;/sessionMode&gt;
+        &lt;username&gt;unifiedcomputep&lt;/username&gt;
+        &lt;password&gt;
+          &lt;crypttext&gt;vcoencrypted:na5UJB+9jRfXDIx9TjI1Yl/2lux7mIwBiSgN/B7W3GA=&lt;/crypttext&gt;
+        &lt;/password&gt;
+      &lt;/authentication&gt;
+      &lt;connectionTimeout&gt;30&lt;/connectionTimeout&gt;
+      &lt;operationTimeout&gt;60&lt;/operationTimeout&gt;
+      &lt;hostVerification&gt;false&lt;/hostVerification&gt;
+      &lt;proxyPort&gt;-1&lt;/proxyPort&gt;
+      &lt;schemaRepo&gt;
+        &lt;sources/&gt;
+      &lt;/schemaRepo&gt;
+      &lt;cleanHttpContextPerRequest&gt;false&lt;/cleanHttpContextPerRequest&gt;
+      &lt;automaticUrlRedirection&gt;false&lt;/automaticUrlRedirection&gt;
+      &lt;proxyAuthentication class="com.vmware.o11n.plugin.rest.NoneAuthentication"&gt;
+        &lt;type&gt;NONE&lt;/type&gt;
+        &lt;sessionMode&gt;Shared Session&lt;/sessionMode&gt;
+        &lt;isValid&gt;true&lt;/isValid&gt;
+        &lt;validationMessage&gt;&lt;/validationMessage&gt;
+      &lt;/proxyAuthentication&gt;
+    &lt;/host&gt;
+    &lt;urlTemplate&gt;http://ucp-etcd1.nm.nmfco.com:2379/v2/keys/unifiedcompute/servers/?recursive=true&lt;/urlTemplate&gt;
+    &lt;method&gt;GET&lt;/method&gt;
+    &lt;inParameters/&gt;
+    &lt;pathParamsCount&gt;0&lt;/pathParamsCount&gt;
+    &lt;headerParameters/&gt;
+    &lt;defaultContentType&gt;&lt;/defaultContentType&gt;
+    &lt;commonHeaders/&gt;
+    &lt;supportedAcceptHeaderMediaTypes/&gt;
+    &lt;supportedContentTypes/&gt;
+    &lt;mandatoryPathParamNames/&gt;
+    &lt;mandatoryQueryParamNames/&gt;
+    &lt;mandatoryHeaderParamNames/&gt;
+  &lt;/com.vmware.o11n.plugin.rest.RESTOperation&gt;
+  &lt;com.vmware.o11n.plugin.rest.RESTOperation reference="../com.vmware.o11n.plugin.rest.RESTOperation/host/operations/entry[3]/com.vmware.o11n.plugin.rest.RESTOperation"/&gt;
+  &lt;com.vmware.o11n.plugin.rest.RESTOperation reference="../com.vmware.o11n.plugin.rest.RESTOperation/host/operations/entry[4]/com.vmware.o11n.plugin.rest.RESTOperation"/&gt;
+  &lt;com.vmware.o11n.plugin.rest.RESTOperation reference="../com.vmware.o11n.plugin.rest.RESTOperation/host/operations/entry[2]/com.vmware.o11n.plugin.rest.RESTOperation"/&gt;
+&lt;/list&gt;</property>
+        <property type="bool" name="hostVerification">false</property>
+        <property type="string" name="name">ucp-etcd</property>
+        <property type="string" name="authenticationType">Basic</property>
+        <property type="string" name="sessionMode">Shared Session</property>
+        <property type="integer" name="connectionTimeout">30</property>
+        <property type="string" name="username">unifiedcomputep</property>
+    </properties>
+</endpoint>

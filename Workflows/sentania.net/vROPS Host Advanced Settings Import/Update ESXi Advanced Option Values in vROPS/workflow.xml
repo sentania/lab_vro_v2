@@ -1,0 +1,346 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<workflow xmlns="http://vmware.com/vco/workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://vmware.com/vco/workflow http://vmware.com/vco/workflow/Workflow-v4.xsd" root-name="item2" object-name="workflow:name=generic" id="7c3a26e3-c66b-48a6-a087-81e994eb079b" version="1.1.0" api-version="6.0.0" editor-version="2.0" restartMode="1" resumeFromFailedMode="0">
+  <display-name><![CDATA[Update ESXi Advanced Option Values in vROPS]]></display-name>
+  <description><![CDATA[Populate selected advanced settings into vROPS from vCenter]]></description>
+  <position y="50.0" x="100.0"/>
+  <attrib name="sdkConnections" type="Array/VC:SdkConnection" read-only="false">
+    <value encoded="n"><![CDATA[[]]]></value>
+  </attrib>
+  <attrib name="hosts" type="Array/Array" read-only="false">
+    <value encoded="n"><![CDATA[[]]]></value>
+  </attrib>
+  <attrib name="vmHosts" type="Array/VC:HostSystem" read-only="false">
+    <value encoded="n"><![CDATA[[]]]></value>
+  </attrib>
+  <attrib name="advancedSettingsArray" type="Array/string" read-only="false">
+    <value encoded="n"><![CDATA[[24:string#Disk.ResetLatency]]]></value>
+  </attrib>
+  <attrib name="hostSettingJSON" type="Properties" read-only="false">
+    <value encoded="n"><![CDATA[{}]]></value>
+  </attrib>
+  <attrib name="authData" type="Properties" read-only="false">
+    <value encoded="n"><![CDATA[{}]]></value>
+  </attrib>
+  <attrib name="username" type="string" read-only="false">
+    <value encoded="n"><![CDATA[]]></value>
+  </attrib>
+  <attrib name="authsource" type="string" read-only="false">
+    <value encoded="n"><![CDATA[]]></value>
+  </attrib>
+  <attrib name="vropsHostname" type="string" read-only="false">
+    <value encoded="n"><![CDATA[]]></value>
+  </attrib>
+  <attrib name="password" type="SecureString" read-only="false">
+    <value encoded="n"><![CDATA[]]></value>
+  </attrib>
+  <workflow-item name="item0" type="end" end-mode="0">
+    <in-binding/>
+    <position y="130.0" x="220.0"/>
+  </workflow-item>
+  <workflow-item name="item2" out-name="item8" type="task">
+    <display-name><![CDATA[Set SDK Connections]]></display-name>
+    <script encoded="false"><![CDATA[sdkConnections = VcPlugin.allSdkConnections
+]]></script>
+    <in-binding/>
+    <out-binding>
+      <bind name="sdkConnections" type="Array/VC:SdkConnection" export-name="sdkConnections"/>
+    </out-binding>
+    <description><![CDATA[Simple task with custom script capability.]]></description>
+    <position y="60.0" x="200.0"/>
+  </workflow-item>
+  <workflow-item name="item3" out-name="item4" type="foreach">
+    <display-name><![CDATA[Get VMware Hosts by vCenter]]></display-name>
+    <in-binding>
+      <bind name="vc" type="Array/VC:SdkConnection" export-name="*sdkConnections"/>
+    </in-binding>
+    <out-binding>
+      <bind name="hosts" type="Array/Array" export-name="*hosts"/>
+    </out-binding>
+    <reference type="Workflow" id="08d75a8c-a79e-4dfb-8ff7-5d48ef6d94a9"/>
+    <position y="60.0" x="480.0"/>
+  </workflow-item>
+  <workflow-item name="item4" out-name="item5" type="task">
+    <display-name><![CDATA[Transform Host Arrays]]></display-name>
+    <script encoded="false"><![CDATA[var vmHosts = hosts.reduce(function(acc, curr) {
+    return acc.concat(curr);
+}, []);]]></script>
+    <in-binding>
+      <bind name="hosts" type="Array/Array" export-name="hosts"/>
+    </in-binding>
+    <out-binding>
+      <bind name="vmHosts" type="Array/VC:HostSystem" export-name="vmHosts"/>
+    </out-binding>
+    <description><![CDATA[Simple task with custom script capability.]]></description>
+    <position y="60.0" x="620.0"/>
+  </workflow-item>
+  <workflow-item name="item5" out-name="item7" type="task">
+    <display-name><![CDATA[Get Advanced settings]]></display-name>
+    <script encoded="false"><![CDATA[// Input parameters:
+// vmHosts: Array of VC:HostSystem
+// advancedSettingsArray: Array of strings (names of the advanced settings to gather) - can be empty
+
+var hostSettingJSON = {};
+
+for (var i = 0; i < vmHosts.length; i++) {
+    var host = vmHosts[i];
+    var hostName = host.name;
+    var advancedSettings = {};
+
+    try {
+        // Retrieve all advanced settings for the host
+        var allAdvancedSettings = host.configManager.advancedOption.queryOptions();
+
+        if (advancedSettingsArray.length === 0) {
+            // If no specific advanced settings are specified, return all settings
+            for (var k = 0; k < allAdvancedSettings.length; k++) {
+                advancedSettings[allAdvancedSettings[k].key] = allAdvancedSettings[k].value;
+            }
+        } else {
+            // Filter the settings based on the advancedSettingsArray
+            for (var j = 0; j < advancedSettingsArray.length; j++) {
+                var settingName = advancedSettingsArray[j];
+                var settingValue = "Not Found";
+
+                for (var k = 0; k < allAdvancedSettings.length; k++) {
+                    if (allAdvancedSettings[k].key === settingName) {
+                        settingValue = allAdvancedSettings[k].value;
+                        break;
+                    }
+                }
+
+                advancedSettings[settingName] = settingValue;
+            }
+        }
+    } catch (e) {
+        System.warn("Failed to get settings for host " + hostName + ": " + e.message);
+    }
+
+    // Add the host information to the hostSettingJSON
+    hostSettingJSON[hostName] = advancedSettings;
+}
+]]></script>
+    <in-binding>
+      <bind name="vmHosts" type="Array/VC:HostSystem" export-name="vmHosts"/>
+      <bind name="advancedSettingsArray" type="Array/string" export-name="advancedSettingsArray"/>
+    </in-binding>
+    <out-binding>
+      <bind name="hostSettingJSON" type="Properties" export-name="hostSettingJSON"/>
+    </out-binding>
+    <description><![CDATA[Simple task with custom script capability.]]></description>
+    <position y="140.0" x="620.0"/>
+  </workflow-item>
+  <workflow-item name="item6" out-name="item0" type="task">
+    <display-name><![CDATA[Update Properties in vROPS]]></display-name>
+    <script encoded="false"><![CDATA[// Input parameters:
+// hostSettingJSON: Properties
+// authData: string
+
+// Create REST host configuration
+var restHost = new RESTHost("https://" + vropsHostname);
+restHost.name = "vrops"
+restHost.url = "https://" + vropsHostname;
+restHost = RESTHostManager.createTransientHostFrom(restHost);
+RESTHostManager.reloadConfiguration();
+// Function to get resource ID by host name
+function getResourceIdByHostName(hostName) {
+    var url = "/suite-api/api/resources?resourceKind=HostSystem&name=" + hostName;
+    var request = restHost.createRequest("GET", url, null);
+    request.contentType = "application/json";
+    request.setHeader("accept", "application/json");
+    authHeader = "OpsToken " + authData.get("authToken")
+    request.setHeader("Authorization", authHeader);
+    
+    var response = request.execute();
+    if (response.statusCode !== 200) {
+        throw "Failed to retrieve resource ID for host " + hostName + ": " + response.statusCode + " - " + response.contentAsString;
+    }
+
+    var resources = JSON.parse(response.contentAsString);
+    if (resources.pageInfo.totalCount === 0) {
+        System.warn("No resource found for host " + hostName);
+        return null;
+    }
+
+    return resources.resourceList[0].identifier;
+}
+
+// Function to add or update properties in vROps
+function updateHostProperties(resourceId, properties) {
+    var url = "/suite-api/api/resources/" + resourceId + "/properties";
+    var requestBody = {
+        "property-content": []
+    };
+
+    for (var key in properties) {
+        if (properties.hasOwnProperty(key)) {
+            requestBody["property-content"].push({
+                "statKey": "Advanced Setting|" + key,
+                "values": [properties[key]],
+                "timestamps": [new Date().getTime()]
+            });
+        }
+    }
+    var request = restHost.createRequest("POST", url, JSON.stringify(requestBody));
+    request.contentType = "application/json";
+    request.setHeader("accept", "application/json");
+    authHeader = "OpsToken " + authData.get("authToken")
+    request.setHeader("Authorization", authHeader);
+    
+    var response = request.execute();
+    if (response.statusCode !== 200 && response.statusCode !== 204) {
+        System.warn("Failed to update properties for resource " + resourceId + ": " + response.statusCode + " - " + response.contentAsString);
+    } else {
+        System.log("Successfully updated properties for resource " + resourceId);
+    }
+}
+
+// Iterate over each host and update properties in vROps
+for (var hostName in hostSettingJSON) {
+    System.log("Updating host: " + hostName);
+    if (hostSettingJSON.hasOwnProperty(hostName)) {
+        try {
+            var resourceId = getResourceIdByHostName(hostName);
+            System.log("Operations Resource Identifier for " + hostName + " is: " + resourceId);
+            if (resourceId) {
+                updateHostProperties(resourceId, hostSettingJSON[hostName]);
+            }
+        } catch (e) {
+            System.error("Error processing host " + hostName + ": " + e);
+            System.error(e);
+        }
+    }
+}
+]]></script>
+    <in-binding>
+      <bind name="hostSettingJSON" type="Properties" export-name="hostSettingJSON"/>
+      <bind name="authData" type="Properties" export-name="authData"/>
+      <bind name="vropsHostname" type="string" export-name="vropsHostname"/>
+    </in-binding>
+    <out-binding/>
+    <description><![CDATA[Simple task with custom script capability.]]></description>
+    <position y="140.0" x="320.0"/>
+  </workflow-item>
+  <workflow-item name="item7" out-name="item6" type="task">
+    <display-name><![CDATA[Get OPs Auth Token]]></display-name>
+    <script encoded="false"><![CDATA[//Define the JSON request body
+var jsonBody = {
+    "username": "",
+    "authSource": "",
+    "password": "!"
+};
+
+// Create REST host configuration
+var restHost = new RESTHost("https://" + vropsHostname);
+restHost.name = "vrops"
+restHost.url = "https://" + vropsHostname;
+restHost = RESTHostManager.createTransientHostFrom(restHost);
+RESTHostManager.reloadConfiguration();
+//Fill in the values into the jsonBody
+jsonBody.username = username;
+jsonBody.password = password;
+jsonBody.authSource = authsource;
+jsonRequestBody = JSON.stringify(jsonBody);
+//Create a new HTTP REST Request object for the REST host that was provided
+var request = restHost.createRequest("POST", "/suite-api/api/auth/token/acquire", jsonRequestBody);
+request.contentType = "application/json";
+request.setHeader("accept", "application/json");
+
+//Attempt to execute the REST request
+try {
+    response = request.execute();
+    jsonObject = JSON.parse(response.contentAsString);
+    var authData = new Properties();
+    //Return back the authentication token and validity period using a property set
+    if (jsonObject.token != "" && jsonObject.validity != "") {
+        authData.put("authToken", jsonObject.token);
+        authData.put("authTokenValidity", jsonObject.validity);
+        System.log(authData.get("authToken"));
+    }
+    else {
+        throw "There was an errror executing the REST call.";
+    }
+}
+catch (e) {
+    throw "There was an error executing the REST call:" + e;
+}]]></script>
+    <in-binding>
+      <bind name="username" type="string" export-name="username"/>
+      <bind name="authsource" type="string" export-name="authsource"/>
+      <bind name="vropsHostname" type="string" export-name="vropsHostname"/>
+      <bind name="password" type="SecureString" export-name="password"/>
+    </in-binding>
+    <out-binding>
+      <bind name="authData" type="Properties" export-name="authData"/>
+    </out-binding>
+    <description><![CDATA[Simple task with custom script capability.]]></description>
+    <position y="140.0" x="480.0"/>
+  </workflow-item>
+  <workflow-item name="item8" out-name="item3" type="task">
+    <display-name><![CDATA[Get Inputs from Config Element]]></display-name>
+    <script encoded="false"><![CDATA[// Configuration element details (hardcoded based on the companion workflow)
+var configElementCategoryPath = "vROPS";
+var configElementName = "AdvancedSettingsConfig";
+
+// Outputs
+// username: String
+// password: String
+// authsource: String
+// advancedSettings: Array/String - Array of strings representing advanced settings with collect set to true
+
+// Function to get the configuration element
+function getConfigElement(categoryPath, name) {
+    var configElementCategory = Server.getConfigurationElementCategoryWithPath(categoryPath);
+    if (!configElementCategory) {
+        throw "Configuration element category " + categoryPath + " does not exist.";
+    }
+
+    var configElements = configElementCategory.configurationElements;
+    for (var i = 0; i < configElements.length; i++) {
+        if (configElements[i].name === name) {
+            return configElements[i];
+        }
+    }
+
+    throw "Configuration element " + name + " does not exist in category " + categoryPath + ".";
+}
+
+// Get the configuration element
+var configElement = getConfigElement(configElementCategoryPath, configElementName);
+
+// Retrieve attributes
+var vropsHostname = configElement.getAttributeWithKey("vropsHostname").value;
+var username = configElement.getAttributeWithKey("username").value;
+var password = configElement.getAttributeWithKey("password").value;
+var authsource = configElement.getAttributeWithKey("authsource").value;
+
+// Retrieve and process advanced settings
+var advancedSettingsProperties = configElement.getAttributeWithKey("advancedSettings").value;
+var advancedSettings = [];
+
+var keys = advancedSettingsProperties.keys;
+for (var i = 0; i < keys.length; i++) {
+    var key = keys[i];
+    var value = advancedSettingsProperties.get(key);
+    if (value === true) {
+        advancedSettings.push(key);
+    }
+}
+System.log("vROps Hostname: " + vropsHostname);
+System.log("Username: " + username);
+System.log("Auth Source: " + authsource);
+System.log("Advanced Settings: " + JSON.stringify(advancedSettings));
+var advancedSettingsArray = advancedSettings;
+]]></script>
+    <in-binding/>
+    <out-binding>
+      <bind name="authsource" type="string" export-name="authsource"/>
+      <bind name="vropsHostname" type="string" export-name="vropsHostname"/>
+      <bind name="username" type="string" export-name="username"/>
+      <bind name="password" type="SecureString" export-name="password"/>
+      <bind name="advancedSettingsArray" type="Array/string" export-name="advancedSettingsArray"/>
+    </out-binding>
+    <description><![CDATA[Simple task with custom script capability.]]></description>
+    <position y="60.0" x="360.0"/>
+  </workflow-item>
+  <presentation/>
+</workflow>

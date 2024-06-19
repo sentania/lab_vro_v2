@@ -1,0 +1,6 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dunes-script-module name="getADContainer" result-type="string" api-version="6.0.0" id="d5db9f57-7027-45a7-a46c-a7a9c2ed6bcf" version="1.0.0" allowed-operations="vf" category-name="com.vmware.library.vcaccafe.subtenant">
+  <description><![CDATA[Returns the Active direcory container of the business group.]]></description>
+  <param n="businessGroup" t="vCACCAFE:Subtenant"><![CDATA[Business group]]></param>
+  <script encoded="false"><![CDATA[return vCACCAFESubtenantHelper.getADContainer(businessGroup);]]></script>
+</dunes-script-module>
