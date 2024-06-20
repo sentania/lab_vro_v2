@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<workflow xmlns="http://vmware.com/vco/workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://vmware.com/vco/workflow http://vmware.com/vco/workflow/Workflow-v4.xsd" root-name="item1" object-name="workflow:name=generic" id="08d75a8c-a79e-4dfb-8ff7-5d48ef6d94a9" version="2.1.0" api-version="6.0.0" allowed-operations="vef" editor-version="2.0" restartMode="1" resumeFromFailedMode="0">
+<workflow xmlns="http://vmware.com/vco/workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://vmware.com/vco/workflow http://vmware.com/vco/workflow/Workflow-v4.xsd" root-name="item1" object-name="workflow:name=generic" id="08d75a8c-a79e-4dfb-8ff7-5d48ef6d94a9" version="2.1.1" api-version="6.0.0" allowed-operations="vef" editor-version="2.0" restartMode="1" resumeFromFailedMode="0">
   <display-name><![CDATA[Get VMware Hosts by vCenter]]></display-name>
   <description><![CDATA[Returns a list of virtual machines from all registered vCenter Server hosts that match the provided expression. The expression is any valid javascript regex.]]></description>
   <position y="50.0" x="100.0"/>
